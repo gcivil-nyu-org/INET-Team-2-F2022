@@ -25,7 +25,7 @@ SECRET_KEY = '&#t1)c0-ux8ren0xn)!$m60bv4273ri58h(9eoeagzji@8n%(n'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['serenity-env.eba-u98bc2zz.us-west-2.elasticbeanstalk.com', '127.0.0.1']
+ALLOWED_HOSTS = ['serenity-env.eba-u98bc2zz.us-west-2.elasticbeanstalk.com', '127.0.0.1', 'serenity-env.eba-2mvcgj9h.us-east-1.elasticbeanstalk.com']
 
 
 # Application definition
@@ -37,6 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
+    'app',
 ]
 
 MIDDLEWARE = [
