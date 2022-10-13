@@ -4,8 +4,7 @@ from django.db import models
 
 class ScoreTable(models.Model):
     zipcode = models.IntegerField()
-    crime_score = models.FloatField(max_length=10)
-    tree_score = models.FloatField(max_length=10)
+    residential_Noise = models.FloatField(max_length=10)
 
     def __str__(self):
         return str(self.zipcode)

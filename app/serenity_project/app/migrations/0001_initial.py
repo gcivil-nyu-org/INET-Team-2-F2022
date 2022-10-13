@@ -16,8 +16,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('zipcode', models.IntegerField()),
-                ('crime_score', models.FloatField(max_length=10)),
-                ('tree_score', models.FloatField(max_length=10)),
+                ('residential_noise', models.FloatField(max_length=10)),
             ],
         ),
     ]
