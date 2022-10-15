@@ -1,13 +1,20 @@
+<!DOCTYPE html>
+<html>
 {{error}}
 
 {% if post %}
-
-        <h1>Search Result</h1>
+<center>
+<head style="background-color:DarkOliveGreen;">
+        <h1 style="color:honeydew">Search Result</h1>
         <br>
+</head>
 
-
-    {{post}}
-
+<body style="background-color:DarkOliveGreen;">
+    <p style="color:peachpuff">The 'Residential Noise' score for {{post.zipcode}} is <b>{{post.residential_Noise}}</b>!</p>
     {% else %}
     <h1>nothing found</h1>
 {% endif %}
+
+</body>
+</center>
+</html>

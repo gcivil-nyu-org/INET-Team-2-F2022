@@ -1,4 +1,4 @@
-{% if latest_question_list %}
+<!-- {% if latest_question_list %}
     <ul>
     {% for zipcode in latest_zipcodelist %}
         <li><a href="/app/index">{{ zipcode.zipcode }}</a></li>
@@ -6,13 +6,31 @@
     </ul>
 {% else %}
     <p>No zipcodes are available.</p>
-{% endif %}
+{% endif %} -->
+<body style="background-color:ECFFE8;">
+<header>
+   <center>
+    <h1 style="color:ForestGreen;">Welcome to <i>SerenitySearch!</i></h1>
+    <p style="color:ForestGreen;"><i>Helping New Yorkers find peace in the city that never sleeps</i></p>
+</center> 
+
+</header>
+
+<nav style="background-color:DarkOliveGreen;">
+    <center>
+    <p style="color:ECFFE8;">[some navigation links will go here...]</p>
+</center>
+</nav>
+
+<br><br><br><br><br><br><br>
 
 <center>
+    <p style="color:ForestGreen;">To start your search, please enter a 5-digit NYC zipcode:</p>
 <form action="search" method = "POST">
     {% csrf_token %}
-    <input type="text" name="searched"/>
+    <input type="text" placeholder="Enter a Zipcode" name="searched"/>
     <button type="submit">Search</button>   
 </form>
 
 </center>
+</body>
