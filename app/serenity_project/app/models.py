@@ -7,6 +7,6 @@ class ScoreTable(models.Model):
     residential_Noise = models.FloatField(max_length=10)
 
     def __str__(self):
-        return str(self.zipcode)
-    def serenity_score(self):
-        return str(self.residential_Noise)
+        return f"Zipcode: {self.zipcode}, Score: {self.residential_Noise}"
+    # def serenity_score(self):
+    #     return str(self.residential_Noise)

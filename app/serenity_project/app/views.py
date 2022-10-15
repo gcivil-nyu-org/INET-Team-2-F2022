@@ -23,7 +23,7 @@ def search(request):
     csrfContext = RequestContext(request)
     if request.method == 'POST':
         search = request.POST['searched']
-        post = ScoreTable.objects.filter(zipcode=search)
+        post = ScoreTable.objects.get(zipcode=search)
         return render(request, 'app/search.html', {'post' : post},csrfContext)
     else:
         return render(request, 'app/search.html',{},csrfContext)
