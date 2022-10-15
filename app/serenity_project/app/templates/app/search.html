@@ -10,11 +10,21 @@
 </head>
 
 <body style="background-color:DarkOliveGreen;">
-    <p style="color:peachpuff">The 'Residential Noise' score for {{post.zipcode}} is <b>{{post.residential_Noise}}</b>!</p>
+    <h2 style="color:peachpuff">Noise Grade: {{post.grade}}</h2>
+    <p style="color:peachpuff">The 'Residential Noise' score for {{post.zipcode}} is <b>{{post.residential_Noise}}</b></p>
     {% else %}
     <h1>nothing found</h1>
-{% endif %}
-
+    {% endif %}
+    <br>
+    <h3 style="color:honeydew">About our scoring system:</h3>
+    <p style="color:honeydew">Scores are on the range [0,20] with the higher scores representing zip codes which received more noise complaints.</p>
+    <p style="color:honeydew">A = [0,2)</p>
+    <p style="color:honeydew">B = [2,3)</p>
+    <p style="color:honeydew">C = [3,4)</p>
+    <p style="color:honeydew">D = [4,5)</p>
+    <p style="color:honeydew">E = [5,6)</p>
+    <p style="color:honeydew">F = [6,7)</p>
+    <p style="color:honeydew">G = 7+</p>
 </body>
 </center>
 </html>
