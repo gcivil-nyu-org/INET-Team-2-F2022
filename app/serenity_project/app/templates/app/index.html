@@ -9,8 +9,9 @@
 {% endif %}
 
 <center>
-<form action="{% url 'search' %" method = "get">
-    <input type="text" name="search"/>
+<form action="search" method = "POST">
+    {% csrf_token %}
+    <input type="text" name="searched"/>
     <button type="submit">Search</button>   
 </form>
 

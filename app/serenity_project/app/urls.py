@@ -10,5 +10,5 @@ router.register('api', ScoreTableViewSet)
 urlpatterns = [
     path('index/', views.index, name='index'),
     path('', include(router.urls)),
-    path('index/search/', views.search,name='search')
+    path('index/search', views.search,name='search')
 ]

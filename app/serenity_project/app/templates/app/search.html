@@ -5,8 +5,8 @@
         <h1>Search Result</h1>
         <br>
     </center>
-{% for i in post %}
-    <center><h2><a href="/search/{{i.zipcode}}"></a></h2></center>
+{% for result in post %}
+    {{post}}
 {% endfor %}
     {% else %}
     <center><h1>nothing found</h1></center>

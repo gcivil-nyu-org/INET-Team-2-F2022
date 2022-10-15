@@ -5,6 +5,8 @@ from rest_framework import viewsets
 from .models import ScoreTable
 from .serializers import ScoreTableSerializer
 from django.shortcuts import render
+from django.views.decorators.csrf import csrf_protect
+from django.template import RequestContext
 
 class ScoreTableViewSet(viewsets.ModelViewSet):
     queryset = ScoreTable.objects.all()
@@ -18,7 +20,10 @@ def index(request):
     return render(request, 'app/index.html', context)
 
 def search(request):
-    if request.method == 'GET':
-        search = request.GET.get('search')
-        post = ScoreTable.objects.all().filter(zipcode=search)
-        return render(request, 'app/index/search.html', {'post' : post})
+    csrfContext = RequestContext(request)
+    if request.method == 'POST':
+        search = request.POST['searched']
+        post = ScoreTable.objects.filter(zipcode=search)
+        return render(request, 'app/search.html', {'post' : post},csrfContext)
+    else:
+        return render(request, 'app/search.html',{},csrfContext)

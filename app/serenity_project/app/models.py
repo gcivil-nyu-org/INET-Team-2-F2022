@@ -8,3 +8,5 @@ class ScoreTable(models.Model):
 
     def __str__(self):
         return str(self.zipcode)
+    def serenity_score(self):
+        return str(self.residential_Noise)
