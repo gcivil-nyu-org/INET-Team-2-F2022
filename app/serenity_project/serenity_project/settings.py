@@ -25,7 +25,7 @@ SECRET_KEY = '&#t1)c0-ux8ren0xn)!$m60bv4273ri58h(9eoeagzji@8n%(n'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['proj-test-env2.eba-dzhhuiqz.us-west-2.elasticbeanstalk.com']
+ALLOWED_HOSTS = ['proj-test-env2.eba-dzhhuiqz.us-west-2.elasticbeanstalk.com', 'localhost', '127.0.0.1']
 
 
 # Application definition
@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'app.apps.AppConfig',
+    'frontend.apps.FrontendConfig',
 ]
 
 MIDDLEWARE = [
