@@ -25,7 +25,7 @@ SECRET_KEY = '&#t1)c0-ux8ren0xn)!$m60bv4273ri58h(9eoeagzji@8n%(n'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['proj-test-env2.eba-dzhhuiqz.us-west-2.elasticbeanstalk.com']
+ALLOWED_HOSTS = ['proj-test-env2.eba-dzhhuiqz.us-west-2.elasticbeanstalk.com', '127.0.0.1']
 
 
 # Application definition
@@ -38,18 +38,22 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'corsheaders',
     'app.apps.AppConfig',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+CORS_ALLOW_ALL_ORIGINS = True
 
 ROOT_URLCONF = 'serenity_project.urls'
 
