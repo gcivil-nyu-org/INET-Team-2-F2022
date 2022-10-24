@@ -1,0 +1,10 @@
+language: python
+python:
+- 3.7.9
+install:
+- pip install -r serenity_project/requirements.txt
+before_script:
+- python serenity_project/manage.py migrate
+script:
+- black --check .
+- flake8 .

@@ -1,18 +1,18 @@
 branch-defaults:
-  default:
-    environment: cicd-test
+  develop:
+    environment: se-cicd-env
     group_suffix: null
 global:
-  application_name: app-cicd-test
+  application_name: se-cicd
   branch: null
-  default_ec2_keyname: aws-eb
+  default_ec2_keyname: null
   default_platform: Python 3.7
-  default_region: us-east-1
+  default_region: us-west-2
   include_git_submodules: true
   instance_profile: null
   platform_name: null
   platform_version: null
   profile: eb-cli
   repository: null
-  sc: null
+  sc: git
   workspace_type: Application
