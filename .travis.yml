@@ -8,3 +8,17 @@ before_script:
 script:
 - black --check .
 - flake8 .
+- cd serenity_project
+
+deploy:
+  provider: elasticbeanstalk
+  access_key_id:
+    secure: "krSqS+tvkUWdSMSgJ4slcTTDkim/21zMDpkaxQncFrTJuJIgqpa7KRrBl1T3eSAfwHJv4sXoX1yKRfBSXPMhL5WUY1Mk2UNNa2vBIesq76uSMoSdclChd84m7UjbDHiWkt4cYzXSpkTdLYd2UWyX/gwRsptUZzHi/WXvSRossyKESZmnj5oWWnD0ga79tKIvB6d/3kxU3GCc0iI69+nmNU17fs+KZb0cdVVHQVcfC31ww/GRXih2ExrMZHB0NJibdP7ihN0Kbh0O6n/Ij77D8xG5nYxjBHEePoZy/0zKLj63+7WBQeUv3WAxc9c9EDUcRzojNL1yUb6D/WDpfbgQz7zgO35uRYwXjmmtjOMADwofXCtB+JXKCB2tWjh+Q/AcTk729s/DwK3e1tF/klz0pj/edSVodBImp0+DfjJRs4896yqq2T0E5errIVj9FUQWNuX3aas/6nlf3g/scjGM6vfnxhY/1cARtdb6mnDfWZglM9b3MHQ/jYoAm+601329h/Rm0nH8Qj9RTf6yMry6pdmFCrTbpowaJ/nSrvyczSFHYq575eNXMz5EsvqCd06oCSMbtg14g7NFfcb/feMR8vpsobAJYMkS1IUlApMVOVPKN7DxDmdAlofeME5yXXIz0O1sKkUeTyCa9N8anbRqh+AUz/RZgjTRQjQgWv65ppw="
+  secret_access_key:
+    secure: "F9vV+HQ/EfU7PMJQNXRvcYLNaXJB+eq2pw+yz7z+wLkc/P+MYXEvNoyoLPAl4Z/JaHM6n21YmvkIQzqikNq4MpwKkPlrS8/UloANDUZVJGXn7fm1HZOXFEP00FziWgUru66raZXVXcd6xtzUqpXVIZmSnPP1V0X93fItuGBQxpPrWgqEIWrBLC+zg2uiGIiyA3Zw+DkFi5MFQc+eqoAw5a/0PXWDe7seLbH1fKQjLloLnxdKt5MNWZ9al26TCX5qi36awhCSRTRTi/3Dbh7UYLHmp0RLrdQma9n/P/6HWODEkXBFxnP1uw4h1GLznksZb4oltARa0X1EgHdCDzpvBh/Y2IoJT47XfuTsJXMIC7LVhstHB5oPLdzluTCbH8awN28LWuhw0VJVJEuHdYtE8vttQt+64iYntzbGpXrho8kdKonoC4/xcJsC+eEygtX9pq+XSylj/zy9gLGEABmYWhJyHPdgFoynAYVOvr76jHQIedILiyxRea6VyNGLQ8LHdwbnJ2C2x4yo0K+1DzpT/S0aCdMzqEvtJQ1DYyTM36SbHRAN/tVzYXeDzy+5zBQHZ+y5WDkG6zDCCSI1VMrGfEBMhpSoshGOpxBrdTEXaZd9IUvUxu4Z0tBSerEVuGYjoWlXIFfK6hf0vQcvfwNvAsPRzQpLht/ZicUDNZpdpgM="
+  region: "us-east-1"
+  app: "app-cicd-test"
+  env: "cicd-test"
+  bucket_name: "elasticbeanstalk-us-east-1-316737002213"
+  on:
+    all_branches: true
