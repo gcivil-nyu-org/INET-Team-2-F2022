@@ -90,3 +90,6 @@ def login_request(request):
     return render(
         request=request, template_name="app/login.html", context={"login_form": form}
     )
+
+def map_view(request):
+    return render(request, "app/map.html",{})
