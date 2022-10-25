@@ -33,7 +33,7 @@ def search(request):
         search = request.POST["searched"]
         post = ScoreTable.objects.get(zipcode=search)
         # currZip = post.zipcode
-        normalizeNoise = post.residential_Noise / 1000
+        normalizeNoise = (post.residentialNoise+post.dirtyConditions+post.sanitationCondition+post.wasteDisposal+post.unsanitaryCondition) / 1000
         if normalizeNoise >= 7:
             post.grade = "G"
         elif normalizeNoise < 7 and normalizeNoise >= 6:
