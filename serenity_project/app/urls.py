@@ -7,7 +7,7 @@ from django.conf.urls.static import static
 # from django.conf.urls import patterns,url
 from . import views
 
-## api router
+# api router
 api_router = DefaultRouter()
 api_router.register("table", ScoreTableViewSet)
 
@@ -19,4 +19,3 @@ urlpatterns = [
     path("login", views.login_request, name="login"),
     path("map", views.map_view, name="map"),
 ]
-
