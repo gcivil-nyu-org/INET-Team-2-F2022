@@ -6,13 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('app', '0003_auto_20221025_1346'),
+        ("app", "0003_auto_20221025_1346"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='scoretable',
-            name='id',
+            model_name="scoretable",
+            name="id",
             field=models.AutoField(primary_key=True, serialize=False),
         ),
     ]

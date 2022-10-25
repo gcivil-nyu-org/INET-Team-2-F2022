@@ -12,7 +12,7 @@ from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import AuthenticationForm
 
 
-from django.template.response import TemplateResponse 
+from django.template.response import TemplateResponse
 
 
 import pandas as pd
@@ -36,7 +36,13 @@ def search(request):
         search = request.POST["searched"]
         post = ScoreTable.objects.get(zipcode=search)
         # currZip = post.zipcode
-        normalizeNoise = (post.residentialNoise+post.dirtyConditions+post.sanitationCondition+post.wasteDisposal+post.unsanitaryCondition) / 1000
+        normalizeNoise = (
+            post.residentialNoise
+            + post.dirtyConditions
+            + post.sanitationCondition
+            + post.wasteDisposal
+            + post.unsanitaryCondition
+        ) / 1000
         if normalizeNoise >= 7:
             post.grade = "G"
         elif normalizeNoise < 7 and normalizeNoise >= 6:
@@ -94,6 +100,6 @@ def login_request(request):
         request=request, template_name="app/login.html", context={"login_form": form}
     )
 
-def map_view(request):
-    return render(request, "app/map.html",{})
 
+def map_view(request):
+    return render(request, "app/map.html", {})

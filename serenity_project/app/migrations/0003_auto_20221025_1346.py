@@ -6,36 +6,36 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('app', '0002_auto_20221013_1348'),
+        ("app", "0002_auto_20221013_1348"),
     ]
 
     operations = [
         migrations.RenameField(
-            model_name='scoretable',
-            old_name='residential_Noise',
-            new_name='dirtyConditions',
+            model_name="scoretable",
+            old_name="residential_Noise",
+            new_name="dirtyConditions",
         ),
         migrations.AddField(
-            model_name='scoretable',
-            name='residentialNoise',
+            model_name="scoretable",
+            name="residentialNoise",
             field=models.FloatField(default=1, max_length=10),
             preserve_default=False,
         ),
         migrations.AddField(
-            model_name='scoretable',
-            name='sanitationCondition',
+            model_name="scoretable",
+            name="sanitationCondition",
             field=models.FloatField(default=1, max_length=10),
             preserve_default=False,
         ),
         migrations.AddField(
-            model_name='scoretable',
-            name='unsanitaryCondition',
+            model_name="scoretable",
+            name="unsanitaryCondition",
             field=models.FloatField(default=1, max_length=10),
             preserve_default=False,
         ),
         migrations.AddField(
-            model_name='scoretable',
-            name='wasteDisposal',
+            model_name="scoretable",
+            name="wasteDisposal",
             field=models.FloatField(default=1, max_length=10),
             preserve_default=False,
         ),

@@ -3,6 +3,7 @@ from rest_framework.routers import DefaultRouter
 from .views import ScoreTableViewSet
 from django.conf import settings
 from django.conf.urls.static import static
+
 # from django.conf.urls import patterns,url
 from . import views
 
