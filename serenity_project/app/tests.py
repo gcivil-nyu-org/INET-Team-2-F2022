@@ -20,10 +20,6 @@ class AppViewTests(TestCase):
         response = self.client.get(path="/login")
         assert response.status_code == 200
 
-    def test_map_page(self):
-        response = self.client.get(path="/map")
-        assert response.status_code == 200
-
 
 class TestLogin(TestCase):
     def test_login(self):
