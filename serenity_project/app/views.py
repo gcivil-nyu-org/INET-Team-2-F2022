@@ -11,7 +11,6 @@ from django.contrib import messages
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import AuthenticationForm
 
-
 from django.template.response import TemplateResponse
 
 
@@ -99,7 +98,3 @@ def login_request(request):
     return render(
         request=request, template_name="app/login.html", context={"login_form": form}
     )
-
-
-def map_view(request):
-    return render(request, "app/map.html", {})
