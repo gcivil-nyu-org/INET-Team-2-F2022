@@ -46,7 +46,7 @@ def search(request):
         if normalizeNoise >= 7:
             post.grade = "G"
         elif normalizeNoise < 7 and normalizeNoise >= 6:
-            post.grade = "G"
+            post.grade = "F"
         elif normalizeNoise < 6 and normalizeNoise >= 5:
             post.grade = "E"
         elif normalizeNoise < 5 and normalizeNoise >= 4:

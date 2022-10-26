@@ -27,6 +27,17 @@
                 }
             });
             map.data.loadGeoJson("{% static 'json/nycpolygon.geojson' %}");
+            var infowindow = new google.maps.InfoWindow();
+            
+            map.data.addListener('click', function(event) {
+              let zipcode = event.feature.getProperty("postalCode");
+              let neighborhood = event.feature.getProperty("PO_NAME")
+              let html = '' + neighborhood + ': ' + zipcode; // combine state name with a label
+              infowindow.setContent(html); // show the html variable in the infowindow
+              infowindow.setPosition(event.latLng); // anchor the infowindow at the marker
+              infowindow.setOptions({pixelOffset: new google.maps.Size(0,-30)}); // move the infowindow up slightly to the top of the marker icon
+              infowindow.open(map);
+            });
         }
     </script>
     <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDdv_xCiAS0nmezcZQ95VWozTJ_BHQXjlE&callback=initMap" type="text/javascript"></script>
