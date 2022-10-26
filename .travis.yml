@@ -1,0 +1,24 @@
+language: python
+python:
+- 3.7.9
+install:
+- pip install -r serenity_project/requirements.txt
+before_script:
+- python serenity_project/manage.py migrate
+script:
+- black --check .
+- flake8 .
+- cd serenity_project
+
+deploy:
+  provider: elasticbeanstalk
+  access_key_id:
+    secure: "Quvu/qsyP1Brhc9bkO4/faLOIRsf8wrU8Zk/1ZPVzWMWeRXgQK9kop9f8+QodNNlghP5da1QPzrg90ly7X+804ShL980TJ2XcDVTlwkMtp6EJClvnpnAgiFGS0LiVsM8o0J2StN6901kZSzWum6j+AEQZuNxyjbbr7QXsotPjLo6dnK2frKpw7m18OkjpZbwO8tGJaR7+Jq9gWfaklYry4bb88C4RYWL2CtHy6BRbzYwuMDXPWRcn0ez/n2EQFC6VOxCHwtIUta/w1nazE/2LaMavidntcUCT9gDwZTC/B26EMa4cjR5y3qXVR9ZVNODHYGyn3sBRoFtoiiK5dxsF/K4aLNa3j6drQgDU/612DAKRbLzlSXSpXuxPgPg1IM/f++7BrLYfnkY2k97KVNfwEGdBYiwifJfepbSN8mTaDn6V64GH7qpM+kD1bZeX0dr9aEYhfvRbUwf34TSQNo9dRI/UuNjECDgULgqRHxW7IB5r2lY6+6oJTqDWbiVuqA6b//gR7P0i933irB7hWorE+3Ttqg2kZ/h48rmykxsvgt7JaCocLZbbPv6rUkxbaKVKI+dKOYwAYZRset9AttogvO0g9NLkOe6oPRCx6gk2ReijXbSsk4DdHInQuqqOnJpGcXFAZXDgHOrwy98jQXL1bYFerORVdHaU9XnT5Jz3HQ="
+  secret_access_key:
+    secure: "aZAph/bwinFOFZVtsFMsiukiKgg3utx7Bj4mKu6471ZrgbZvKsEY/+z08VJwfW2Kr9BVtOhr/EfKBiKU4sgwff+0mPkzgA2xNR+lvczSbqCPPQ+2UmWCiNEGdg892S6C6rGvilzBnezwDtTO3guL9Rc3MXBbkPNvkgENzG4XNoW7SOeJqoY0zBcjDpVxYEfT/iz3rrNn4Ngp0K10eBK4R3ChgfjyKELUcCcIbIeglQVL6516xIAr5O/0ksp4kvkjIIM9K5+Tfm7H9e+m2HIk/Kh6xxXmf2j00Xe9vbhxrb81sIVJk1DT2aS+N8/vvLa3Ydwfh3fUn+xAVHgS5ykB6+jEU9DVKkAoAgTErh9et8Bm954qVWa6zrs+6CwAo9/YzQhTjbZ7BelYGeAc7x+4WHy+XnQS0OTW9Yrs6LIgqjCIIq59XC73/uWRCuj2CT2b0o9ad1ir9rKAvF8qMitsDOfEs2IM9jGBpYLt40FqCnFKN38Bu97zmj7d5Su9JIhvz0Q/+OQjHBDCeMFvMuL5QhiR4PJ+5WciCHA7ScArV5FzCx8pluLhMfX1ZqLz9fXx+om8IXwxC4HuMIwlz48LFcdaCmnW1SmoUt6wXX3iZbwwQfm8mwj8Jwz4eD+Xtn2l2YOyzo4OG9sqL/Os4KZnOLVcldcG9Ow3PFZbmN3nCKU="
+  region: "us-east-1"
+  app: "app-cicd-test"
+  env: "cicd-test"
+  bucket_name: "elasticbeanstalk-us-east-1-316737002213"
+  on:
+    all_branches: true

@@ -1,0 +1,9 @@
+[flake8]
+max-line-length = 95
+extend_ignore = F401,F811
+exclude =
+    .git,
+    __pycache__,
+    env,
+    venv,
+    ./polls/migrations/0001_initial.py
