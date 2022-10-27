@@ -1,5 +1,4 @@
 from django.shortcuts import render, redirect
-
 # Create your views here.
 from rest_framework import viewsets
 from .models import ScoreTable
@@ -9,7 +8,6 @@ from .forms import NewUserForm
 from django.contrib import messages
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import AuthenticationForm
-
 import pandas as pd
 import numpy as np
 
