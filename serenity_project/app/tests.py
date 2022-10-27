@@ -1,12 +1,13 @@
 from django.test import TestCase
 from django.urls import reverse
-from .models import ScoreTable
+from django.http import HttpRequest
 from django.contrib.auth.models import User
-from .views import search
+from app.models import ScoreTable
+from app.views import search
 from unittest.mock import patch
 import json
 import requests
-from django.http import HttpRequest
+
 
 
 from django.test import Client
