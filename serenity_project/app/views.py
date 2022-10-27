@@ -4,15 +4,11 @@ from django.shortcuts import render, redirect
 from rest_framework import viewsets
 from .models import ScoreTable
 from .serializers import ScoreTableSerializer
-from django.views.decorators.csrf import csrf_protect
 from django.template import RequestContext, Template, Context
 from .forms import NewUserForm
 from django.contrib import messages
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import AuthenticationForm
-
-from django.template.response import TemplateResponse
-
 
 import pandas as pd
 import numpy as np
@@ -24,9 +20,7 @@ class ScoreTableViewSet(viewsets.ModelViewSet):
 
 
 def index(request):
-    latest_zipcode_list = ScoreTable.objects.order_by("zipcode")[:5]
-    context = {"latest_zipcode_list": latest_zipcode_list}
-    return render(request, "app/index.html", context)
+    return render(request, "app/index.html", {})
 
 
 def search(request):
