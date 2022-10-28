@@ -105,6 +105,7 @@ def login_request(request):
 def map_view(request):
     return render(request, "app/map.html", {})
 
+
 def logoutUser(request):
-   logout(request)
-   return redirect("home")
+    logout(request)
+    return redirect("home")

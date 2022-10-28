@@ -3,8 +3,24 @@
 {{error}}
 {% if post %}
 <center>
+    <p style="color:ECFFE8;">
+        {% block user %}
+        {% if user.is_authenticated %}
+            Hi {{ user.username }}!
+            <p style="color:ECFFE8;"><a href="{% url 'logout' %}">Log Out</a></p>
+        {% else %}
+            <a style="color:ECFFE8;" href="{% url 'login' %}">Log In</a>
+        {% endif %}
+        {% endblock %}
+    </p>
 <head style="background-color:DarkOliveGreen;">
+    {% block header %}
+    {% if user.is_authenticated %}
+        <h1 style="color:honeydew">{{ user.username }}'s Search Result</h1>
+    {% else %}
         <h1 style="color:honeydew">Search Result</h1>
+    {% endif %}
+    {% endblock %}
         <br>
 </head>
 
