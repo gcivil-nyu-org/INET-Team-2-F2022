@@ -125,18 +125,20 @@ class testSearchView(TestCase):
         response = search(req)
         assert response.status_code == 200
 
+
 class TestForms(TestCase):
     def test_form_save(self):
         from .forms import NewUserForm
+
         form = NewUserForm()
         form.cleaned_data = {}
-        form.cleaned_data['email'] = 'test_email'
-        form.cleaned_data['password1'] = 'test_password'
+        form.cleaned_data["email"] = "test_email"
+        form.cleaned_data["password1"] = "test_password"
 
         user = form.save(False)
-        email = form.cleaned_data['email']
+        email = form.cleaned_data["email"]
         assert email == user.email
-    
+
     def test_meta(self):
         from .forms import NewUserForm
         from django.contrib.auth.models import User
@@ -145,27 +147,22 @@ class TestForms(TestCase):
         assert meta.model == User
         assert meta.fields == ("username", "email", "password1", "password2")
 
-class TestViews(TestCase):
 
+class TestViews(TestCase):
     def test_get_city_normalized_noise(self):
         from .views import _get_city_normalized_noise
-        
-        noise = _get_city_normalized_noise(
-                1000, 
-                1000, 
-                1000, 
-                1000, 
-                1000)
-        assert noise == 5 
+
+        noise = _get_city_normalized_noise(1000, 1000, 1000, 1000, 1000)
+        assert noise == 5
 
     def test_get_city_grade_from_noise(self):
         from .views import _get_city_grade_from_noise
-        
-        assert _get_city_grade_from_noise(7) == 'G'
-        assert _get_city_grade_from_noise(6) == 'F'
-        assert _get_city_grade_from_noise(5) == 'E'
-        assert _get_city_grade_from_noise(4) == 'D'
-        assert _get_city_grade_from_noise(3) == 'C'
-        assert _get_city_grade_from_noise(2) == 'B'
-        assert _get_city_grade_from_noise(1) == 'A'
-        assert _get_city_grade_from_noise(0) == 'A'
+
+        assert _get_city_grade_from_noise(7) == "G"
+        assert _get_city_grade_from_noise(6) == "F"
+        assert _get_city_grade_from_noise(5) == "E"
+        assert _get_city_grade_from_noise(4) == "D"
+        assert _get_city_grade_from_noise(3) == "C"
+        assert _get_city_grade_from_noise(2) == "B"
+        assert _get_city_grade_from_noise(1) == "A"
+        assert _get_city_grade_from_noise(0) == "A"

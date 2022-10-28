@@ -22,18 +22,22 @@ class ScoreTableViewSet(viewsets.ModelViewSet):
 def index(request):
     return render(request, "app/index.html", {})
 
+
 def _get_city_normalized_noise(
-        resident_noise,
-        dirty_conditions, 
-        sanitation_condition, 
-        waste_disposal, 
-        unsanitary_condition):
+    resident_noise,
+    dirty_conditions,
+    sanitation_condition,
+    waste_disposal,
+    unsanitary_condition,
+):
     return (
         resident_noise
         + dirty_conditions
         + sanitation_condition
         + waste_disposal
-        + unsanitary_condition) / 1000
+        + unsanitary_condition
+    ) / 1000
+
 
 def _get_city_grade_from_noise(normalized_noise):
     grade = None
@@ -51,9 +55,10 @@ def _get_city_grade_from_noise(normalized_noise):
         grade = "B"
     elif normalized_noise < 2 and normalized_noise >= 0:
         grade = "A"
-    return grade 
+    return grade
 
-def search(request): # pragma: no cover
+
+def search(request):  # pragma: no cover
     csrfContext = RequestContext(request)
     if request.method == "POST":
         search = request.POST["searched"]
@@ -64,8 +69,9 @@ def search(request): # pragma: no cover
             post.dirtyConditions,
             post.sanitationCondition,
             post.wasteDisposal,
-            post.unsanitaryCondition)
-        
+            post.unsanitaryCondition,
+        )
+
         post.residential_Noise = normalizeNoise
         post.grade = _get_city_grade_from_noise(normalizeNoise)
 
@@ -74,7 +80,7 @@ def search(request): # pragma: no cover
         return render(request, "app/search.html", {}, csrfContext)
 
 
-def register_request(request): # pragma: no cover
+def register_request(request):  # pragma: no cover
     if request.method == "POST":
         form = NewUserForm(request.POST)
         if form.is_valid():
@@ -91,7 +97,7 @@ def register_request(request): # pragma: no cover
     )
 
 
-def login_request(request): # pragma: no cover
+def login_request(request):  # pragma: no cover
     if request.method == "POST":
         form = AuthenticationForm(request, data=request.POST)
         if form.is_valid():
