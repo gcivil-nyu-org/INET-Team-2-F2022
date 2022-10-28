@@ -125,7 +125,10 @@ class TestForms(TestCase):
     def test_form_save(self):
         from .forms import NewUserForm
         form = NewUserForm()
+        form.cleaned_data = {}
+        form.cleaned_data['email'] = 'test_email'
+        form.cleaned_data['password1'] = 'test_password'
 
         user = form.save(False)
         email = form.cleaned_data['email']
-        self.AssertEqual(email, user.email)
+        assert email == user.email
