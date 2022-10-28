@@ -119,6 +119,7 @@ def login_request(request):  # pragma: no cover
         request=request, template_name="app/login.html", context={"login_form": form}
     )
 
+
 def logoutUser(request):
     logout(request)
     return redirect("home")
