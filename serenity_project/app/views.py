@@ -22,35 +22,53 @@ class ScoreTableViewSet(viewsets.ModelViewSet):
 def index(request):
     return render(request, "app/index.html", {})
 
+def _get_city_normalized_noise(
+        resident_noise,
+        dirty_conditions, 
+        sanitation_condition, 
+        waste_disposal, 
+        unsanitary_condition):
+    return (
+        resident_noise
+        + dirty_conditions
+        + sanitation_condition
+        + waste_disposal
+        + unsanitary_condition) / 1000
 
+def _get_city_grade_from_noise(normalized_noise):
+    grade = None
+    if normalized_noise >= 7:
+        grade = "G"
+    elif normalized_noise < 7 and normalized_noise >= 6:
+        grade = "F"
+    elif normalized_noise < 6 and normalized_noise >= 5:
+        grade = "E"
+    elif normalized_noise < 5 and normalized_noise >= 4:
+        grade = "D"
+    elif normalized_noise < 4 and normalized_noise >= 3:
+        grade = "C"
+    elif normalized_noise < 3 and normalized_noise >= 2:
+        grade = "B"
+    elif normalized_noise < 2 and normalized_noise >= 0:
+        grade = "A"
+    return grade 
+        
 def search(request):
     csrfContext = RequestContext(request)
     if request.method == "POST":
         search = request.POST["searched"]
         post = ScoreTable.objects.get(zipcode=search)
         # currZip = post.zipcode
-        normalizeNoise = (
-            post.residentialNoise
-            + post.dirtyConditions
-            + post.sanitationCondition
-            + post.wasteDisposal
-            + post.unsanitaryCondition
-        ) / 1000
-        if normalizeNoise >= 7:
-            post.grade = "G"
-        elif normalizeNoise < 7 and normalizeNoise >= 6:
-            post.grade = "F"
-        elif normalizeNoise < 6 and normalizeNoise >= 5:
-            post.grade = "E"
-        elif normalizeNoise < 5 and normalizeNoise >= 4:
-            post.grade = "D"
-        elif normalizeNoise < 4 and normalizeNoise >= 3:
-            post.grade = "C"
-        elif normalizeNoise < 3 and normalizeNoise >= 2:
-            post.grade = "B"
-        elif normalizeNoise < 2 and normalizeNoise >= 0:
-            post.grade = "A"
+        normalizeNoise = _get_city_normalized_noise(
+            post.residentialNoise,
+            post.dirtyConditions,
+            post.sanitationCondition,
+            post.wasteDisposal,
+            post.unsanitaryCondition)
+        
         post.residential_Noise = normalizeNoise
+        post.grade = _get_city_grade_from_noise(normalizeNoise)
+
         return render(request, "app/search.html", {"post": post})
     else:
         return render(request, "app/search.html", {}, csrfContext)

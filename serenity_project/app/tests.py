@@ -132,3 +132,28 @@ class TestForms(TestCase):
         user = form.save(False)
         email = form.cleaned_data['email']
         assert email == user.email
+
+class TestViews(TestCase):
+
+    def test_get_city_normalized_noise(self):
+        from .views import _get_city_normalized_noise
+        
+        noise = _get_city_normalized_noise(
+                1000, 
+                1000, 
+                1000, 
+                1000, 
+                1000)
+        assert noise == 5 
+
+    def test_get_city_grade_from_noise(self):
+        from .views import _get_city_grade_from_noise
+        
+        assert _get_city_grade_from_noise(7) == 'G'
+        assert _get_city_grade_from_noise(6) == 'F'
+        assert _get_city_grade_from_noise(5) == 'E'
+        assert _get_city_grade_from_noise(4) == 'D'
+        assert _get_city_grade_from_noise(3) == 'C'
+        assert _get_city_grade_from_noise(2) == 'B'
+        assert _get_city_grade_from_noise(1) == 'A'
+        assert _get_city_grade_from_noise(0) == 'A'
