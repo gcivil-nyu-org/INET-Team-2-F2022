@@ -120,3 +120,12 @@ class testSearchView(TestCase):
         req.POST = {"searched": 11220}
         response = search(req)
         assert response.status_code == 200
+
+class TestForms(TestCase):
+    def test_form_save(self):
+        from .forms import NewUserForm
+        form = NewUserForm()
+
+        user = form.save(False)
+        email = form.cleaned_data['email']
+        self.AssertEqual(email, user.email)
