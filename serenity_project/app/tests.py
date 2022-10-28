@@ -8,6 +8,10 @@ import json
 import requests
 from django.http import HttpRequest
 
+from django.test.client import RequestFactory
+from django.core.handlers.wsgi import WSGIRequest
+from .views import search
+
 
 from django.test import Client
 
@@ -159,8 +163,8 @@ class TestViews(TestCase):
         assert _get_city_grade_from_noise(0) == 'A'
 
     def test_search(self):
-        from django.test.client import RequestFactory
-        from django.core.handlers.wsgi import WSGIRequest
         rf = RequestFactory()
         post_request = rf.post('/app/search.html/', {'searched': 'town'})
         assert isinstance(post_request, WSGIRequest)
+
+        assert search(post_request) is None
