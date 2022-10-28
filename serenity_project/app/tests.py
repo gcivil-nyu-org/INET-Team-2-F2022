@@ -157,3 +157,10 @@ class TestViews(TestCase):
         assert _get_city_grade_from_noise(2) == 'B'
         assert _get_city_grade_from_noise(1) == 'A'
         assert _get_city_grade_from_noise(0) == 'A'
+
+    def test_search(self):
+        from django.test.client import RequestFactory
+        from django.core.handlers.wsgi import WSGIRequest
+        rf = RequestFactory()
+        post_request = rf.post('/app/search.html/', {'searched': 'town'})
+        assert isinstance(post_request, WSGIRequest)
