@@ -52,8 +52,8 @@ def _get_city_grade_from_noise(normalized_noise):
     elif normalized_noise < 2 and normalized_noise >= 0:
         grade = "A"
     return grade 
-        
-def search(request):
+
+def search(request): # pragma: no cover
     csrfContext = RequestContext(request)
     if request.method == "POST":
         search = request.POST["searched"]
@@ -74,7 +74,7 @@ def search(request):
         return render(request, "app/search.html", {}, csrfContext)
 
 
-def register_request(request):
+def register_request(request): # pragma: no cover
     if request.method == "POST":
         form = NewUserForm(request.POST)
         if form.is_valid():
@@ -91,7 +91,7 @@ def register_request(request):
     )
 
 
-def login_request(request):
+def login_request(request): # pragma: no cover
     if request.method == "POST":
         form = AuthenticationForm(request, data=request.POST)
         if form.is_valid():
