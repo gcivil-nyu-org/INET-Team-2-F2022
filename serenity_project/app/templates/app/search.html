@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html>
 {{error}}
-
 {% if post %}
 <center>
 <head style="background-color:DarkOliveGreen;">
@@ -10,8 +9,12 @@
 </head>
 
 <body style="background-color:DarkOliveGreen;">
-    <h2 style="color:peachpuff">Noise Grade: {{post.grade}}</h2>
-    <p style="color:peachpuff">The 'Residential Noise' score for {{post.zipcode}} is <b>{{post.residential_Noise}}</b></p>
+    <h2 style="color:peachpuff">Serenity Factors for {{post.zipcode}}:</h2>
+    <p style="color:peachpuff">The 'Residential Noise' score is <b>{{post.residential_Noise}}</b></p>
+    <p style="color:peachpuff">The 'Dirty Conditions' score is <b>{{post.dirtyConditions}}</b></p>
+    <p style="color:peachpuff">The 'Sanitation Conditions' score is <b>{{post.sanitationConditions}}</b></p>
+    <p style="color:peachpuff">The 'Waste Disposal' score is <b>{{post.wasteDisposal}}</b></p>
+    <p style="color:peachpuff">The 'Unsanitary Conditions' score is <b>{{post.unsanitaryConditions}}</b></p>
     {% else %}
     <h1>nothing found</h1>
     {% endif %}
