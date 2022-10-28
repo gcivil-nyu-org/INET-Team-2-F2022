@@ -2,8 +2,11 @@ branch-defaults:
   develop:
     environment: se-cicd-env
     group_suffix: null
+  main:
+    environment: se-proj-main-env
+    group_suffix: null
 global:
-  application_name: se-cicd
+  application_name: se-proj-main
   branch: null
   default_ec2_keyname: null
   default_platform: Python 3.7
