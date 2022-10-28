@@ -7,8 +7,10 @@ from .serializers import ScoreTableSerializer
 from django.template import RequestContext, Template, Context
 from .forms import NewUserForm
 from django.contrib import messages
-from django.contrib.auth import login, authenticate
+from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import AuthenticationForm
+from django.shortcuts import HttpResponseRedirect
+from django.template.response import TemplateResponse
 
 import pandas as pd
 import numpy as np
@@ -87,7 +89,7 @@ def register_request(request):  # pragma: no cover
             user = form.save()
             login(request, user)
             messages.success(request, "Registration successful.")
-            return redirect("index")
+            return redirect("home")
         messages.error(request, "Unsuccessful registration. Invalid information.")
     form = NewUserForm()
     return render(
@@ -107,7 +109,7 @@ def login_request(request):  # pragma: no cover
             if user is not None:
                 login(request, user)
                 messages.info(request, f"You are now logged in as {username}.")
-                return redirect("index")
+                return redirect("home")
             else:
                 messages.error(request, "Invalid username or password.")
         else:
@@ -116,3 +118,7 @@ def login_request(request):  # pragma: no cover
     return render(
         request=request, template_name="app/login.html", context={"login_form": form}
     )
+
+def logoutUser(request):
+    logout(request)
+    return redirect("home")
