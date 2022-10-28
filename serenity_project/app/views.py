@@ -8,8 +8,9 @@ from django.views.decorators.csrf import csrf_protect
 from django.template import RequestContext, Template, Context
 from .forms import NewUserForm
 from django.contrib import messages
-from django.contrib.auth import login, authenticate
+from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import AuthenticationForm
+from django.shortcuts import HttpResponseRedirect
 
 
 from django.template.response import TemplateResponse
@@ -90,7 +91,7 @@ def login_request(request):
             if user is not None:
                 login(request, user)
                 messages.info(request, f"You are now logged in as {username}.")
-                return redirect("index")
+                return redirect("home")
             else:
                 messages.error(request, "Invalid username or password.")
         else:
@@ -103,3 +104,7 @@ def login_request(request):
 
 def map_view(request):
     return render(request, "app/map.html", {})
+
+def logoutUser(request):
+   logout(request)
+   return redirect("home")

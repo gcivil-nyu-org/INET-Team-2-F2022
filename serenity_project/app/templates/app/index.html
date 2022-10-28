@@ -45,7 +45,16 @@
 
 <nav style="background-color:DarkOliveGreen;">
     <center>
-    <p style="color:ECFFE8;">[some navigation links will go here...]</p>
+    <p style="color:ECFFE8;">
+        {% block user %}
+        {% if user.is_authenticated %}
+            Hi {{ user.username }}!
+            <p style="color:ECFFE8;"><a href="{% url 'logout' %}">Log Out</a></p>
+        {% else %}
+            <a style="color:ECFFE8;" href="{% url 'login' %}">Log In</a>
+        {% endif %}
+        {% endblock %}
+    </p>
 </center>
 </nav>
 

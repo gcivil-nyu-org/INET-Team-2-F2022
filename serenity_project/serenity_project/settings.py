@@ -129,3 +129,6 @@ STATICFILES_DIRS = [
 STATIC_URL = "/static/"
 
 # STATIC_ROOT = "static"
+
+LOGIN_REDIRECT_URL = "home"
+LOGOUT_REDIRECT_URL = "home"  
