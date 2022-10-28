@@ -136,6 +136,14 @@ class TestForms(TestCase):
         user = form.save(False)
         email = form.cleaned_data['email']
         assert email == user.email
+    
+    def test_meta(self):
+        from .forms import NewUserForm
+        from django.contrib.auth.models import User
+
+        meta = NewUserForm.Meta()
+        assert meta.model == User
+        assert meta.fields == ("username", "email", "password1", "password2")
 
 class TestViews(TestCase):
 
