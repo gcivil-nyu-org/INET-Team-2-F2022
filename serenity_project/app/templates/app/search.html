@@ -28,15 +28,29 @@
     <h2 style="color:peachpuff">Serenity Factors for {{post.zipcode}}:</h2>
     <p style="color:peachpuff">The 'Residential Noise' score is <b>{{post.residentialNoise}}</b></p>
     <p style="color:peachpuff">The 'Dirty Conditions' score is <b>{{post.dirtyConditions}}</b></p>
-    <p style="color:peachpuff">The 'Sanitation Conditions' score is <b>{{post.sanitationConditions}}</b></p>
+    <p style="color:peachpuff">The 'Sanitation Conditions' score is <b>{{post.sanitationCondition}}</b></p>
     <p style="color:peachpuff">The 'Waste Disposal' score is <b>{{post.wasteDisposal}}</b></p>
-    <p style="color:peachpuff">The 'Unsanitary Conditions' score is <b>{{post.unsanitaryConditions}}</b></p>
+    <p style="color:peachpuff">The 'Unsanitary Conditions' score is <b>{{post.unsanitaryCondition}}</b></p>
     <h2 style="color:honeydew">Overall SerenityScore: {{post.grade}}</h2>
     <p style="color:peachpuff">The SerenityScore (numeric) is: <b>{{post.overallScore}}</b></p>
+    <br>
+    <h3 style="color:peachpuff">User Rating: {{post.userAvg}}</h3>
     {% else %}
     <h1>nothing found</h1>
     {% endif %}
     <br>
+    {% block rate %}
+    {% if user.is_authenticated %}
+        <form action="/rate/" method = "POST">
+        {% csrf_token %}
+        <input id="zip" type="hidden" name="zip" value="{{ post.zipcode }}">
+        <input type="submit" value="Submit a grade for {{ post.zipcode }}!" />
+        </form>
+        <br>
+    {% else %}
+        <br>
+    {% endif %}
+    {% endblock %}
     <h3 style="color:honeydew">About our scoring system:</h3>
     <p style="color:honeydew">Scores are on the range [0,20] with the higher scores representing zip codes which received more complaints.</p>
     <p style="color:honeydew">A = [0,2)</p>

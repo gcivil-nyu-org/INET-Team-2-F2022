@@ -11,6 +11,7 @@ from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.shortcuts import HttpResponseRedirect
 from django.template.response import TemplateResponse
+from .forms import RatingForm
 
 import pandas as pd
 import numpy as np
@@ -82,7 +83,56 @@ def search(request):  # pragma: no cover
         return render(request, "app/search.html", {}, csrfContext)
 
 
-def register_request(request):  # pragma: no cover
+def submit_rating(request):
+    # csrfContext = RequestContext(request)
+    zip = request.POST.get("zip")
+    form = RatingForm(request.POST)
+    print(zip)
+    return render(request, "app/rate.html", {"form": form, "zip": zip})
+
+
+def update_user_rating(zip, grade):
+    print(zip)
+    print(grade)
+    post = ScoreTable.objects.get(zipcode=zip)
+    print(post)
+    post.gradeCount += 1
+    if grade == "A":
+        post.userGrade += 1
+    if grade == "B":
+        post.userGrade += 2
+    if grade == "C":
+        post.userGrade += 3
+    if grade == "D":
+        post.userGrade += 4
+    if grade == "E":
+        post.userGrade += 5
+    if grade == "F":
+        post.userGrade += 6
+    if grade == "G":
+        post.userGrade += 7
+    post.userAvg = (post.userGrade) / (post.gradeCount)
+    post.save()
+    return post.userAvg
+
+
+def get_rating(request):
+    # csrfContext = RequestContext(request)
+    form = RatingForm(request.POST)
+    if request.method == "POST":
+        form = RatingForm(request.POST)
+        zip = request.POST.get("zip")
+        grade = request.POST.get("user_rating")
+        updated_grade = update_user_rating(zip, grade)
+        return render(
+            request,
+            "app/thanks.html",
+            {"grade": grade, "zipcode": zip, "updated_grade": updated_grade},
+        )
+    return render(request, "app/thanks.html", {"form": form})
+
+
+def register_request(request):
     if request.method == "POST":
         form = NewUserForm(request.POST)
         if form.is_valid():

@@ -19,4 +19,6 @@ urlpatterns = [
     path("register", views.register_request, name="register"),
     path("login", views.login_request, name="login"),
     path("logout", views.logoutUser, name="logout"),
+    path("rate/", views.submit_rating, name="rate"),
+    path("thanks/", views.get_rating, name="thanks"),
 ]

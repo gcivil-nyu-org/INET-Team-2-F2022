@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<body>  
+<center>
+{% if zip %}
+<h1 style="color:olive"> Submit your grade for {{ zip }}: </h1>
+
+<form action="/thanks/" method="post" style="color:forestgreen">
+    {% csrf_token %}
+    {{ form }}
+    <input id="zip" type="hidden" name="zip" value="{{ zip }}">
+    <input type="submit" value="Submit">
+</form>
+{% else %}
+
+<p style="color:ECFFE8;"><a href="{% url 'home' %}">Return Home</a></p>
+{% endif %}
+
+<h3 style="color:forestgreen">About our scoring system:</h3>
+<p style="color:olive">Scores are on the range [0,20] with the higher scores representing zip codes which are less peaceful.</p>
+<p style="color:olive">A = [0,2)</p>
+<p style="color:olive">B = [2,3)</p>
+<p style="color:olive">C = [3,4)</p>
+<p style="color:olive">D = [4,5)</p>
+<p style="color:olive">E = [5,6)</p>
+<p style="color:olive">F = [6,7)</p>
+<p style="color:olive">G = 7+</p>
+<br>
+<p style="color:ECFFE8;"><a href="{% url 'home' %}">New Search</a></p>
+
+</body>
+</center>
+</html>
