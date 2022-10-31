@@ -74,7 +74,7 @@ def search(request):  # pragma: no cover
             post.unsanitaryCondition,
         )
 
-        post.residential_Noise = normalizeNoise
+        post.overallScore = normalizeNoise
         post.grade = _get_city_grade_from_noise(normalizeNoise)
 
         return render(request, "app/search.html", {"post": post})
