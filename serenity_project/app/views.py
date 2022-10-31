@@ -91,29 +91,23 @@ def submit_rating(request):
     return render(request, "app/rate.html", {"form": form, "zip": zip})
 
 
-def update_user_rating(zip, grade):
-    print(zip)
+def update_user_rating(total, grade):
     print(grade)
-    post = ScoreTable.objects.get(zipcode=zip)
-    print(post)
-    post.gradeCount += 1
     if grade == "A":
-        post.userGrade += 1
+        total += 1
     if grade == "B":
-        post.userGrade += 2
+        total += 2
     if grade == "C":
-        post.userGrade += 3
+        total += 3
     if grade == "D":
-        post.userGrade += 4
+        total += 4
     if grade == "E":
-        post.userGrade += 5
+        total += 5
     if grade == "F":
-        post.userGrade += 6
+        total += 6
     if grade == "G":
-        post.userGrade += 7
-    post.userAvg = (post.userGrade) / (post.gradeCount)
-    post.save()
-    return post.userAvg
+        total += 7
+    return total
 
 
 def get_rating(request):
@@ -123,11 +117,17 @@ def get_rating(request):
         form = RatingForm(request.POST)
         zip = request.POST.get("zip")
         grade = request.POST.get("user_rating")
-        updated_grade = update_user_rating(zip, grade)
+        post = ScoreTable.objects.get(zipcode=zip)
+        post.gradeCount += 1
+        count = post.gradeCount
+        total = post.userGrade
+        post.userGrade = update_user_rating(total, grade)
+        post.userAvg = post.userGrade / count
+        post.save()
         return render(
             request,
             "app/thanks.html",
-            {"grade": grade, "zipcode": zip, "updated_grade": updated_grade},
+            {"grade": grade, "zipcode": zip, "updated_grade": post.userAvg},
         )
     return render(request, "app/thanks.html", {"form": form})
 

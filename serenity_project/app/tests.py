@@ -1,6 +1,7 @@
 from django.test import TestCase
 from django.urls import reverse
 from .models import ScoreTable
+from .serializers import ScoreTableSerializer
 from django.contrib.auth.models import User
 from .views import search
 from unittest.mock import patch
@@ -166,3 +167,14 @@ class TestViews(TestCase):
         assert _get_city_grade_from_noise(2) == "B"
         assert _get_city_grade_from_noise(1) == "A"
         assert _get_city_grade_from_noise(0) == "A"
+
+    def test_update_user_rating(self):
+        from .views import update_user_rating
+
+        assert update_user_rating(100, "A") == 101
+        assert update_user_rating(100, "B") == 102
+        assert update_user_rating(100, "C") == 103
+        assert update_user_rating(100, "D") == 104
+        assert update_user_rating(100, "E") == 105
+        assert update_user_rating(100, "F") == 106
+        assert update_user_rating(100, "G") == 107
