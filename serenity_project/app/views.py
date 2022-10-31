@@ -4,16 +4,14 @@ from django.shortcuts import render, redirect
 from rest_framework import viewsets
 from .models import ScoreTable
 from .serializers import ScoreTableSerializer
-from django.views.decorators.csrf import csrf_protect
 from django.template import RequestContext, Template, Context
 from .forms import NewUserForm
 from django.contrib import messages
-from django.contrib.auth import login, authenticate
+from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import AuthenticationForm
-
-
+from django.shortcuts import HttpResponseRedirect
 from django.template.response import TemplateResponse
-
+from .forms import RatingForm
 
 import pandas as pd
 import numpy as np
@@ -25,42 +23,113 @@ class ScoreTableViewSet(viewsets.ModelViewSet):
 
 
 def index(request):
-    latest_zipcode_list = ScoreTable.objects.order_by("zipcode")[:5]
-    context = {"latest_zipcode_list": latest_zipcode_list}
-    return render(request, "app/index.html", context)
+    return render(request, "app/index.html", {})
 
 
-def search(request):
+def _get_city_normalized_noise(
+    resident_noise,
+    dirty_conditions,
+    sanitation_condition,
+    waste_disposal,
+    unsanitary_condition,
+):
+    return (
+        resident_noise
+        + dirty_conditions
+        + sanitation_condition
+        + waste_disposal
+        + unsanitary_condition
+    ) / 1000
+
+
+def _get_city_grade_from_noise(normalized_noise):
+    grade = None
+    if normalized_noise >= 7:
+        grade = "G"
+    elif normalized_noise < 7 and normalized_noise >= 6:
+        grade = "F"
+    elif normalized_noise < 6 and normalized_noise >= 5:
+        grade = "E"
+    elif normalized_noise < 5 and normalized_noise >= 4:
+        grade = "D"
+    elif normalized_noise < 4 and normalized_noise >= 3:
+        grade = "C"
+    elif normalized_noise < 3 and normalized_noise >= 2:
+        grade = "B"
+    elif normalized_noise < 2 and normalized_noise >= 0:
+        grade = "A"
+    return grade
+
+
+def search(request):  # pragma: no cover
     csrfContext = RequestContext(request)
     if request.method == "POST":
         search = request.POST["searched"]
         post = ScoreTable.objects.get(zipcode=search)
         # currZip = post.zipcode
-        normalizeNoise = (
-            post.residentialNoise
-            + post.dirtyConditions
-            + post.sanitationCondition
-            + post.wasteDisposal
-            + post.unsanitaryCondition
-        ) / 1000
-        if normalizeNoise >= 7:
-            post.grade = "G"
-        elif normalizeNoise < 7 and normalizeNoise >= 6:
-            post.grade = "G"
-        elif normalizeNoise < 6 and normalizeNoise >= 5:
-            post.grade = "E"
-        elif normalizeNoise < 5 and normalizeNoise >= 4:
-            post.grade = "D"
-        elif normalizeNoise < 4 and normalizeNoise >= 3:
-            post.grade = "C"
-        elif normalizeNoise < 3 and normalizeNoise >= 2:
-            post.grade = "B"
-        elif normalizeNoise < 2 and normalizeNoise >= 0:
-            post.grade = "A"
-        post.residential_Noise = normalizeNoise
+        normalizeNoise = _get_city_normalized_noise(
+            post.residentialNoise,
+            post.dirtyConditions,
+            post.sanitationCondition,
+            post.wasteDisposal,
+            post.unsanitaryCondition,
+        )
+
+        post.overallScore = normalizeNoise
+        post.grade = _get_city_grade_from_noise(normalizeNoise)
+
         return render(request, "app/search.html", {"post": post})
     else:
         return render(request, "app/search.html", {}, csrfContext)
+
+
+def submit_rating(request):
+    # csrfContext = RequestContext(request)
+    zip = request.POST.get("zip")
+    form = RatingForm(request.POST)
+    print(zip)
+    return render(request, "app/rate.html", {"form": form, "zip": zip})
+
+
+def update_user_rating(total, grade):
+    print(grade)
+    if grade == "A":
+        total += 1
+    if grade == "B":
+        total += 2
+    if grade == "C":
+        total += 3
+    if grade == "D":
+        total += 4
+    if grade == "E":
+        total += 5
+    if grade == "F":
+        total += 6
+    if grade == "G":
+        total += 7
+    return total
+
+
+def get_rating(request):
+    # csrfContext = RequestContext(request)
+    form = RatingForm(request.POST)
+    if request.method == "POST":
+        form = RatingForm(request.POST)
+        zip = request.POST.get("zip")
+        grade = request.POST.get("user_rating")
+        post = ScoreTable.objects.get(zipcode=zip)
+        post.gradeCount += 1
+        count = post.gradeCount
+        total = post.userGrade
+        post.userGrade = update_user_rating(total, grade)
+        post.userAvg = post.userGrade / count
+        post.save()
+        return render(
+            request,
+            "app/thanks.html",
+            {"grade": grade, "zipcode": zip, "updated_grade": post.userAvg},
+        )
+    return render(request, "app/thanks.html", {"form": form})
 
 
 def register_request(request):
@@ -70,7 +139,7 @@ def register_request(request):
             user = form.save()
             login(request, user)
             messages.success(request, "Registration successful.")
-            return redirect("index")
+            return redirect("home")
         messages.error(request, "Unsuccessful registration. Invalid information.")
     form = NewUserForm()
     return render(
@@ -80,7 +149,7 @@ def register_request(request):
     )
 
 
-def login_request(request):
+def login_request(request):  # pragma: no cover
     if request.method == "POST":
         form = AuthenticationForm(request, data=request.POST)
         if form.is_valid():
@@ -90,7 +159,7 @@ def login_request(request):
             if user is not None:
                 login(request, user)
                 messages.info(request, f"You are now logged in as {username}.")
-                return redirect("index")
+                return redirect("home")
             else:
                 messages.error(request, "Invalid username or password.")
         else:
@@ -101,5 +170,6 @@ def login_request(request):
     )
 
 
-def map_view(request):
-    return render(request, "app/map.html", {})
+def logoutUser(request):
+    logout(request)
+    return redirect("home")

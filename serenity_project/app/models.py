@@ -12,6 +12,9 @@ class ScoreTable(models.Model):
     wasteDisposal = models.FloatField(max_length=10)
     unsanitaryCondition = models.FloatField(max_length=10)
     grade = "A"
+    gradeCount = models.FloatField(default=0, max_length=10)
+    userAvg = models.FloatField(default=0, max_length=10)
+    userGrade = models.FloatField(default=0, max_length=10)
 
     def __str__(self):
         return f"Zipcode: {self.zipcode}, Score: {self.residentialNoise}, Grade:"

@@ -9,6 +9,9 @@ script:
 - black --check .
 - flake8 .
 - cd serenity_project
+- coverage run --source=serenity_project,app manage.py test
+after_script:
+  - coveralls
 
 deploy:
   provider: elasticbeanstalk

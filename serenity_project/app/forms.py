@@ -3,9 +3,6 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 
 
-# Create your forms here.
-
-
 class NewUserForm(UserCreationForm):
     email = forms.EmailField(required=True)
 
@@ -19,3 +16,7 @@ class NewUserForm(UserCreationForm):
         if commit:
             user.save()
         return user
+
+
+class RatingForm(forms.Form):
+    user_rating = forms.CharField(label="Your grade", max_length=1)

@@ -1,23 +1,58 @@
 <!DOCTYPE html>
 <html>
 {{error}}
-
 {% if post %}
 <center>
+    <p style="color:ECFFE8;">
+        {% block user %}
+        {% if user.is_authenticated %}
+            Hi {{ user.username }}!
+            <p style="color:ECFFE8;"><a href="{% url 'logout' %}">Log Out</a></p>
+        {% else %}
+            <a style="color:ECFFE8;" href="{% url 'login' %}">Log In</a>
+        {% endif %}
+        {% endblock %}
+    </p>
 <head style="background-color:DarkOliveGreen;">
+    {% block header %}
+    {% if user.is_authenticated %}
+        <h1 style="color:honeydew">{{ user.username }}'s Search Result</h1>
+    {% else %}
         <h1 style="color:honeydew">Search Result</h1>
+    {% endif %}
+    {% endblock %}
         <br>
 </head>
 
 <body style="background-color:DarkOliveGreen;">
-    <h2 style="color:peachpuff">Noise Grade: {{post.grade}}</h2>
-    <p style="color:peachpuff">The 'Residential Noise' score for {{post.zipcode}} is <b>{{post.residential_Noise}}</b></p>
+    <h2 style="color:peachpuff">Serenity Factors for {{post.zipcode}}:</h2>
+    <p style="color:peachpuff">The 'Residential Noise' score is <b>{{post.residentialNoise}}</b></p>
+    <p style="color:peachpuff">The 'Dirty Conditions' score is <b>{{post.dirtyConditions}}</b></p>
+    <p style="color:peachpuff">The 'Sanitation Conditions' score is <b>{{post.sanitationCondition}}</b></p>
+    <p style="color:peachpuff">The 'Waste Disposal' score is <b>{{post.wasteDisposal}}</b></p>
+    <p style="color:peachpuff">The 'Unsanitary Conditions' score is <b>{{post.unsanitaryCondition}}</b></p>
+    <h2 style="color:honeydew">Overall SerenityScore: {{post.grade}}</h2>
+    <p style="color:peachpuff">The SerenityScore (numeric) is: <b>{{post.overallScore}}</b></p>
+    <br>
+    <h3 style="color:peachpuff">User Rating: {{post.userAvg}}</h3>
     {% else %}
     <h1>nothing found</h1>
     {% endif %}
     <br>
+    {% block rate %}
+    {% if user.is_authenticated %}
+        <form action="/rate/" method = "POST">
+        {% csrf_token %}
+        <input id="zip" type="hidden" name="zip" value="{{ post.zipcode }}">
+        <input type="submit" value="Submit a grade for {{ post.zipcode }}!" />
+        </form>
+        <br>
+    {% else %}
+        <br>
+    {% endif %}
+    {% endblock %}
     <h3 style="color:honeydew">About our scoring system:</h3>
-    <p style="color:honeydew">Scores are on the range [0,20] with the higher scores representing zip codes which received more noise complaints.</p>
+    <p style="color:honeydew">Scores are on the range [0,20] with the higher scores representing zip codes which received more complaints.</p>
     <p style="color:honeydew">A = [0,2)</p>
     <p style="color:honeydew">B = [2,3)</p>
     <p style="color:honeydew">C = [3,4)</p>
@@ -25,6 +60,8 @@
     <p style="color:honeydew">E = [5,6)</p>
     <p style="color:honeydew">F = [6,7)</p>
     <p style="color:honeydew">G = 7+</p>
+    <br>
+    <p style="color:ECFFE8;"><a href="{% url 'home' %}">New Search</a></p>
 </body>
 </center>
 </html>

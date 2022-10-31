@@ -1,0 +1,5 @@
+[run]
+omit = 
+    serenity_project/settings.py
+    serenity_project/wsgi.py
+    serenity_project/asgi.py
