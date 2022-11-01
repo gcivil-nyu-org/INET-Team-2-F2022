@@ -2,7 +2,7 @@ from django import forms
 from django.forms import ModelForm
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from .models import Forum, Discussion
+from .models import ForumPost, Comment
 
 
 class NewUserForm(UserCreationForm):
@@ -25,12 +25,12 @@ class RatingForm(forms.Form):
 
 
  
-class CreateInForum(ModelForm):
+class CreateInForumPost(ModelForm):
     class Meta:
-        model= Forum
+        model= ForumPost
         fields = "__all__"
  
-class CreateInDiscussion(ModelForm):
+class CreateInComment(ModelForm):
     class Meta:
-        model= Discussion
+        model= Comment
         fields = "__all__"

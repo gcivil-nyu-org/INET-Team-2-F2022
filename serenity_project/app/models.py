@@ -1,3 +1,4 @@
+from email.policy import default
 from django.db import models
 
 # Create your models here.
@@ -23,9 +24,18 @@ class ScoreTable(models.Model):
     #     return str(self.residential_Noise)
 
 
+
+# class Forum(model.Model): 
+    """
+    zipcode
+
+    """
+    
+
 #parent model
-class Forum(models.Model):
+class ForumPost(models.Model): # change to ForumPost foreign key to Forum
     id = models.AutoField(primary_key=True)
+    zipcode = models.ForeignKey(ScoreTable, blank=True, on_delete=models.CASCADE, default=1, null=True)
     name=models.CharField(max_length=200,default="anonymous" )
     email=models.CharField(max_length=200,null=True)
     topic= models.CharField(max_length=300)
@@ -37,10 +47,10 @@ class Forum(models.Model):
         return str(self.topic)
  
 #child model
-class Discussion(models.Model):
+class Comment(models.Model): # change to Comment
     id = models.AutoField(primary_key=True)
-    forum = models.ForeignKey(Forum,blank=True,on_delete=models.CASCADE)
+    forumPost = models.ForeignKey(ForumPost,blank=True,on_delete=models.CASCADE)
     discuss = models.CharField(max_length=1000)
  
     def __str__(self):
-        return str(self.forum)
+        return str(self.forumPost)

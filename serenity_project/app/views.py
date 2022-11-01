@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 
 # Create your views here.
 from rest_framework import viewsets
-from .models import ScoreTable, Forum, Discussion
+from .models import ScoreTable, ForumPost, Comment
 from .serializers import ScoreTableSerializer
 from django.template import RequestContext, Template, Context
 from django.contrib import messages
@@ -10,7 +10,7 @@ from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.shortcuts import HttpResponseRedirect
 from django.template.response import TemplateResponse
-from .forms import RatingForm, NewUserForm, CreateInForum, CreateInDiscussion
+from .forms import RatingForm, NewUserForm, CreateInForumPost, CreateInComment
 
 import pandas as pd
 import numpy as np
@@ -175,33 +175,32 @@ def logoutUser(request):
 
 
 def forum_home(request):
-    forums=Forum.objects.all()
-    count=forums.count()
-    discussions=[]
-    for i in forums:
-        discussions.append(i.discussion_set.all())
- 
-    context={'forums':forums,
+    forumPosts=ForumPost.objects.all()
+    count=forumPosts.count()
+    comments=[]
+    for i in forumPosts:
+        comments.append(i.comment_set.all())
+    context={'forumPosts':forumPosts,
               'count':count,
-              'discussions':discussions}
+              'comments':comments}
     return render(request,'app/forum_home.html',context)
  
-def addInForum(request):
-    form = CreateInForum()
+def addInForumPost(request):
+    form = CreateInForumPost()
     if request.method == 'POST':
-        form = CreateInForum(request.POST)
+        form = CreateInForumPost(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('/forum')
+            return redirect('/forumPosts')
     context ={'form':form}
-    return render(request,'app/addInForum.html',context)
+    return render(request,'app/addInForumPost.html',context)
  
-def addInDiscussion(request):
-    form = CreateInDiscussion()
+def addInComment(request):
+    form = CreateInComment()
     if request.method == 'POST':
-        form = CreateInDiscussion(request.POST)
+        form = CreateInComment(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('/forum')
+            return redirect('/forumPosts')
     context ={'form':form}
-    return render(request,'app/addInDiscussion.html',context)
+    return render(request,'app/addInComment.html',context)
