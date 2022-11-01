@@ -24,7 +24,7 @@ class ScoreTable(models.Model):
 
 
 # parent model
-class Forum(models.Model):
+class ForumPost(models.Model):
     id = models.AutoField(primary_key=True)
     zipcode = models.ForeignKey(ScoreTable, blank=True, on_delete=models.CASCADE, default=1, null=True)
     name=models.CharField(max_length=200,default="anonymous" )
