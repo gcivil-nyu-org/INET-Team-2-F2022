@@ -21,4 +21,7 @@ urlpatterns = [
     path("logout", views.logoutUser, name="logout"),
     path("rate/", views.submit_rating, name="rate"),
     path("thanks/", views.get_rating, name="thanks"),
+    path('forum',views.forum_home,name='forum_home'),
+    path('addInForum/',views.addInForum,name='addInForum'),
+    path('addInDiscussion/',views.addInDiscussion,name='addInDiscussion'),
 ]

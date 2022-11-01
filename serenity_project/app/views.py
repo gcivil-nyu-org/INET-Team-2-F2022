@@ -2,16 +2,15 @@ from django.shortcuts import render, redirect
 
 # Create your views here.
 from rest_framework import viewsets
-from .models import ScoreTable
+from .models import ScoreTable, Forum, Discussion
 from .serializers import ScoreTableSerializer
 from django.template import RequestContext, Template, Context
-from .forms import NewUserForm
 from django.contrib import messages
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.shortcuts import HttpResponseRedirect
 from django.template.response import TemplateResponse
-from .forms import RatingForm
+from .forms import RatingForm, NewUserForm, CreateInForum, CreateInDiscussion
 
 import pandas as pd
 import numpy as np
@@ -173,3 +172,36 @@ def login_request(request):  # pragma: no cover
 def logoutUser(request):
     logout(request)
     return redirect("home")
+
+
+def forum_home(request):
+    forums=Forum.objects.all()
+    count=forums.count()
+    discussions=[]
+    for i in forums:
+        discussions.append(i.discussion_set.all())
+ 
+    context={'forums':forums,
+              'count':count,
+              'discussions':discussions}
+    return render(request,'app/forum_home.html',context)
+ 
+def addInForum(request):
+    form = CreateInForum()
+    if request.method == 'POST':
+        form = CreateInForum(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('/forum')
+    context ={'form':form}
+    return render(request,'app/addInForum.html',context)
+ 
+def addInDiscussion(request):
+    form = CreateInDiscussion()
+    if request.method == 'POST':
+        form = CreateInDiscussion(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('/forum')
+    context ={'form':form}
+    return render(request,'app/addInDiscussion.html',context)
