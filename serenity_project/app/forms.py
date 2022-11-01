@@ -24,13 +24,13 @@ class RatingForm(forms.Form):
     user_rating = forms.CharField(label="Your grade", max_length=1)
 
 
- 
 class CreateInForum(ModelForm):
     class Meta:
-        model= Forum
+        model = Forum
         fields = "__all__"
- 
+
+
 class CreateInDiscussion(ModelForm):
     class Meta:
-        model= Discussion
+        model = Discussion
         fields = "__all__"
