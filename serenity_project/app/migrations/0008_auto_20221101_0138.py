@@ -6,18 +6,18 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('app', '0007_discussion_forum'),
+        ("app", "0007_discussion_forum"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='discussion',
-            name='id',
+            model_name="discussion",
+            name="id",
             field=models.AutoField(primary_key=True, serialize=False),
         ),
         migrations.AlterField(
-            model_name='forum',
-            name='id',
+            model_name="forum",
+            name="id",
             field=models.AutoField(primary_key=True, serialize=False),
         ),
     ]
