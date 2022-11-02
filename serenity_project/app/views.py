@@ -82,7 +82,8 @@ def search(request):  # pragma: no cover
     else:
         return render(request, "app/search.html", {}, csrfContext)
 
-@login_required(login_url='/login') 
+
+@login_required(login_url="/login")
 def submit_rating(request):
     # csrfContext = RequestContext(request)
     zip = request.POST.get("zip")
@@ -109,7 +110,8 @@ def update_user_rating(total, grade):
         total += 7
     return total
 
-@login_required(login_url='/login') 
+
+@login_required(login_url="/login")
 def get_rating(request):
     # csrfContext = RequestContext(request)
     form = RatingForm(request.POST)
@@ -176,34 +178,38 @@ def logoutUser(request):
 
 
 def forum_home(request):
-    forumPosts=ForumPost.objects.all()
-    count=forumPosts.count()
-    comments=[]
+    forumPosts = ForumPost.objects.all()
+    count = forumPosts.count()
+    comments = []
     for i in forumPosts:
         comments.append(i.comment_set.all())
-    context={'forumPosts':forumPosts,
-              'count':count,
-              'comments':comments}
-    return render(request,'app/forum_home.html',context)
- 
-@login_required(login_url='/login') 
+    context = {"forumPosts": forumPosts, "count": count, "comments": comments}
+    return render(request, "app/forum_home.html", context)
+
+
+@login_required(login_url="/login")
 def addInForumPost(request):
     form = CreateInForumPost()
-    if request.method == 'POST':
+    if request.method == "POST":
         form = CreateInForumPost(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('/forumPosts')
-    context ={'form':form}
-    return render(request,'app/addInForumPost.html',context)
+            return redirect("/forumPosts")
+    context = {"form": form}
+    return render(request, "app/addInForumPost.html", context)
 
-@login_required(login_url='/login') 
+
+@login_required(login_url="/login")
 def addInComment(request):
     form = CreateInComment()
-    if request.method == 'POST':
+    if request.method == "POST":
         form = CreateInComment(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('/forumPosts')
-    context ={'form':form}
-    return render(request,'app/addInComment.html',context)
+            return redirect("/forumPosts")
+    context = {"form": form}
+    return render(request, "app/addInComment.html", context)
+
+
+def page_not_found_view(request, exception):
+    return render(request, "404.html", status=404)

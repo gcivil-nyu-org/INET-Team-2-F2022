@@ -21,7 +21,9 @@ urlpatterns = [
     path("logout", views.logoutUser, name="logout"),
     path("rate/", views.submit_rating, name="rate"),
     path("thanks/", views.get_rating, name="thanks"),
-    path('forumPosts',views.forum_home,name='forum_home'),
-    path('addInForumPost/',views.addInForumPost,name='addInForumPost'),
-    path('addInComment/',views.addInComment,name='addInComment'),
+    path("forumPosts", views.forum_home, name="forum_home"),
+    path("addInForumPost/", views.addInForumPost, name="addInForumPost"),
+    path("addInComment/", views.addInComment, name="addInComment"),
 ]
+
+handler404 = "app.views.page_not_found_view"

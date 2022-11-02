@@ -7,14 +7,19 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('app', '0010_rename_discussion_comment'),
+        ("app", "0010_rename_discussion_comment"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='forumpost',
-            name='zipcode',
-            field=models.ForeignKey(blank=True, default=11201, on_delete=django.db.models.deletion.CASCADE, to='app.scoretable'),
+            model_name="forumpost",
+            name="zipcode",
+            field=models.ForeignKey(
+                blank=True,
+                default=11201,
+                on_delete=django.db.models.deletion.CASCADE,
+                to="app.scoretable",
+            ),
             preserve_default=False,
         ),
     ]

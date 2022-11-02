@@ -6,17 +6,17 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('app', '0008_auto_20221101_0138'),
+        ("app", "0008_auto_20221101_0138"),
     ]
 
     operations = [
         migrations.RenameModel(
-            old_name='forum',
-            new_name='ForumPost',
+            old_name="forum",
+            new_name="ForumPost",
         ),
         migrations.RenameField(
-            model_name='discussion',
-            old_name='forum',
-            new_name='forumPost',
+            model_name="discussion",
+            old_name="forum",
+            new_name="forumPost",
         ),
     ]

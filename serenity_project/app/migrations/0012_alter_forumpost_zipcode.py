@@ -7,13 +7,19 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('app', '0011_forumpost_zipcode'),
+        ("app", "0011_forumpost_zipcode"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='forumpost',
-            name='zipcode',
-            field=models.ForeignKey(blank=True, default=1, null=True, on_delete=django.db.models.deletion.CASCADE, to='app.scoretable'),
+            model_name="forumpost",
+            name="zipcode",
+            field=models.ForeignKey(
+                blank=True,
+                default=1,
+                null=True,
+                on_delete=django.db.models.deletion.CASCADE,
+                to="app.scoretable",
+            ),
         ),
     ]
