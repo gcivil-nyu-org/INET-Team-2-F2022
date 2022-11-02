@@ -20,8 +20,8 @@ deploy:
   secret_access_key:
     secure: "IFrKb9+Kq+ACr2FUqeLRA/6ZaH2tfS+HGDpylyt2otHyyAdnHkRual2nNA4t/ZijJ58q4bCQDzbRNEhTWE7o0hX408VJBVYGAB6ffpzC5/miUfUpHcc1/pwKY8bhOpo3VIQgoZnDkapZuHQZzRE0p8hNX1Ymmps8RCvvRiGi84g5JR2i5ZNzx+oPWD+ez69BsFESQFv8bIzsd16Mbkm5wP0mqjdHPRVbYHUSILfgyThOU5ZIiwrr+xKswgKFil7SQT5CiAHaGsimlKLSrc79cBHKYSuZK0xLe+5JLsswBzCZj8ZmehDkYfUtFlYCH7Q58EG2AdvAFck9aR1O22+ojj+39sgyUZKFMiEglkfD0cX2MuxYlsqdDEGrbTV5uH09JhHw94HJbiLA2Tyvd7mpRhEFMwCptyan73TyACwoyuIzzVxckFQg6wb1LLDAtrk5IACI8DvQIR72SnUtZ8fL/QlXWtU+YITXyBNYztJVih6tjZDESQ4/m2a1MkenY5Ga3i2Qlm+zTx5KCFXnmHFbS2xxcnNYzPQ1Cg5QiCD367EhZ4a8juY/+Y80CVqLFbLgtot/gXxTCBD0DvwxeC/3kaLOcEgdoscmffSHX8vQAV49MtnJ22Ln5WBvEvXQStg1dQdXhrx0lZzlLuuLZT1bmwYIdkeO+wM142JJTav5SBo="
   region: "us-west-2"
-  app: "se-proj-develop"
-  env: "se-proj-develop-env"
+  app: "se-proj-main1"
+  env: "se-proj-main-env1"
   bucket_name: "se-project-develop"
   on:
     all_branches: true
