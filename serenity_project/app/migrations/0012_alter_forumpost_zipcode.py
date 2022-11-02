@@ -5,7 +5,7 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
+    atomic = False
     dependencies = [
         ("app", "0011_forumpost_zipcode"),
     ]
