@@ -27,3 +27,4 @@ urlpatterns = [
 ]
 
 handler404 = "app.views.page_not_found_view"
+handler500 = "app.views.internal_error_view"
