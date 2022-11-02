@@ -8,3 +8,30 @@ html, body {
     margin: 0;
     padding: 0;
 }
+
+h1 {
+    font-family: 'Chau Philomene One', sans-serif;
+}
+
+p {
+    font-family: 'Catamaran', sans-serif;
+}
+
+.serenity-title {
+    text-align:center;
+}
+
+.navbar-nav > li > a {
+    display: flex;
+    align-items: center;  
+    height: 80px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    line-height: 20px;
+  }
+
+.navbar {
+    display: flex;
+    height: 100px;
+    line-height: 20px;
+}
