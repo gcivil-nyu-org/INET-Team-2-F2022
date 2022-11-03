@@ -15,6 +15,7 @@ from .forms import RatingForm, NewUserForm, CreateInForumPost, CreateInComment
 
 import pandas as pd
 import numpy as np
+from django.http import HttpResponse
 from django.contrib.auth import get_user
 
 
@@ -179,13 +180,32 @@ def logoutUser(request):
 
 
 def forum_home(request):
+    # TODO: show all zipcodes with links
     forumPosts = ForumPost.objects.all()
-    count = forumPosts.count()
-    comments = []
-    for i in forumPosts:
-        comments.append(i.comment_set.all())
-    context = {"forumPosts": forumPosts, "count": count, "comments": comments}
+    zipcodes = set()
+    for post in forumPosts:
+        zipcodes.add(post.zipcode.zipcode)
+    count = len(zipcodes)
+    context = {
+        "zipcodes": zipcodes,
+        "count": count,
+    }
     return render(request, "app/forum_home.html", context)
+    
+def forum_zipcode(request, pk):
+    posts = ForumPost.objects.all()
+    posts = posts.filter(zipcode__zipcode=pk)
+    count = posts.count()
+    comments = []
+    for i in posts:
+        comments.append(i.comment_set.all())
+    context = {
+        "zipcode": pk,
+        "forumPosts": posts,
+        "count": count,
+        "comments": comments,
+    }
+    return render(request, "app/forum_zipcode.html", context)
 
 
 @login_required(login_url="/login")
