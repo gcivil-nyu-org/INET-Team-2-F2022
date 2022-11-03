@@ -1,0 +1,32 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zipcode Post</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous"0>
+    <style>
+        .box{
+            border: 4px solid black;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="card-body container">
+        <p>{{postdes}} </p>
+    </h5>
+    <hr>
+    <p> By: {{postname}}</p>
+    email- {{postemail}}
+    <hr>     
+    <h4>Views from other users</h4>
+    {{postcomment}}
+    <form method="POST" action="{% url 'addInComment' %}">
+        {% csrf_token %}
+    <button class="btn btn-success" style="width:fit-content; padding: 4px; margin:10px;">Add more</button>
+    </form>
+</div>
+</body>

@@ -223,6 +223,16 @@ def addInComment(request):
     return render(request, "app/addInComment.html", context)
 
 
+def zipcodePost(request):
+    post = request.POST.get("zipPost")
+    postname = request.POST.get("postname")
+    postemail = request.POST.get("postemail")
+    postdes = request.POST.get("postdes")
+    postcomment=request.POST.get("postcomment")
+    return render(request, "app/zip_post.html", {"post": post, "postname" : postname, "postemail" : postemail, "postdes" : postdes, "postcomment" : postcomment})
+
+
+
 def page_not_found_view(request, exception):
     return render(request, "404.html", status=404)
 

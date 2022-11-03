@@ -19,6 +19,9 @@ class ScoreTable(models.Model):
     def __str__(self):
         return f"Zipcode: {self.zipcode}, Score: {self.residentialNoise}, Grade:"
 
+    def get_zip(self):
+        return f"{self.zipcode}"
+
     # def serenity_score(self):
     #     return str(self.residential_Noise)
 

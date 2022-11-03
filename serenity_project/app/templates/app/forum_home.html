@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Serenity Discussion Forum</title>
+    <link href="{% static 'css/forum.css' %}" rel="stylesheet">     
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous"0>
     <style>
         .box{
@@ -29,7 +30,24 @@
                 <div class="card box container">
                     <br>
                     <h5 class="card-title">
-                        <a href='{{post.link}}'><h3>{{post.topic}} | {{post.zipcode}}</h3></a> 
+                    
+
+                        <form action="/zipcodePost" method = "POST">
+                            {% csrf_token %}
+                            <input type=hidden name=postdes value="{{post.description}}">
+                            <input type=hidden name=postname value="{{post.name}}">
+                            <input type=hidden name=postemail value="{{post.email}}">
+                            {%for comment in comments%}
+                            {%for objs in comment%}  
+                            {% if objs.forumPost == post %}
+                            <input type=hidden name=postcomment value="{{objs.discuss}}">
+                            {% endif %}
+                            {%endfor%}
+                            {%endfor%}
+                            <button type="submit" name="zipPost" value="{{post}}" class="btn-link"><h3>{{post.topic}} | {{post.zipcode.zipcode}} Grade: {{post.zipcode.grade}}</h3></button>
+                        </form>
+
+                        
                         <div class="card-body container">
                                 <p>{{post.description}} </p>
                             </h5>
