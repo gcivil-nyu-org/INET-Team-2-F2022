@@ -17,6 +17,7 @@ import pandas as pd
 import numpy as np
 from django.contrib.auth import get_user
 
+
 class ScoreTableViewSet(viewsets.ModelViewSet):
     queryset = ScoreTable.objects.all()
     serializer_class = ScoreTableSerializer
@@ -196,7 +197,7 @@ def addInForumPost(request):
             form.save()
             return redirect("/forumPosts")
     user = get_user(request)
-    form = CreateInForumPost(initial={'name': user})
+    form = CreateInForumPost(initial={"name": user})
     context = {"form": form}
     return render(request, "app/addInForumPost.html", context)
 
