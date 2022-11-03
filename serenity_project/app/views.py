@@ -15,7 +15,7 @@ from .forms import RatingForm, NewUserForm, CreateInForumPost, CreateInComment
 
 import pandas as pd
 import numpy as np
-
+from django.contrib.auth import get_user
 
 class ScoreTableViewSet(viewsets.ModelViewSet):
     queryset = ScoreTable.objects.all()
@@ -195,6 +195,8 @@ def addInForumPost(request):
         if form.is_valid():
             form.save()
             return redirect("/forumPosts")
+    user = get_user(request)
+    form = CreateInForumPost(initial={'name': user})
     context = {"form": form}
     return render(request, "app/addInForumPost.html", context)
 
