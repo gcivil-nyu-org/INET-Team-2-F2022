@@ -23,6 +23,7 @@ urlpatterns = [
     path("thanks/", views.get_rating, name="thanks"),
     path("forumPosts/", views.forum_home, name="forum_home"),
     path("forumPosts/<pk>", views.forum_zipcode, name="forum_zipcode"),
+    path("forumPosts/<pk>/<id>", views.forum_post, name="forum_post"),
     path("addInForumPost/", views.addInForumPost, name="addInForumPost"),
     path("addInComment/", views.addInComment, name="addInComment"),
 ]
