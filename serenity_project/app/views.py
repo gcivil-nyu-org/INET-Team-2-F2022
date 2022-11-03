@@ -187,6 +187,15 @@ def forum_home(request):
     return render(request, "app/forum_home.html", context)
 
 
+def zipcode_forum(request):
+    forumPosts = ForumPost.objects.all()
+    zipcodes = ScoreTable.objects.all()
+    count = zipcodes.count()
+    context = {"forumPosts": forumPosts, "count": count, "zipcodes": zipcodes}
+    return render(request, "app/zipcode_forum.html", context)
+
+
+
 @login_required(login_url="/login")
 def addInForumPost(request):
     form = CreateInForumPost()
