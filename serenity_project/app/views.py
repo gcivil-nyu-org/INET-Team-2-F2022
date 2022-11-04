@@ -234,7 +234,8 @@ def addInForumPost(request):
             form.save()
             return redirect("/forumPosts")
     user = get_user(request)
-    form = CreateInForumPost(initial={"name": user})
+    email = user.email
+    form = CreateInForumPost(initial={"name": user,"email": email})
     context = {"form": form}
     return render(request, "app/addInForumPost.html", context)
 
