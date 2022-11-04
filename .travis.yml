@@ -20,8 +20,8 @@ deploy:
   secret_access_key:
     secure: "X0GUsz2Vd/isQpVXvdtC4hLHoEvpmw4sEZqFfqv/vPYLK/llsEBWtHYLt9HqExB51os6LHuF0oAco0b+quAVndijAB0J82s6d3GadvCnOgAYkqNHnUi1gLBpn8gikG1oLJGut6E4OuIqWnVUqdWKkv4VU/zVdbtZy5KnuieF4+PsD/JZrRQXgNY0rU1Vj+2NIY2LOnndhfPzqX8oWOJSlybVI8oxShVetCw1Y2m4xB9Zq3p1tBFtSKTibb/7d/Zky4Cv4wqiNfvrZc1oeXckHYedwfXQ/tldvjjf6bgO9mxSFPY5toS99fcKMk/ba9e8PUpMPBqXBmjypw4I8zCM5Fu92AtxKSexbO88m8xBsDuy9ZXUXDzGV/cLsodlgFhRs17XOsmIDUp9KPnSDHkPUARHOVFtTPTCS01tgQXsspIYVbf67lFBRMEaroCbAGN4mqrxt8o7tw3YHC6V8wB+aqlKn40YboraRN6SvQLGPPJeg0iwTnMJHWxfuIaP9Wd12qPKO9KfjSsw/5xA+bNjQgvBYwcmPkm0Ibp6X54AnK3f76yUCP/34IoU2GT42zvrk9/PdwGmQ7BJsA0INNEFfYMmIIdeyTxPAawt0OWoRQfVq3+u9mOmR/5NsFp9xvvs07q8w9L3yNse8uVg7uBpTQtPD3xbZCz6i73/e2ZnUcI="
   region: "us-west-2"
-  app: "se-project-forum"
-  env: "se-project-forum-env"
+  app: "se-proj-forum"
+  env: "se-proj-forum-env"
   bucket_name: "se-forum"
   on:
     all_branches: true
