@@ -191,7 +191,8 @@ def forum_home(request):
         "count": count,
     }
     return render(request, "app/forum_home.html", context)
-    
+
+
 def forum_zipcode(request, pk):
     posts = ForumPost.objects.all()
     posts = posts.filter(zipcode__zipcode=pk)
@@ -207,21 +208,21 @@ def forum_zipcode(request, pk):
     }
     return render(request, "app/forum_zipcode.html", context)
 
+
 def forum_post(request, pk, id):
     id = int(id)
     posts = ForumPost.objects.all()
-    posts = posts.filter(zipcode__zipcode = pk)
+    posts = posts.filter(zipcode__zipcode=pk)
     comments = []
     for i in posts:
         comments.append(i.comment_set.all())
     context = {
-        "zipcode" : pk,
-        "forumPosts" : posts,
-        "comments" : comments,
-        "id" : id,
+        "zipcode": pk,
+        "forumPosts": posts,
+        "comments": comments,
+        "id": id,
     }
     return render(request, "app/forum_post.html", context)
-
 
 
 @login_required(login_url="/login")
