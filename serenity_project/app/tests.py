@@ -97,7 +97,7 @@ class ForumSearch(TestCase):
             email="testemail@gmail.com",
             topic="test topic",
             description="test description",
-            date_created="null"
+            date_created="null",
         )
         self.assertEqual(testPost.id, 1)
         self.assertEqual(testPost.zipcode.zipcode, 11220)
@@ -193,12 +193,13 @@ class TestForumZip(TestCase):
             email="testemail@gmail.com",
             topic="test topic",
             description="test description",
-            date_created="null"
+            date_created="null",
         )
-    
+
     @patch("requests.post")
     def test_forumzip(self, mock_post):
         from .views import forum_home
+
         req = HttpRequest()
         req.method = "POST"
         req.POST = {"searched": 11220}
@@ -208,12 +209,13 @@ class TestForumZip(TestCase):
     @patch("requests.post")
     def test_zip_posts(self, mock_post):
         from .views import forum_zipcode
+
         req = HttpRequest()
         req.method = "POST"
         req.POST = {"searched": 11220}
         response = forum_zipcode(req, 11220)
         self.assertEqual(response.status_code, 200)
-        
+
 
 class TestForms(TestCase):
     def test_form_save(self):
