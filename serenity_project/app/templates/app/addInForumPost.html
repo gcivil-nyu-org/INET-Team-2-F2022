@@ -13,5 +13,8 @@
 <form action="{% url 'addInForumPost' %}" method="POST">
     {% csrf_token %}
     {{form.as_p}}
+    <h3>You are posting as:</h3>
+    <p>Name: {{ user }}</p>
+    <p>Email: {{ email }}</p> <br>
     <input type="submit" class="btn btn-success" value="submit">
 </form>

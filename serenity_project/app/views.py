@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 
 # Create your views here.
 from rest_framework import viewsets
+from django import forms
 from .models import ScoreTable, ForumPost, Comment
 from .serializers import ScoreTableSerializer
 from django.template import RequestContext, Template, Context
@@ -236,7 +237,9 @@ def addInForumPost(request):
     user = get_user(request)
     email = user.email
     form = CreateInForumPost(initial={"name": user, "email": email})
-    context = {"form": form}
+    form.fields["name"].widget = forms.HiddenInput()
+    form.fields["email"].widget = forms.HiddenInput()
+    context = {"form": form, "user": user, "email": email}
     return render(request, "app/addInForumPost.html", context)
 
 
@@ -248,7 +251,12 @@ def addInComment(request):
         if form.is_valid():
             form.save()
             return redirect("/forumPosts")
-    context = {"form": form}
+    user = get_user(request)
+    email = user.email
+    form = CreateInComment(initial={"name": user, "email": email})
+    form.fields["name"].widget = forms.HiddenInput()
+    form.fields["email"].widget = forms.HiddenInput()
+    context = {"form": form, "user": user, "email": email}
     return render(request, "app/addInComment.html", context)
 
 

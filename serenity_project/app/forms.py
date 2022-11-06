@@ -34,3 +34,4 @@ class CreateInComment(ModelForm):
     class Meta:
         model = Comment
         fields = "__all__"
+        widgets = {"name": forms.HiddenInput(), "email": forms.HiddenInput()}

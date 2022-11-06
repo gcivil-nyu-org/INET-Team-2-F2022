@@ -45,6 +45,8 @@ class Comment(models.Model):  # change to Comment
     id = models.AutoField(primary_key=True)
     forumPost = models.ForeignKey(ForumPost, blank=True, on_delete=models.CASCADE)
     discuss = models.CharField(max_length=1000)
+    name = models.CharField(max_length=200, default="anonymous")
+    email = models.CharField(max_length=200, null=True)
 
     def __str__(self):
         return str(self.forumPost)

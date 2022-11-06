@@ -38,6 +38,23 @@ class AppViewTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "app/index.html")
 
+    def test_forum_index(self):
+        response = self.client.get(path="/forumPosts/")
+        assert response.status_code == 200
+        self.assertTemplateUsed(response, "app/forum_home.html")
+
+    def test_add_forum_post(self):
+        response = self.client.get(path="/addInForumPost/")
+        assert response.status_code == 302
+
+    # self.assertTemplateUsed(response, "app/addInForumPost.html")
+
+    def test_add_forum_comment(self):
+        response = self.client.get(path="/addInComment/")
+        assert response.status_code == 302
+
+    # self.assertTemplateUsed(response, "app/addInComment.html")
+
 
 class TestSearch(TestCase):
     def setUp(self):

@@ -8,6 +8,7 @@ class ScoreTableSerializer(serializers.ModelSerializer):
         model = ScoreTable
         fields = "__all__"
 
+
 class ForumPostSerializer(serializers.ModelSerializer):
     class Meta:
         model = ForumPost
