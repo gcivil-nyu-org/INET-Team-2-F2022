@@ -1,6 +1,6 @@
 from django.test import TestCase
 from django.urls import reverse
-from .models import ScoreTable
+from .models import ScoreTable, ForumPost
 from .serializers import ScoreTableSerializer
 from django.contrib.auth.models import User
 from .views import search
@@ -43,17 +43,17 @@ class AppViewTests(TestCase):
         assert response.status_code == 200
         self.assertTemplateUsed(response, "app/forum_home.html")
 
+    def test_forum_zipcode(self):
+        response = self.client.get(path="forumPosts/11216")
+        self.assertEqual(response.status_code, 404)
+
     def test_add_forum_post(self):
         response = self.client.get(path="/addInForumPost/")
         assert response.status_code == 302
 
-    # self.assertTemplateUsed(response, "app/addInForumPost.html")
-
     def test_add_forum_comment(self):
         response = self.client.get(path="/addInComment/")
         assert response.status_code == 302
-
-    # self.assertTemplateUsed(response, "app/addInComment.html")
 
 
 class TestSearch(TestCase):
@@ -73,6 +73,34 @@ class TestSearch(TestCase):
         testZip = ScoreTable.objects.get(zipcode=11220)
         self.assertEqual(testZip.residentialNoise, 1)
         self.assertEqual(testZip.zipcode, 11220)
+
+
+class ForumSearch(TestCase):
+    def setUp(self):
+
+        ScoreTable.objects.create(
+            id=1,
+            zipcode=11220,
+            residentialNoise=1,
+            dirtyConditions=2,
+            sanitationCondition=3,
+            wasteDisposal=4,
+            unsanitaryCondition=5,
+        )
+
+    def testZipResults(self):
+        object = ScoreTable.objects.get(zipcode=11220)
+        testPost = ForumPost.objects.create(
+            id=1,
+            zipcode=object,
+            name="test",
+            email="testemail@gmail.com",
+            topic="test topic",
+            description="test description",
+            date_created="null"
+        )
+        self.assertEqual(testPost.id, 1)
+        self.assertEqual(testPost.zipcode.zipcode, 11220)
 
 
 class TestLogin(TestCase):
@@ -143,6 +171,49 @@ class testSearchView(TestCase):
         response = search(req)
         assert response.status_code == 200
 
+
+class TestForumZip(TestCase):
+    def setUp(self) -> None:
+        ScoreTable.objects.create(
+            id=1,
+            zipcode=11220,
+            residentialNoise=1,
+            dirtyConditions=2,
+            sanitationCondition=3,
+            wasteDisposal=4,
+            unsanitaryCondition=5,
+        )
+
+        object = ScoreTable.objects.get(zipcode=11220)
+
+        ForumPost.objects.create(
+            id=1,
+            zipcode=object,
+            name="test",
+            email="testemail@gmail.com",
+            topic="test topic",
+            description="test description",
+            date_created="null"
+        )
+    
+    @patch("requests.post")
+    def test_forumzip(self, mock_post):
+        from .views import forum_home
+        req = HttpRequest()
+        req.method = "POST"
+        req.POST = {"searched": 11220}
+        response = forum_home(req)
+        assert response.status_code == 200
+
+    @patch("requests.post")
+    def test_zip_posts(self, mock_post):
+        from .views import forum_zipcode
+        req = HttpRequest()
+        req.method = "POST"
+        req.POST = {"searched": 11220}
+        response = forum_zipcode(req, 11220)
+        self.assertEqual(response.status_code, 200)
+        
 
 class TestForms(TestCase):
     def test_form_save(self):
