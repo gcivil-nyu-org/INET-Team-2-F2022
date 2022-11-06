@@ -15,6 +15,7 @@ from .forms import RatingForm, NewUserForm, CreateInForumPost, CreateInComment
 
 import pandas as pd
 import numpy as np
+from django.http import HttpResponse
 from django.contrib.auth import get_user
 
 
@@ -179,22 +180,49 @@ def logoutUser(request):
 
 
 def forum_home(request):
+    # TODO: show all zipcodes with links
     forumPosts = ForumPost.objects.all()
-    count = forumPosts.count()
-    comments = []
-    for i in forumPosts:
-        comments.append(i.comment_set.all())
-    context = {"forumPosts": forumPosts, "count": count, "comments": comments}
+    zipcodes = set()
+    for post in forumPosts:
+        zipcodes.add(post.zipcode.zipcode)
+    count = len(zipcodes)
+    context = {
+        "zipcodes": zipcodes,
+        "count": count,
+    }
     return render(request, "app/forum_home.html", context)
 
 
-def zipcode_forum(request):
-    forumPosts = ForumPost.objects.all()
-    zipcodes = ScoreTable.objects.all()
-    count = zipcodes.count()
-    context = {"forumPosts": forumPosts, "count": count, "zipcodes": zipcodes}
-    return render(request, "app/zipcode_forum.html", context)
+def forum_zipcode(request, pk):
+    posts = ForumPost.objects.all()
+    posts = posts.filter(zipcode__zipcode=pk)
+    count = posts.count()
+    comments = []
+    for i in posts:
+        comments.append(i.comment_set.all())
+    context = {
+        "zipcode": pk,
+        "forumPosts": posts,
+        "count": count,
+        "comments": comments,
+    }
+    return render(request, "app/forum_zipcode.html", context)
 
+
+def forum_post(request, pk, id):
+    id = int(id)
+    posts = ForumPost.objects.all()
+    posts = posts.filter(zipcode__zipcode=pk)
+    comments = []
+    for i in posts:
+        comments.append(i.comment_set.all())
+    context = {
+        "zipcode": pk,
+        "forumPosts": posts,
+        "comments": comments,
+        "id": id,
+    }
+    return render(request, "app/forum_post.html", context)
 
 
 @login_required(login_url="/login")
@@ -206,7 +234,8 @@ def addInForumPost(request):
             form.save()
             return redirect("/forumPosts")
     user = get_user(request)
-    form = CreateInForumPost(initial={"name": user})
+    email = user.email
+    form = CreateInForumPost(initial={"name": user, "email": email})
     context = {"form": form}
     return render(request, "app/addInForumPost.html", context)
 

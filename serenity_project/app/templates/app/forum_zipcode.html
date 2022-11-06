@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Serenity Discussion Forum</title>
+    <title>Serenity Discussion Forum Zipcode {{zipcode}}</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous"0>
     <style>
         .box{
@@ -15,7 +15,7 @@
 </head>
 <body>
         <h2 class="jumbotron">
-            Currently active forums: {{count}}
+            Currently active forum Posts: {{count}}
             <form method="POST" action="{% url 'addInForumPost' %}">
                 {% csrf_token %}
             <button class="btn btn-success" style="width:fit-content; padding: 4px; margin:10px;">Add more</button>
@@ -24,13 +24,33 @@
             <div class="card-columns" style="padding: 10px; margin: 20px;"></div>
             
             
-            {% for zipcode in zipcodes %}
+            {%for post in forumPosts %}
             
                 <div class="card box container">
                     <br>
                     <h5 class="card-title">
-                        <a href="{% url 'forum_zipcode' pk=zipcode %}"><h3>{{zipcode}}</h3></a>
-                    </h5>
+                        <a href="{% url 'forum_post' pk=post.zipcode.zipcode id=post.id %}"><h3>{{post.topic}} | {{post.zipcode.zipcode}} Grade: {{post.zipcode.grade}}</h3></a>
+                        <div class="card-body container">
+                                <p>{{post.description}} </p>
+                            </h5>
+                            <hr>
+                            <p> By: {{post.name}}</p>
+                            email- {{post.email}}
+                            <hr>     
+                            <h4>Views from other users</h4>
+                            {%for comment in comments%}
+                            {%for objs in comment%}  
+                            {% if objs.forumPost == post %}
+                               {{objs.discuss}}
+                               <br>
+                            {% endif %}
+                            {%endfor%}
+                            {%endfor%}
+                            <form method="POST" action="{% url 'addInComment' %}">
+                                {% csrf_token %}
+                            <button class="btn btn-success" style="width:fit-content; padding: 4px; margin:10px;">Add more</button>
+                            </form>
+                        </div>
                 </div>
             </div>
             <br>
