@@ -12,12 +12,19 @@ from django.http import HttpRequest
 from django.test.client import RequestFactory
 from django.core.handlers.wsgi import WSGIRequest
 from .views import search
+from http import HTTPStatus
 
 
 from django.test import Client
 
 
 class AppViewTests(TestCase):
+    def setUp(self):
+        self.client = Client()
+        self.user = User.objects.create_user(
+            "john", "lennon@thebeatles.com", "johnpassword"
+        )
+
     def test_home_endpoint_returns_welcome_page(self):
         response = self.client.get(path="/")
         assert response.status_code == 200
@@ -51,9 +58,19 @@ class AppViewTests(TestCase):
         response = self.client.get(path="/addInForumPost/")
         assert response.status_code == 302
 
+    def test_add_forum_post_login(self):
+        self.client.login(username="john", password="johnpassword")
+        response = self.client.get(path="/addInForumPost/")
+        assert response.status_code == 200
+
     def test_add_forum_comment(self):
         response = self.client.get(path="/addInComment/")
         assert response.status_code == 302
+
+    def test_add_forum_post_login(self):
+        self.client.login(username="john", password="johnpassword")
+        response = self.client.get(path="/addInComment/")
+        assert response.status_code == 200
 
 
 class TestSearch(TestCase):
@@ -268,3 +285,33 @@ class TestViews(TestCase):
         assert update_user_rating(100, "E") == 105
         assert update_user_rating(100, "F") == 106
         assert update_user_rating(100, "G") == 107
+
+
+class ForumPostTests(TestCase):
+    def setUp(self):
+        self.client = Client()
+        self.user = User.objects.create_user(
+            "john", "lennon@thebeatles.com", "johnpassword"
+        )
+
+    def testaddForumPost(self):
+        self.client.login(username="john", password="johnpassword")
+        response = self.client.post(
+            "/addInForumPost/",
+            data={
+                "id": 1,
+                "zipcode": 11220,
+                "topic": "test topic",
+                "description": "test description",
+                "date_created": "2021-05-05",
+            },
+        )
+        self.assertEqual(response.status_code, 200)
+
+    def testaddForumComment(self):
+        self.client.login(username="john", password="johnpassword")
+        response = self.client.post(
+            "/addInComment/",
+            data={"id": 1, "forumPost": 2, "discuss": "test discussion"},
+        )
+        self.assertEqual(response.status_code, 200)
