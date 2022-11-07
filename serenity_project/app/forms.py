@@ -1,6 +1,8 @@
 from django import forms
+from django.forms import ModelForm
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
+from .models import ForumPost, Comment
 
 
 class NewUserForm(UserCreationForm):
@@ -20,3 +22,16 @@ class NewUserForm(UserCreationForm):
 
 class RatingForm(forms.Form):
     user_rating = forms.CharField(label="Your grade", max_length=1)
+
+
+class CreateInForumPost(ModelForm):
+    class Meta:
+        model = ForumPost
+        fields = "__all__"
+
+
+class CreateInComment(ModelForm):
+    class Meta:
+        model = Comment
+        fields = "__all__"
+        widgets = {"name": forms.HiddenInput(), "email": forms.HiddenInput()}

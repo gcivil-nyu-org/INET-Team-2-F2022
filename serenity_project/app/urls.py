@@ -21,4 +21,13 @@ urlpatterns = [
     path("logout", views.logoutUser, name="logout"),
     path("rate/", views.submit_rating, name="rate"),
     path("thanks/", views.get_rating, name="thanks"),
+    path("forumPosts/", views.forum_home, name="forum_home"),
+    path("forumPosts/<pk>", views.forum_zipcode, name="forum_zipcode"),
+    path("forumPosts/<pk>/<id>", views.forum_post, name="forum_post"),
+    path("addInForumPost/", views.addInForumPost, name="addInForumPost"),
+    path("addInComment/", views.addInComment, name="addInComment"),
+    path("forumZipCodeList", views.forum_zipcode, name="forumZipCodeList"),
 ]
+
+handler404 = "app.views.page_not_found_view"
+handler500 = "app.views.internal_error_view"
