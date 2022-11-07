@@ -2,19 +2,22 @@ from django.shortcuts import render, redirect
 
 # Create your views here.
 from rest_framework import viewsets
-from .models import ScoreTable
+from django import forms
+from .models import ScoreTable, ForumPost, Comment
 from .serializers import ScoreTableSerializer
 from django.template import RequestContext, Template, Context
-from .forms import NewUserForm
 from django.contrib import messages
 from django.contrib.auth import login, authenticate, logout
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
 from django.shortcuts import HttpResponseRedirect
 from django.template.response import TemplateResponse
-from .forms import RatingForm
+from .forms import RatingForm, NewUserForm, CreateInForumPost, CreateInComment
 
 import pandas as pd
 import numpy as np
+from django.http import HttpResponse
+from django.contrib.auth import get_user
 
 
 class ScoreTableViewSet(viewsets.ModelViewSet):
@@ -83,6 +86,7 @@ def search(request):  # pragma: no cover
         return render(request, "app/search.html", {}, csrfContext)
 
 
+@login_required(login_url="/login")
 def submit_rating(request):
     # csrfContext = RequestContext(request)
     zip = request.POST.get("zip")
@@ -110,6 +114,7 @@ def update_user_rating(total, grade):
     return total
 
 
+@login_required(login_url="/login")
 def get_rating(request):
     # csrfContext = RequestContext(request)
     form = RatingForm(request.POST)
@@ -173,3 +178,91 @@ def login_request(request):  # pragma: no cover
 def logoutUser(request):
     logout(request)
     return redirect("home")
+
+
+def forum_home(request):
+    # TODO: show all zipcodes with links
+    forumPosts = ForumPost.objects.all()
+    zipcodes = set()
+    for post in forumPosts:
+        zipcodes.add(post.zipcode.zipcode)
+    count = len(zipcodes)
+    context = {
+        "zipcodes": zipcodes,
+        "count": count,
+    }
+    return render(request, "app/forum_home.html", context)
+
+
+def forum_zipcode(request, pk):
+    posts = ForumPost.objects.all()
+    posts = posts.filter(zipcode__zipcode=pk)
+    count = posts.count()
+    comments = []
+    for i in posts:
+        comments.append(i.comment_set.all())
+    context = {
+        "zipcode": pk,
+        "forumPosts": posts,
+        "count": count,
+        "comments": comments,
+    }
+    return render(request, "app/forum_zipcode.html", context)
+
+
+def forum_post(request, pk, id):
+    id = int(id)
+    posts = ForumPost.objects.all()
+    posts = posts.filter(zipcode__zipcode=pk)
+    comments = []
+    for i in posts:
+        comments.append(i.comment_set.all())
+    context = {
+        "zipcode": pk,
+        "forumPosts": posts,
+        "comments": comments,
+        "id": id,
+    }
+    return render(request, "app/forum_post.html", context)
+
+
+@login_required(login_url="/login")
+def addInForumPost(request):
+    form = CreateInForumPost()
+    if request.method == "POST":
+        form = CreateInForumPost(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect("/forumPosts")
+    user = get_user(request)
+    email = user.email
+    form = CreateInForumPost(initial={"name": user, "email": email})
+    form.fields["name"].widget = forms.HiddenInput()
+    form.fields["email"].widget = forms.HiddenInput()
+    context = {"form": form, "user": user, "email": email}
+    return render(request, "app/addInForumPost.html", context)
+
+
+@login_required(login_url="/login")
+def addInComment(request):
+    form = CreateInComment()
+    if request.method == "POST":
+        form = CreateInComment(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect("/forumPosts")
+    user = get_user(request)
+    email = user.email
+    form = CreateInComment(initial={"name": user, "email": email})
+    form.fields["name"].widget = forms.HiddenInput()
+    form.fields["email"].widget = forms.HiddenInput()
+    context = {"form": form, "user": user, "email": email}
+    return render(request, "app/addInComment.html", context)
+
+
+def page_not_found_view(request, exception):
+    return render(request, "404.html", status=404)
+
+
+def internal_error_view(request):
+    return render(request, "500.html", status=500)
