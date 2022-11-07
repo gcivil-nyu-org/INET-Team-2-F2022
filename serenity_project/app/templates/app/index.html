@@ -113,20 +113,23 @@
         
     </div>
 
-    <ul class="navbar-nav pe-5">
+    <!-- pe-6 is a bootstrap spacing class, need to figure out a better way to align the links and title -->
+    <ul class="navbar-nav pe-6"> 
         {% block user %}
         {% if user.is_authenticated %}
         <li class="nav-item">
-        
           <p>Hi {{ user.username }}!<a class="nav-link align-right" href="{% url 'logout' %}">Log Out</a></p>
         </li>
         {% else %}
-        <li class="nav-item">
+        <li class="nav-item align-right">
             <a class="nav-link" href="{% url 'login' %}">Log In</a>
         </li>
         {% endif %}
         {% endblock %}
-        <a style="color:ECFFE8;" href="{% url 'forum_home' %}">Forum Home</a>
+        <li class="nav-item align-right pe-3">
+            <a class="nav-link" href="{% url 'forum_home' %}">Forum Home</a>
+        </li>
+
     </p>
 </center>
 </nav>
