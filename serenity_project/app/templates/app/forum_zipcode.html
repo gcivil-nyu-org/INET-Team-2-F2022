@@ -37,7 +37,7 @@
                             <p> By: {{post.name}}</p>
                             email- {{post.email}}
                             <hr>     
-                            <h4>Views from other users</h4>
+                            <h4>Comments from other users</h4>
                             {%for comment in comments%}
                             {%for objs in comment%}  
                             {% if objs.forumPost == post %}
