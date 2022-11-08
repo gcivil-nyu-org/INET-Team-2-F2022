@@ -145,7 +145,7 @@
     <p style="color:ForestGreen;">To start your search, please enter a 5-digit NYC zipcode:</p>
 <form action="search" method = "POST">
     {% csrf_token %}
-    <input type="text" placeholder="Enter a Zipcode" name="searched"/>
+    <input type="text" placeholder="Enter a Zipcode" name="searched" minlength="5" maxlength="5" pattern="[0-9.]+" required/>
     <button type="submit" class = "btn btn-outline-primary">Search</button>   
 </form>
 
