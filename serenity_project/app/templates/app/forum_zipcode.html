@@ -41,7 +41,7 @@
                             {%for comment in comments%}
                             {%for objs in comment%}  
                             {% if objs.forumPost == post %}
-                               {{objs.discuss}}
+                               {{objs.comment}}
                                <br>
                             {% endif %}
                             {%endfor%}
