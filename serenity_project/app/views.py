@@ -194,7 +194,7 @@ def logoutUser(request):
 
 
 def forum_home(request):
-    # TODO: show all zipcodes with links
+    # TODO: show all buroughs
     forumPosts = ForumPost.objects.all()
     zipcodes = set()
     for post in forumPosts:
@@ -205,6 +205,20 @@ def forum_home(request):
         "count": count,
     }
     return render(request, "app/forum_home.html", context)
+
+def forum_borough(request, borough):
+    # TODO: show zipcodes filtered by burough
+    forumPosts = ForumPost.objects.all()
+    forumPosts = forumPosts.filter(zipcode__borough=borough)
+    zipcodes = set()
+    for post in forumPosts:
+        zipcodes.add(post.zipcode.zipcode)
+    count = len(zipcodes)
+    context = {
+        "zipcodes": zipcodes,
+        "count": count,
+    }
+    return render(request, "app/forum_borough.html", context)
 
 
 def forum_zipcode(request, pk):
