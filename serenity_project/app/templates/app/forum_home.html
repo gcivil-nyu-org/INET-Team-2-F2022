@@ -1,42 +1,96 @@
 {% load static %}
-<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Serenity Discussion Forum</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Catamaran:wght@200;400;700&family=Chau+Philomene+One&display=swap" rel="stylesheet">
+    <link href="{% static 'css/forum.css' %}" rel="stylesheet">     
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous"0>
     <style>
-        .box{
-            border: 4px solid black;
-            margin: 0 auto;
-        }
+
     </style>
 </head>
 <body>
-        <h2 class="jumbotron">
+
+    <nav class="navbar navbar-expand-lg navbar-light">
+    
+        <a class="navbar-brand ps-3" href="/">
+            <img src="{% static '/img/SerenitySearch-1.png' %}" alt="" width="90" height="90">
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+    
+        <div class="collapse navbar-collapse justify-content-center">
+            <header class="serenity-title">
+                <h1 style="color:ForestGreen;">SerenitySearch</h1>
+                <p style="color:ForestGreen;"><i>Helping New Yorkers find peace in the city that never sleeps</i></p>
+            </header>
+            
+        </div>
+    
+        <!-- pe-6 is a bootstrap spacing class, need to figure out a better way to align the links and title -->
+        <ul class="navbar-nav pe-6"> 
+            <li class="nav-item align-right pe-3">
+                <a class="nav-link" href="{% url 'home' %}">Home</a>
+            </li>
+            {% block user %}
+            {% if user.is_authenticated %}
+            <li class="nav-item">
+              <p>Hi {{ user.username }}!<a class="nav-link align-right" href="{% url 'logout' %}">Log Out</a></p>
+            </li>
+            {% else %}
+            <li class="nav-item align-right">
+                <a class="nav-link" href="{% url 'login' %}">Log In</a>
+            </li>
+            {% endif %}
+            {% endblock %}
+            <li class="nav-item align-right pe-3">
+                <a class="nav-link" href="{% url 'forum_home' %}">Forum Home</a>
+            </li>
+    
+        </p>
+    </nav>
+
+        <h2 class="navbar">
             Currently active forums: {{count}}
             <form method="POST" action="{% url 'addInForumPost' %}">
                 {% csrf_token %}
-            <button class="btn btn-success" style="width:fit-content; padding: 4px; margin:10px;">Add more</button>
+            <button class="btn btn-success" style="width:fit-content;">Add more</button>
             </form>
         </h2>
-            <div class="card-columns" style="padding: 10px; margin: 20px;"></div>
+        <div class = "container-fluid">
+
+        
             
             
             {% for zipcode in zipcodes %}
             
-                <div class="card box container">
+                <div class="box container">
                     <br>
                     <h5 class="card-title">
                         <a href="{% url 'forum_zipcode' pk=zipcode %}"><h3>{{zipcode}}</h3></a>
                     </h5>
                 </div>
-            </div>
+                <br>
+                   {%endfor%}
+        </div>
+
+        <div class="container-fluid">
             <br>
+            <br>
+            <br>
+            <br>
+            <br>
+        </div>
+       
+           
             
-            {%endfor%}
-          
+         
+       
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
