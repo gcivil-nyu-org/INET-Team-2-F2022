@@ -210,13 +210,14 @@ def forum_borough(request, borough):
         zipcodes.add(post.zipcode.zipcode)
     count = len(zipcodes)
     context = {
+        "borough" : borough,
         "zipcodes": zipcodes,
         "count": count,
     }
     return render(request, "app/forum_borough.html", context)
 
 
-def forum_zipcode(request, pk):
+def forum_zipcode(request, borough, pk):
     posts = ForumPost.objects.all()
     posts = posts.filter(zipcode__zipcode=pk)
     count = posts.count()
@@ -224,6 +225,7 @@ def forum_zipcode(request, pk):
     for i in posts:
         comments.append(i.comment_set.all())
     context = {
+        "borough": borough,
         "zipcode": pk,
         "forumPosts": posts,
         "count": count,
@@ -232,7 +234,7 @@ def forum_zipcode(request, pk):
     return render(request, "app/forum_zipcode.html", context)
 
 
-def forum_post(request, pk, id):
+def forum_post(request, borough, pk, id):
     id = int(id)
     posts = ForumPost.objects.all()
     posts = posts.filter(zipcode__zipcode=pk)
@@ -240,6 +242,7 @@ def forum_post(request, pk, id):
     for i in posts:
         comments.append(i.comment_set.all())
     context = {
+        "borough": borough,
         "zipcode": pk,
         "forumPosts": posts,
         "comments": comments,

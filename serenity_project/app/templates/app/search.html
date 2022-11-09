@@ -61,6 +61,11 @@
     <p style="color:honeydew">F = [6,7)</p>
     <p style="color:honeydew">G = 7+</p>
     <br>
+
+    <h5 class="card-title">
+        <a href="{% url 'forum_zipcode' borough=post.borough pk=post.zipcode %}"><h3>Forum: {{post.zipcode}}</h3></a>
+    </h5>
+
     <p style="color:ECFFE8;"><a href="{% url 'home' %}">New Search</a></p>
 </body>
 </center>

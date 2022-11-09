@@ -77,7 +77,7 @@
                 <div class="box container">
                     <br>
                     <h5 class="card-title">
-                        <a href="{% url 'forum_post' pk=post.zipcode.zipcode id=post.id %}"><h3>{{post.topic}} | {{post.zipcode.zipcode}} Grade: {{post.zipcode.grade}}</h3></a>
+                        <a href="{% url 'forum_post' borough=borough pk=post.zipcode.zipcode id=post.id %}"><h3>{{post.topic}} | {{post.zipcode.zipcode}} Grade: {{post.zipcode.grade}}</h3></a>
                         <div class="card-box container">
                                 <p>{{post.description}} </p>
                             </h5>
