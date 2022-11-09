@@ -12,6 +12,7 @@
 </head>
 <form action="{% url 'addInForumPost' %}" method="POST">
     {% csrf_token %}
+    <h3>New post!</h3>
     {{form.as_p}}
     <h3>You are posting as:</h3>
     <p>Name: {{ user }}</p>
