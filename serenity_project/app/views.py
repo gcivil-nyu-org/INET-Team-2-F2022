@@ -195,14 +195,9 @@ def logoutUser(request):
 
 def forum_home(request):
     # TODO: show all buroughs
-    forumPosts = ForumPost.objects.all()
-    zipcodes = set()
-    for post in forumPosts:
-        zipcodes.add(post.zipcode.zipcode)
-    count = len(zipcodes)
+    boroughs = ["Manhattan", "Brooklyn", "Staten Island", "Queens", "Bronx"]
     context = {
-        "zipcodes": zipcodes,
-        "count": count,
+        "boroughs": boroughs
     }
     return render(request, "app/forum_home.html", context)
 

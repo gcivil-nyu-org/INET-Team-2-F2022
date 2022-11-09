@@ -1,1 +1,12 @@
-Hello this should show buroughs
+Hello this should show boroughs
+
+{% for borough in boroughs %}
+            
+<div class="box container">
+    <br>
+    <h5 class="card-title">
+        <a href="{% url 'forum_borough' borough=borough %}"><h3>{{borough}}</h3></a>
+    </h5>
+</div>
+<br>
+{%endfor%}
