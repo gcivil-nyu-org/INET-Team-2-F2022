@@ -15,6 +15,7 @@ class ScoreTable(models.Model):
     gradeCount = models.FloatField(default=0, max_length=10)
     userAvg = models.FloatField(default=0, max_length=10)
     userGrade = models.FloatField(default=0, max_length=10)
+    borough = models.CharField(max_length=100)
 
     def __str__(self):
         return f"Zipcode: {self.zipcode}, Score: {self.residentialNoise}, Grade:"
@@ -43,7 +44,9 @@ class ForumPost(models.Model):
 # child model
 class Comment(models.Model):  # change to Comment
     id = models.AutoField(primary_key=True)
-    forumPost = models.ForeignKey(ForumPost, blank=False, on_delete=models.CASCADE, default=1)
+    forumPost = models.ForeignKey(
+        ForumPost, blank=False, on_delete=models.CASCADE, default=1
+    )
     comment = models.CharField(max_length=1000)
     name = models.CharField(max_length=200, default="anonymous")
     email = models.CharField(max_length=200, null=True)
