@@ -122,19 +122,32 @@ def get_rating(request):
         form = RatingForm(request.POST)
         zip = request.POST.get("zip")
         grade = request.POST.get("user_rating")
-        post = ScoreTable.objects.get(zipcode=zip)
-        post.gradeCount += 1
-        count = post.gradeCount
-        total = post.userGrade
-        post.userGrade = update_user_rating(total, grade)
-        post.userAvg = post.userGrade / count
-        post.save()
-        return render(
-            request,
-            "app/thanks.html",
-            {"grade": grade, "zipcode": zip, "updated_grade": post.userAvg},
-        )
-    return render(request, "app/thanks.html", {"form": form})
+        if isinstance(grade, str) and len(grade) == 1:
+            if (
+                grade == "A"
+                or grade == "B"
+                or grade == "C"
+                or grade == "D"
+                or grade == "E"
+                or grade == "F"
+                or grade == "G"
+            ):
+                post = ScoreTable.objects.get(zipcode=zip)
+                post.gradeCount += 1
+                count = post.gradeCount
+                total = post.userGrade
+                post.userGrade = update_user_rating(total, grade)
+                post.userAvg = post.userGrade / count
+                post.save()
+                return render(
+                    request,
+                    "app/thanks.html",
+                    {"grade": grade, "zipcode": zip, "updated_grade": post.userAvg},
+                )
+            else:
+                messages.error(request, "Invalid grade! Try again!")
+                return render(request, "app/rate.html", {"form": form, "zip": zip})
+    return render(request, "app/rate.html", {"form": form, "zip": zip})
 
 
 def register_request(request):
