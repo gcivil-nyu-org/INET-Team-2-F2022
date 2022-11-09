@@ -178,6 +178,7 @@ class testSearchView(TestCase):
             sanitationCondition=3,
             wasteDisposal=4,
             unsanitaryCondition=5,
+            borough="Brooklyn",
         )
 
     @patch("requests.post")
@@ -230,7 +231,7 @@ class TestForumZip(TestCase):
         req = HttpRequest()
         req.method = "POST"
         req.POST = {"searched": 11220}
-        response = forum_zipcode(req, 11220)
+        response = forum_zipcode(req, "Manhattan", "10012")
         self.assertEqual(response.status_code, 200)
 
 

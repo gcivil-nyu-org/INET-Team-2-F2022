@@ -91,12 +91,10 @@ def submit_rating(request):
     # csrfContext = RequestContext(request)
     zip = request.POST.get("zip")
     form = RatingForm(request.POST)
-    print(zip)
     return render(request, "app/rate.html", {"form": form, "zip": zip})
 
 
 def update_user_rating(total, grade):
-    print(grade)
     if grade == "A":
         total += 1
     if grade == "B":
@@ -196,10 +194,9 @@ def logoutUser(request):
 def forum_home(request):
     # TODO: show all buroughs
     boroughs = ["Manhattan", "Brooklyn", "Staten Island", "Queens", "Bronx"]
-    context = {
-        "boroughs": boroughs
-    }
+    context = {"boroughs": boroughs}
     return render(request, "app/forum_home.html", context)
+
 
 def forum_borough(request, borough):
     # TODO: show zipcodes filtered by burough
@@ -210,7 +207,7 @@ def forum_borough(request, borough):
         zipcodes.add(post.zipcode.zipcode)
     count = len(zipcodes)
     context = {
-        "borough" : borough,
+        "borough": borough,
         "zipcodes": zipcodes,
         "count": count,
     }
