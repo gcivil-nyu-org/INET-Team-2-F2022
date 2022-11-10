@@ -59,57 +59,96 @@
     </nav>
     
 
-    
+    <conteiner>
 
-<div class="container">
-    <br>
-    <h5 class="card-title">
-        <img src="{% static '/img/manhattan.jpeg' %}" alt="" width="300" height="300">
-        <a href="{% url 'forum_borough' borough='Manhattan' %}"><h3>Manhattan</h3></a>
-    </h5>
-</div>
-<br>
+        <!-- Manhattan -->
+        <div class="container">
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+            <div class="col">
+              <div class="card">
+            
+                <div class="card-body">
+                    <h5 class="card-title">
+               
+                        <img src="{% static '/img/manhattan.jpeg' %}" alt="" width="250" height="250">
+                        <a href="{% url 'forum_borough' borough='Manhattan' %}"><h3>Manhattan</h3></a>
+                   
+                    </h5>
+                  <p class="card-text">
+                    This is a longer card with supporting text below as a natural lead-in to
+                    additional content. This content is a little bit longer.
+                  </p>
+                </div>
+              </div>
+            </div>
+            <!-- Brooklyn -->
+            <div class="col">
+              <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <img src="{% static '/img/Brooklyn.jpg' %}" alt="" width="250" height="250">
+                        <a href="{% url 'forum_borough' borough='Brooklyn' %}"><h3>Brooklyn</h3></a>
+                    </h5>
+                  <p class="card-text">
+                    This is a longer card with supporting text below as a natural lead-in to
+                    additional content. This content is a little bit longer.
+                  </p>
+                </div>
+              </div>
+            </div>
+            <!-- Queens -->
+            <div class="col">
+              <div class="card">
+        
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <img src="{% static '/img/queens.jpeg' %}" alt="" width="250" height="250">
+                        <a href="{% url 'forum_borough' borough='Queens' %}"><h3>Queens</h3></a>
+                    </h5>
+                  <p class="card-text">This is a longer card with supporting text below as a natural lead-in to
+                    additional content.</p>
+                </div>
+              </div>
+            </div>
+     
+              <!-- Bronx -->
+            <div class="d-flex justify-content-center">
+              <div class="card center-block">        
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <img src="{% static '/img/bronx.jpeg' %}" alt="" width="250" height="250">
+                        <a href="{% url 'forum_borough' borough='Bronx' %}"><h3>Bronx</h3></a>
+                    </h5>
+                  <p class="card-text">
+                    This is a longer card with supporting text below as a natural lead-in to
+                    additional content. This content is a little bit longer.
+                  </p>
+                </div>
+              </div>
+            </div>
+        
+  <!-- SI -->
+   <div class="d-flex justify-content-center">
+    <div class="card center-block">        
+      <div class="card-body">
+        <h5 class="card-title">
+            <img src="{% static '/img/staten.jpeg' %}" alt="" width="250" height="250">
+            <a href="{% url 'forum_borough' borough='Staten Island' %}"><h3>Staten Island</h3></a>
+        </h5>
+        <p class="card-text">
+          This is a longer card with supporting text below as a natural lead-in to
+          additional content. This content is a little bit longer.
+        </p>
+      </div>
+    </div>
+  </div>
 
-<div class="container">
-    <br>
-    <h5 class="card-title">
-        <img src="{% static '/img/Brooklyn.jpg' %}" alt="" width="300" height="300">
-        <a href="{% url 'forum_borough' borough='Brooklyn' %}"><h3>Brooklyn</h3></a>
-    </h5>
-</div>
-<br>
+            
+          </div>
+        </div>
+        
+    </conteiner>
 
-
-<div class="container">
-    <br>
-    <h5 class="card-title">
-        <img src="{% static '/img/queens.jpeg' %}" alt="" width="300" height="300">
-        <a href="{% url 'forum_borough' borough='Queens' %}"><h3>Queens</h3></a>
-    </h5>
-</div>
-<br>
-
-
-<div class="container">
-    <br>
-    <h5 class="card-title">
-        <img src="{% static '/img/staten.jpeg' %}" alt="" width="300" height="300">
-        <a href="{% url 'forum_borough' borough='Staten Island' %}"><h3>Staten Island</h3></a>
-    </h5>
-</div>
-<br>
-
-
-<div class="container">
-    <br>
-    <h5 class="card-title">
-        <img src="{% static '/img/bronx.jpeg' %}" alt="" width="300" height="300">
-        <a href="{% url 'forum_borough' borough='Bronx' %}"><h3>Bronx</h3></a>
-    </h5>
-</div>
-<br>
-
-</div>
     
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
 </body>
