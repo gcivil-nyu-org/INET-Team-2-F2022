@@ -16,6 +16,10 @@ from .forms import RatingForm, NewUserForm, CreateInForumPost, CreateInComment
 
 import pandas as pd
 import numpy as np
+import seaborn as sns
+import matplotlib.pyplot as plt
+from sklearn import preprocessing
+from sklearn.preprocessing import normalize
 from django.http import HttpResponse
 from django.contrib.auth import get_user
 
@@ -63,6 +67,50 @@ def _get_city_grade_from_noise(normalized_noise):
         grade = "A"
     return grade
 
+def calculate_factor(zipcode):
+    zipcodeFactors = ScoreTable.objects.get(zipcode=zipcode)
+    n = []
+    factors = 'residentialNoise', 'dirtyConditions', 'sanitationCondition', 'wasteDisposal', 'unsanitaryCondition', 'constructionImpact'
+    for factor in factors:
+        currSet = ScoreTable.objects.values_list(factor, flat=True)
+        arr = np.array(currSet)
+        if (factor == 'residentialNoise'):
+            normal = zipcodeFactors.residentialNoise / np.linalg.norm(arr)
+        if (factor == 'dirtyConditions'):
+            normal = zipcodeFactors.dirtyConditions / np.linalg.norm(arr)
+        if (factor == 'sanitationCondition'):
+            normal = zipcodeFactors.sanitationCondition / np.linalg.norm(arr)
+        if (factor == 'wasteDisposal'):
+            normal = zipcodeFactors.wasteDisposal / np.linalg.norm(arr)
+        if (factor == 'unsanitaryCondition'):
+            normal = zipcodeFactors.unsanitaryCondition / np.linalg.norm(arr)
+        if (factor == 'constructionImpact'):
+            normal = zipcodeFactors.unsanitaryCondition / np.linalg.norm(arr)
+        n.append(normal)
+    n = np.array(n)
+    weights = np.array([1,1,1,1,1,4])
+    score = np.average(n, weights=weights)
+    return score
+
+calculate_factor(11215)
+
+def _get_grade_from_score(score):
+    grade = None
+    if score >= 0.4:
+        grade = "G"
+    elif score < 0.4 and score >= 0.3:
+        grade = "F"
+    elif score < 0.3 and score >= 0.2:
+        grade = "E"
+    elif score < 0.2 and score >= 0.15:
+        grade = "D"
+    elif score < 0.15 and score >= 0.1:
+        grade = "C"
+    elif score < 0.1 and score >= 0.05:
+        grade = "B"
+    elif score < 0.05 and score >= 0:
+        grade = "A"
+    return grade
 
 def search(request):  # pragma: no cover
     csrfContext = RequestContext(request)
@@ -70,6 +118,7 @@ def search(request):  # pragma: no cover
         search = request.POST["searched"]
         try:
             post = ScoreTable.objects.get(zipcode=search)
+            score = calculate_factor(search)
             normalizeNoise = _get_city_normalized_noise(
                 post.residentialNoise,
                 post.dirtyConditions,
@@ -77,9 +126,8 @@ def search(request):  # pragma: no cover
                 post.wasteDisposal,
                 post.unsanitaryCondition,
             )
-
             post.overallScore = normalizeNoise
-            post.grade = _get_city_grade_from_noise(normalizeNoise)
+            post.grade = _get_grade_from_score(score)
 
             return render(request, "app/search.html", {"post": post})
         except ScoreTable.DoesNotExist:
