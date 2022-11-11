@@ -67,32 +67,42 @@ def _get_city_grade_from_noise(normalized_noise):
         grade = "A"
     return grade
 
+
 def calculate_factor(zipcode):
     zipcodeFactors = ScoreTable.objects.get(zipcode=zipcode)
     n = []
-    factors = 'residentialNoise', 'dirtyConditions', 'sanitationCondition', 'wasteDisposal', 'unsanitaryCondition', 'constructionImpact'
+    factors = (
+        "residentialNoise",
+        "dirtyConditions",
+        "sanitationCondition",
+        "wasteDisposal",
+        "unsanitaryCondition",
+        "constructionImpact",
+    )
     for factor in factors:
         currSet = ScoreTable.objects.values_list(factor, flat=True)
         arr = np.array(currSet)
-        if (factor == 'residentialNoise'):
+        if factor == "residentialNoise":
             normal = zipcodeFactors.residentialNoise / np.linalg.norm(arr)
-        if (factor == 'dirtyConditions'):
+        if factor == "dirtyConditions":
             normal = zipcodeFactors.dirtyConditions / np.linalg.norm(arr)
-        if (factor == 'sanitationCondition'):
+        if factor == "sanitationCondition":
             normal = zipcodeFactors.sanitationCondition / np.linalg.norm(arr)
-        if (factor == 'wasteDisposal'):
+        if factor == "wasteDisposal":
             normal = zipcodeFactors.wasteDisposal / np.linalg.norm(arr)
-        if (factor == 'unsanitaryCondition'):
+        if factor == "unsanitaryCondition":
             normal = zipcodeFactors.unsanitaryCondition / np.linalg.norm(arr)
-        if (factor == 'constructionImpact'):
+        if factor == "constructionImpact":
             normal = zipcodeFactors.unsanitaryCondition / np.linalg.norm(arr)
         n.append(normal)
     n = np.array(n)
-    weights = np.array([1,1,1,1,1,4])
+    weights = np.array([1, 1, 1, 1, 1, 4])
     score = np.average(n, weights=weights)
     return score
 
+
 calculate_factor(11215)
+
 
 def _get_grade_from_score(score):
     grade = None
@@ -111,6 +121,7 @@ def _get_grade_from_score(score):
     elif score < 0.05 and score >= 0:
         grade = "A"
     return grade
+
 
 def search(request):  # pragma: no cover
     csrfContext = RequestContext(request)
