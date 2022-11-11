@@ -68,21 +68,28 @@ def search(request):  # pragma: no cover
     csrfContext = RequestContext(request)
     if request.method == "POST":
         search = request.POST["searched"]
-        post = ScoreTable.objects.get(zipcode=search)
-        # currZip = post.zipcode
-        normalizeNoise = _get_city_normalized_noise(
-            post.residentialNoise,
-            post.dirtyConditions,
-            post.sanitationCondition,
-            post.wasteDisposal,
-            post.unsanitaryCondition,
-        )
+        try:
+            post = ScoreTable.objects.get(zipcode=search)
+            normalizeNoise = _get_city_normalized_noise(
+                post.residentialNoise,
+                post.dirtyConditions,
+                post.sanitationCondition,
+                post.wasteDisposal,
+                post.unsanitaryCondition,
+            )
 
-        post.overallScore = normalizeNoise
-        post.grade = _get_city_grade_from_noise(normalizeNoise)
+            post.overallScore = normalizeNoise
+            post.grade = _get_city_grade_from_noise(normalizeNoise)
 
-        return render(request, "app/search.html", {"post": post})
+            return render(request, "app/search.html", {"post": post})
+        except ScoreTable.DoesNotExist:
+            print("entered else")
+            messages.error(
+                request, "Invalid NYC zipcode OR We don't have data for this zipcode."
+            )
+            return render(request, "app/index.html", {})
     else:
+
         return render(request, "app/search.html", {}, csrfContext)
 
 
