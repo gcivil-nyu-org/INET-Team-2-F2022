@@ -283,13 +283,13 @@ class TestViews(TestCase):
     def test_update_user_rating(self):
         from .views import update_user_rating
 
-        assert update_user_rating(100, "A") == 101
-        assert update_user_rating(100, "B") == 102
-        assert update_user_rating(100, "C") == 103
-        assert update_user_rating(100, "D") == 104
-        assert update_user_rating(100, "E") == 105
-        assert update_user_rating(100, "F") == 106
-        assert update_user_rating(100, "G") == 107
+        assert update_user_rating(100, "A") == 100.05
+        assert update_user_rating(100, "B") == 100.1
+        assert update_user_rating(100, "C") == 100.15
+        assert update_user_rating(100, "D") == 100.2
+        assert update_user_rating(100, "E") == 100.3
+        assert update_user_rating(100, "F") == 100.4
+        assert update_user_rating(100, "G") == 100.5
 
 
 class ForumPostTests(TestCase):

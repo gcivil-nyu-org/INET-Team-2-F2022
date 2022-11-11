@@ -71,6 +71,7 @@ def _get_city_grade_from_noise(normalized_noise):
 def calculate_factor(zipcode):
     zipcodeFactors = ScoreTable.objects.get(zipcode=zipcode)
     n = []
+    weights = []
     factors = (
         "residentialNoise",
         "dirtyConditions",
@@ -82,26 +83,18 @@ def calculate_factor(zipcode):
     for factor in factors:
         currSet = ScoreTable.objects.values_list(factor, flat=True)
         arr = np.array(currSet)
-        if factor == "residentialNoise":
-            normal = zipcodeFactors.residentialNoise / np.linalg.norm(arr)
-        if factor == "dirtyConditions":
-            normal = zipcodeFactors.dirtyConditions / np.linalg.norm(arr)
-        if factor == "sanitationCondition":
-            normal = zipcodeFactors.sanitationCondition / np.linalg.norm(arr)
-        if factor == "wasteDisposal":
-            normal = zipcodeFactors.wasteDisposal / np.linalg.norm(arr)
-        if factor == "unsanitaryCondition":
-            normal = zipcodeFactors.unsanitaryCondition / np.linalg.norm(arr)
-        if factor == "constructionImpact":
-            normal = zipcodeFactors.unsanitaryCondition / np.linalg.norm(arr)
-        n.append(normal)
+        normal = getattr(zipcodeFactors, factor) / np.linalg.norm(arr)
+        if normal != 0:
+            n.append(normal)
+            if factor == "constructionImpact":
+                weights.append(4)
+            else:
+                weights.append(1)
     n = np.array(n)
-    weights = np.array([1, 1, 1, 1, 1, 4])
+    weights = np.array(weights)
+    print(n)
     score = np.average(n, weights=weights)
     return score
-
-
-calculate_factor(11215)
 
 
 def _get_grade_from_score(score):
@@ -130,16 +123,8 @@ def search(request):  # pragma: no cover
         try:
             post = ScoreTable.objects.get(zipcode=search)
             score = calculate_factor(search)
-            normalizeNoise = _get_city_normalized_noise(
-                post.residentialNoise,
-                post.dirtyConditions,
-                post.sanitationCondition,
-                post.wasteDisposal,
-                post.unsanitaryCondition,
-            )
-            post.overallScore = normalizeNoise
+            post.overallScore = score
             post.grade = _get_grade_from_score(score)
-
             return render(request, "app/search.html", {"post": post})
         except ScoreTable.DoesNotExist:
             print("entered else")
@@ -162,19 +147,19 @@ def submit_rating(request):
 
 def update_user_rating(total, grade):
     if grade == "A":
-        total += 1
+        total += 0.05
     if grade == "B":
-        total += 2
+        total += 0.1
     if grade == "C":
-        total += 3
+        total += 0.15
     if grade == "D":
-        total += 4
+        total += 0.2
     if grade == "E":
-        total += 5
+        total += 0.3
     if grade == "F":
-        total += 6
+        total += 0.4
     if grade == "G":
-        total += 7
+        total += 0.5
     return total
 
 
