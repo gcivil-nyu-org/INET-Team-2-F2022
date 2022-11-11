@@ -16,10 +16,6 @@ from .forms import RatingForm, NewUserForm, CreateInForumPost, CreateInComment
 
 import pandas as pd
 import numpy as np
-import seaborn as sns
-import matplotlib.pyplot as plt
-from sklearn import preprocessing
-from sklearn.preprocessing import normalize
 from django.http import HttpResponse
 from django.contrib.auth import get_user
 
