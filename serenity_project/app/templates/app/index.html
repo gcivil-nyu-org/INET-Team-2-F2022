@@ -68,7 +68,7 @@
             
             map.data.addListener('click', function(event) {
               let zipcode = event.feature.getProperty("postalCode");
-              let neighborhood = event.feature.getProperty("PO_NAME");
+              let neighborhood = event.feature.getProperty("PO_NAME");;
               let grade = event.feature.getProperty("grade");
 
               let html = '' + neighborhood + ': ' + zipcode + ' Grade: ' + grade; // combine state name with a label
