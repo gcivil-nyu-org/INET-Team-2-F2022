@@ -25,7 +25,7 @@
 </head>
 
 <body style="background-color:DarkOliveGreen;">
-    <h2 style="color:peachpuff">Serenity Factors (not normalized) for {{post.zipcode}}:</h2>
+    <h2 style="color:peachpuff">Serenity Factors (raw) for {{post.zipcode}}:</h2>
     <p style="color:peachpuff">The 'Residential Noise' score is <b>{{post.residentialNoise}}</b></p>
     <p style="color:peachpuff">The 'Dirty Conditions' score is <b>{{post.dirtyConditions}}</b></p>
     <p style="color:peachpuff">The 'Sanitation Conditions' score is <b>{{post.sanitationCondition}}</b></p>
@@ -34,7 +34,12 @@
     <h2 style="color:honeydew">Overall SerenityScore: {{post.grade}}</h2>
     <p style="color:peachpuff">The SerenityScore (normalized) is: <b>{{post.overallScore}}</b></p>
     <br>
-    <h3 style="color:peachpuff">User Rating: {{post.userAvg}}</h3>
+    <h3 style="color:peachpuff">User Rating: 
+        {% if post.userAvg == 0 %}
+            No one has reviewed this zip code!
+        {% else %}
+            {{post.userAvg}}</h3>
+        {% endif %}
     {% else %}
     <h1>nothing found</h1>
     {% endif %}
@@ -52,7 +57,7 @@
     {% endif %}
     {% endblock %}
     <h3 style="color:honeydew">About our scoring system:</h3>
-    <p style="color:honeydew">Scores are on the range [0,1] with the lower scores representing zip codes are more peaceful</p>
+    <p style="color:honeydew">Scores are on the range [0,1] with the lower scores representing zip codes are more peaceful.</p>
     <p style="color:honeydew">A = [0,0.05)</p>
     <p style="color:honeydew">B = [0.05,1)</p>
     <p style="color:honeydew">C = [1,0.15)</p>
