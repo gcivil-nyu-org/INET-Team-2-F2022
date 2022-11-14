@@ -1,12 +1,4 @@
-<!-- {% if latest_question_list %}
-    <ul>
-    {% for zipcode in latest_zipcodelist %}
-        <li><a href="/app/index">{{ zipcode.zipcode }}</a></li>
-    {% endfor %}
-    </ul>
-{% else %}
-    <p>No zipcodes are available.</p>
-{% endif %} -->
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -76,7 +68,7 @@
             
             map.data.addListener('click', function(event) {
               let zipcode = event.feature.getProperty("postalCode");
-              let neighborhood = event.feature.getProperty("PO_NAME");
+              let neighborhood = event.feature.getProperty("PO_NAME");;
               let grade = event.feature.getProperty("grade");
 
               let html = '' + neighborhood + ': ' + zipcode + ' Grade: ' + grade; // combine state name with a label
@@ -115,6 +107,9 @@
 
     <!-- pe-6 is a bootstrap spacing class, need to figure out a better way to align the links and title -->
     <ul class="navbar-nav pe-6"> 
+        <li class="nav-item align-right pe-3">
+            <a class="nav-link" href="{% url 'home' %}">Home</a>
+        </li>
         {% block user %}
         {% if user.is_authenticated %}
         <li class="nav-item">
@@ -131,7 +126,7 @@
         </li>
 
     </p>
-</center>
+
 </nav>
 
 {% block content %}
@@ -142,11 +137,25 @@
     <p style="color:ForestGreen;">To start your search, please enter a 5-digit NYC zipcode:</p>
 <form action="search" method = "POST">
     {% csrf_token %}
-    <input type="text" placeholder="Enter a Zipcode" name="searched"/>
+    <input type="text" placeholder="Enter a Zipcode" name="searched" minlength="5" maxlength="5" pattern="[0-9]+" required/>
     <button type="submit" class = "btn btn-outline-primary">Search</button>   
 </form>
 
+{% if messages %}
+    {% for message in messages %}
+    {% endfor %}
+{% endif %}
 
+{% for message in messages %}
+    <div class="container-fluid p-0">
+      <div class="alert {{ message.tags }} alert-dismissible" role="alert" >
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="True">&times;</span>
+        </button>
+        {{ message }}
+      </div>
+    </div>
+    {% endfor %}
 
 
 </center>

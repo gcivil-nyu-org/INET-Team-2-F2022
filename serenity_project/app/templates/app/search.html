@@ -1,40 +1,94 @@
 <!DOCTYPE html>
 <html>
+{%load static%}
 {{error}}
 {% if post %}
-<center>
-    <p style="color:ECFFE8;">
-        {% block user %}
-        {% if user.is_authenticated %}
-            Hi {{ user.username }}!
-            <p style="color:ECFFE8;"><a href="{% url 'logout' %}">Log Out</a></p>
-        {% else %}
-            <a style="color:ECFFE8;" href="{% url 'login' %}">Log In</a>
-        {% endif %}
-        {% endblock %}
-    </p>
-<head style="background-color:DarkOliveGreen;">
-    {% block header %}
-    {% if user.is_authenticated %}
-        <h1 style="color:honeydew">{{ user.username }}'s Search Result</h1>
-    {% else %}
-        <h1 style="color:honeydew">Search Result</h1>
-    {% endif %}
-    {% endblock %}
-        <br>
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Serenity Search Result</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Catamaran:wght@200;400;700&family=Chau+Philomene+One&display=swap" rel="stylesheet">
+    <link href="{% static 'css/forum.css' %}" rel="stylesheet">     
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous"0>
+ 
 </head>
 
-<body style="background-color:DarkOliveGreen;">
-    <h2 style="color:peachpuff">Serenity Factors for {{post.zipcode}}:</h2>
-    <p style="color:peachpuff">The 'Residential Noise' score is <b>{{post.residentialNoise}}</b></p>
-    <p style="color:peachpuff">The 'Dirty Conditions' score is <b>{{post.dirtyConditions}}</b></p>
-    <p style="color:peachpuff">The 'Sanitation Conditions' score is <b>{{post.sanitationCondition}}</b></p>
-    <p style="color:peachpuff">The 'Waste Disposal' score is <b>{{post.wasteDisposal}}</b></p>
-    <p style="color:peachpuff">The 'Unsanitary Conditions' score is <b>{{post.unsanitaryCondition}}</b></p>
-    <h2 style="color:honeydew">Overall SerenityScore: {{post.grade}}</h2>
-    <p style="color:peachpuff">The SerenityScore (numeric) is: <b>{{post.overallScore}}</b></p>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-light">
+    
+        <a class="navbar-brand ps-3" href="/">
+            <img src="{% static '/img/SerenitySearch-1.png' %}" alt="" width="90" height="90">
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+    
+        <div class="collapse navbar-collapse justify-content-center navbar-center">
+            <header class="serenity-title">
+                <h1 style="color:ForestGreen;">SerenitySearch</h1>
+                <p style="color:ForestGreen;"><i>Helping New Yorkers find peace in the city that never sleeps</i></p>
+            </header>
+            
+        </div>
+    
+        <!-- pe-6 is a bootstrap spacing class, need to figure out a better way to align the links and title -->
+        <ul class="navbar-nav pe-6"> 
+            <li class="nav-item align-right pe-3">
+                <a class="nav-link" href="{% url 'home' %}">Home</a>
+            </li>
+            {% block user %}
+            {% if user.is_authenticated %}
+            <li class="nav-item">
+              <p>Hi {{ user.username }}!<a class="nav-link align-right" href="{% url 'logout' %}">Log Out</a></p>
+            </li>
+            {% else %}
+            <li class="nav-item align-right">
+                <a class="nav-link" href="{% url 'login' %}">Log In</a>
+            </li>
+            {% endif %}
+            {% endblock %}
+            <li class="nav-item align-right pe-3">
+                <a class="nav-link" href="{% url 'forum_home' %}">Forum Home</a>
+            </li>
+    
+        </p>
+    </nav>
+
+
     <br>
-    <h3 style="color:peachpuff">User Rating: {{post.userAvg}}</h3>
+
+    <div class="container text-center">   
+
+        {% block header %}
+        {% if user.is_authenticated %}
+            <h1>{{ user.username }}'s Search Result</h1>
+        {% else %}
+            <h1>Search Result</h1>
+        {% endif %}
+        {% endblock %}
+    
+
+    <h2>Serenity Factors (normalized) for {{post.zipcode}}:</h2>
+    <p>The 'Residential Noise' score is <b>{{post.residentialNoise}}</b></p>
+    <p>The 'Dirty Conditions' score is <b>{{post.dirtyConditions}}</b></p>
+    <p>The 'Sanitation Conditions' score is <b>{{post.sanitationCondition}}</b></p>
+    <p>The 'Waste Disposal' score is <b>{{post.wasteDisposal}}</b></p>
+    <p>The 'Unsanitary Conditions' score is <b>{{post.unsanitaryCondition}}</b></p>
+    <p>The 'Construction Impact' score is <b>{{post.constructionImpact}}</b></p>
+    <h2>Overall SerenityScore: {{post.grade}}</h2>
+    <p>The SerenityScore (normalized) is: <b>{{post.overallScore}}</b></p>
+    <br>
+    <h3>User Rating: 
+        {% if post.userAvg == 0 %}
+            No one has reviewed this zip code!
+        {% else %}
+            {{post.userAvg}}</h3>
+        {% endif %}
     {% else %}
     <h1>nothing found</h1>
     {% endif %}
@@ -44,24 +98,30 @@
         <form action="/rate/" method = "POST">
         {% csrf_token %}
         <input id="zip" type="hidden" name="zip" value="{{ post.zipcode }}">
-        <input type="submit" value="Submit a grade for {{ post.zipcode }}!" />
+        <input class = "btn btn-success" type="submit" value="Submit a grade for {{ post.zipcode }}!" />
         </form>
         <br>
     {% else %}
         <br>
     {% endif %}
     {% endblock %}
-    <h3 style="color:honeydew">About our scoring system:</h3>
-    <p style="color:honeydew">Scores are on the range [0,20] with the higher scores representing zip codes which received more complaints.</p>
-    <p style="color:honeydew">A = [0,2)</p>
-    <p style="color:honeydew">B = [2,3)</p>
-    <p style="color:honeydew">C = [3,4)</p>
-    <p style="color:honeydew">D = [4,5)</p>
-    <p style="color:honeydew">E = [5,6)</p>
-    <p style="color:honeydew">F = [6,7)</p>
-    <p style="color:honeydew">G = 7+</p>
+    <h3>About our scoring system:</h3>
+    <p>Scores are on the range [0,1] with the lower scores representing zip codes are more peaceful.</p>
+    <p>A = [0,0.05)</p>
+    <p>B = [0.05,1)</p>
+    <p>C = [1,0.15)</p>
+    <p>D = [0.15,0.2)</p>
+    <p>E = [0.2,0.3)</p>
+    <p>F = [0.3,0.4)</p>
+    <p>G = 0.4+</p>
     <br>
-    <p style="color:ECFFE8;"><a href="{% url 'home' %}">New Search</a></p>
+
+    <h5 class="card-title">
+        <a href="{% url 'forum_zipcode' borough=post.borough pk=post.zipcode %}"><h3>Check out the forum for {{post.zipcode}}</h3></a>
+    </h5>
+
+    <a class="btn btn-success" href="{% url 'home' %}">New Search</a>
+    </div>
 </body>
-</center>
+
 </html>

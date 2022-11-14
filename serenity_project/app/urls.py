@@ -22,8 +22,13 @@ urlpatterns = [
     path("rate/", views.submit_rating, name="rate"),
     path("thanks/", views.get_rating, name="thanks"),
     path("forumPosts/", views.forum_home, name="forum_home"),
-    path("forumPosts/<pk>", views.forum_zipcode, name="forum_zipcode"),
-    path("forumPosts/<pk>/<id>", views.forum_post, name="forum_post"),
+    path("forumPosts/<borough>/", views.forum_borough, name="forum_borough"),  # burough
+    path(
+        "forumPosts/<borough>/<pk>/", views.forum_zipcode, name="forum_zipcode"
+    ),  # zipcode
+    path(
+        "forumPosts/<borough>/<pk>/<id>/", views.forum_post, name="forum_post"
+    ),  # post
     path("addInForumPost/", views.addInForumPost, name="addInForumPost"),
     path("addInComment/", views.addInComment, name="addInComment"),
     path("forumZipCodeList", views.forum_zipcode, name="forumZipCodeList"),

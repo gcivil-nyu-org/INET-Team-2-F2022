@@ -29,37 +29,54 @@ def index(request):
     return render(request, "app/index.html", {})
 
 
-def _get_city_normalized_noise(
-    resident_noise,
-    dirty_conditions,
-    sanitation_condition,
-    waste_disposal,
-    unsanitary_condition,
-):
-    return (
-        resident_noise
-        + dirty_conditions
-        + sanitation_condition
-        + waste_disposal
-        + unsanitary_condition
-    ) / 1000
+def calculate_factor(zipcode):
+    zipcodeFactors = ScoreTable.objects.get(zipcode=zipcode)
+    n = []
+    weights = []
+    nFactors = []
+    factors = (
+        "residentialNoise",
+        "dirtyConditions",
+        "sanitationCondition",
+        "wasteDisposal",
+        "unsanitaryCondition",
+        "constructionImpact",
+        "userAvg",
+    )
+    for factor in factors:
+        currSet = ScoreTable.objects.values_list(factor, flat=True)
+        arr = np.array(currSet)
+        normal = getattr(zipcodeFactors, factor) / np.linalg.norm(arr)
+        nFactors.append(round(normal, 2))
+        if normal != 0:
+            n.append(normal)
+            if factor == "constructionImpact":
+                weights.append(4)
+            elif factor == "userAvg":
+                weights.append(0.5)
+            else:
+                weights.append(1)
+    n = np.array(n)
+    weights = np.array(weights)
+    score = round(np.average(n, weights=weights), 2)
+    return score, nFactors
 
 
-def _get_city_grade_from_noise(normalized_noise):
+def _get_grade_from_score(score):
     grade = None
-    if normalized_noise >= 7:
+    if score >= 0.4:
         grade = "G"
-    elif normalized_noise < 7 and normalized_noise >= 6:
+    elif score < 0.4 and score >= 0.3:
         grade = "F"
-    elif normalized_noise < 6 and normalized_noise >= 5:
+    elif score < 0.3 and score >= 0.2:
         grade = "E"
-    elif normalized_noise < 5 and normalized_noise >= 4:
+    elif score < 0.2 and score >= 0.15:
         grade = "D"
-    elif normalized_noise < 4 and normalized_noise >= 3:
+    elif score < 0.15 and score >= 0.1:
         grade = "C"
-    elif normalized_noise < 3 and normalized_noise >= 2:
+    elif score < 0.1 and score >= 0.05:
         grade = "B"
-    elif normalized_noise < 2 and normalized_noise >= 0:
+    elif score < 0.05 and score >= 0:
         grade = "A"
     return grade
 
@@ -68,21 +85,32 @@ def search(request):  # pragma: no cover
     csrfContext = RequestContext(request)
     if request.method == "POST":
         search = request.POST["searched"]
-        post = ScoreTable.objects.get(zipcode=search)
-        # currZip = post.zipcode
-        normalizeNoise = _get_city_normalized_noise(
-            post.residentialNoise,
-            post.dirtyConditions,
-            post.sanitationCondition,
-            post.wasteDisposal,
-            post.unsanitaryCondition,
-        )
-
-        post.overallScore = normalizeNoise
-        post.grade = _get_city_grade_from_noise(normalizeNoise)
-
-        return render(request, "app/search.html", {"post": post})
+        try:
+            post = ScoreTable.objects.get(zipcode=search)
+            score, normals = calculate_factor(search)
+            factors = (
+                "residentialNoise",
+                "dirtyConditions",
+                "sanitationCondition",
+                "wasteDisposal",
+                "unsanitaryCondition",
+                "constructionImpact",
+                "userAvg",
+            )
+            count = 0
+            for factor in factors:
+                setattr(post, factor, normals[count])
+                count += 1
+            post.grade = _get_grade_from_score(score)
+            return render(request, "app/search.html", {"post": post})
+        except ScoreTable.DoesNotExist:
+            print("entered else")
+            messages.error(
+                request, "Invalid NYC zipcode OR We don't have data for this zipcode."
+            )
+            return render(request, "app/index.html", {})
     else:
+
         return render(request, "app/search.html", {}, csrfContext)
 
 
@@ -91,26 +119,24 @@ def submit_rating(request):
     # csrfContext = RequestContext(request)
     zip = request.POST.get("zip")
     form = RatingForm(request.POST)
-    print(zip)
     return render(request, "app/rate.html", {"form": form, "zip": zip})
 
 
 def update_user_rating(total, grade):
-    print(grade)
     if grade == "A":
-        total += 1
+        total += 0.05
     if grade == "B":
-        total += 2
+        total += 0.1
     if grade == "C":
-        total += 3
+        total += 0.15
     if grade == "D":
-        total += 4
+        total += 0.2
     if grade == "E":
-        total += 5
+        total += 0.3
     if grade == "F":
-        total += 6
+        total += 0.4
     if grade == "G":
-        total += 7
+        total += 0.5
     return total
 
 
@@ -122,19 +148,32 @@ def get_rating(request):
         form = RatingForm(request.POST)
         zip = request.POST.get("zip")
         grade = request.POST.get("user_rating")
-        post = ScoreTable.objects.get(zipcode=zip)
-        post.gradeCount += 1
-        count = post.gradeCount
-        total = post.userGrade
-        post.userGrade = update_user_rating(total, grade)
-        post.userAvg = post.userGrade / count
-        post.save()
-        return render(
-            request,
-            "app/thanks.html",
-            {"grade": grade, "zipcode": zip, "updated_grade": post.userAvg},
-        )
-    return render(request, "app/thanks.html", {"form": form})
+        if isinstance(grade, str) and len(grade) == 1:
+            if (
+                grade == "A"
+                or grade == "B"
+                or grade == "C"
+                or grade == "D"
+                or grade == "E"
+                or grade == "F"
+                or grade == "G"
+            ):
+                post = ScoreTable.objects.get(zipcode=zip)
+                post.gradeCount += 1
+                count = post.gradeCount
+                total = post.userGrade
+                post.userGrade = update_user_rating(total, grade)
+                post.userAvg = round((post.userGrade / count), 2)
+                post.save()
+                return render(
+                    request,
+                    "app/thanks.html",
+                    {"grade": grade, "zipcode": zip, "updated_grade": post.userAvg},
+                )
+            else:
+                messages.error(request, "Invalid grade! Try again!")
+                return render(request, "app/rate.html", {"form": form, "zip": zip})
+    return render(request, "app/rate.html", {"form": form, "zip": zip})
 
 
 def register_request(request):
@@ -181,20 +220,29 @@ def logoutUser(request):
 
 
 def forum_home(request):
-    # TODO: show all zipcodes with links
+    # TODO: show all buroughs
+    boroughs = ["Manhattan", "Brooklyn", "Staten Island", "Queens", "Bronx"]
+    context = {"boroughs": boroughs}
+    return render(request, "app/forum_home.html", context)
+
+
+def forum_borough(request, borough):
+    # TODO: show zipcodes filtered by burough
     forumPosts = ForumPost.objects.all()
+    forumPosts = forumPosts.filter(zipcode__borough=borough)
     zipcodes = set()
     for post in forumPosts:
         zipcodes.add(post.zipcode.zipcode)
     count = len(zipcodes)
     context = {
+        "borough": borough,
         "zipcodes": zipcodes,
         "count": count,
     }
-    return render(request, "app/forum_home.html", context)
+    return render(request, "app/forum_borough.html", context)
 
 
-def forum_zipcode(request, pk):
+def forum_zipcode(request, borough, pk):
     posts = ForumPost.objects.all()
     posts = posts.filter(zipcode__zipcode=pk)
     count = posts.count()
@@ -202,6 +250,7 @@ def forum_zipcode(request, pk):
     for i in posts:
         comments.append(i.comment_set.all())
     context = {
+        "borough": borough,
         "zipcode": pk,
         "forumPosts": posts,
         "count": count,
@@ -210,7 +259,7 @@ def forum_zipcode(request, pk):
     return render(request, "app/forum_zipcode.html", context)
 
 
-def forum_post(request, pk, id):
+def forum_post(request, borough, pk, id):
     id = int(id)
     posts = ForumPost.objects.all()
     posts = posts.filter(zipcode__zipcode=pk)
@@ -218,6 +267,7 @@ def forum_post(request, pk, id):
     for i in posts:
         comments.append(i.comment_set.all())
     context = {
+        "borough": borough,
         "zipcode": pk,
         "forumPosts": posts,
         "comments": comments,

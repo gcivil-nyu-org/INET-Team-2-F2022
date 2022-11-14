@@ -13,6 +13,7 @@ from django.test.client import RequestFactory
 from django.core.handlers.wsgi import WSGIRequest
 from .views import search
 from http import HTTPStatus
+import numpy as np
 
 
 from django.test import Client
@@ -84,6 +85,7 @@ class TestSearch(TestCase):
             sanitationCondition=3,
             wasteDisposal=4,
             unsanitaryCondition=5,
+            constructionImpact=1.0,
         )
 
     def testZipResults(self):
@@ -103,6 +105,7 @@ class ForumSearch(TestCase):
             sanitationCondition=3,
             wasteDisposal=4,
             unsanitaryCondition=5,
+            constructionImpact=1.0,
         )
 
     def testZipResults(self):
@@ -178,6 +181,8 @@ class testSearchView(TestCase):
             sanitationCondition=3,
             wasteDisposal=4,
             unsanitaryCondition=5,
+            borough="Brooklyn",
+            constructionImpact=1.0,
         )
 
     @patch("requests.post")
@@ -199,6 +204,7 @@ class TestForumZip(TestCase):
             sanitationCondition=3,
             wasteDisposal=4,
             unsanitaryCondition=5,
+            constructionImpact=1.0,
         )
 
         object = ScoreTable.objects.get(zipcode=11220)
@@ -230,7 +236,7 @@ class TestForumZip(TestCase):
         req = HttpRequest()
         req.method = "POST"
         req.POST = {"searched": 11220}
-        response = forum_zipcode(req, 11220)
+        response = forum_zipcode(req, "Manhattan", "10012")
         self.assertEqual(response.status_code, 200)
 
 
@@ -257,34 +263,28 @@ class TestForms(TestCase):
 
 
 class TestViews(TestCase):
-    def test_get_city_normalized_noise(self):
-        from .views import _get_city_normalized_noise
+    def test_get_grade_from_score(self):
+        from .views import _get_grade_from_score
 
-        noise = _get_city_normalized_noise(1000, 1000, 1000, 1000, 1000)
-        assert noise == 5
-
-    def test_get_city_grade_from_noise(self):
-        from .views import _get_city_grade_from_noise
-
-        assert _get_city_grade_from_noise(7) == "G"
-        assert _get_city_grade_from_noise(6) == "F"
-        assert _get_city_grade_from_noise(5) == "E"
-        assert _get_city_grade_from_noise(4) == "D"
-        assert _get_city_grade_from_noise(3) == "C"
-        assert _get_city_grade_from_noise(2) == "B"
-        assert _get_city_grade_from_noise(1) == "A"
-        assert _get_city_grade_from_noise(0) == "A"
+        assert _get_grade_from_score(0.4) == "G"
+        assert _get_grade_from_score(0.3) == "F"
+        assert _get_grade_from_score(0.2) == "E"
+        assert _get_grade_from_score(0.15) == "D"
+        assert _get_grade_from_score(0.1) == "C"
+        assert _get_grade_from_score(0.05) == "B"
+        assert _get_grade_from_score(0.01) == "A"
+        assert _get_grade_from_score(0.0) == "A"
 
     def test_update_user_rating(self):
         from .views import update_user_rating
 
-        assert update_user_rating(100, "A") == 101
-        assert update_user_rating(100, "B") == 102
-        assert update_user_rating(100, "C") == 103
-        assert update_user_rating(100, "D") == 104
-        assert update_user_rating(100, "E") == 105
-        assert update_user_rating(100, "F") == 106
-        assert update_user_rating(100, "G") == 107
+        assert update_user_rating(100, "A") == 100.05
+        assert update_user_rating(100, "B") == 100.1
+        assert update_user_rating(100, "C") == 100.15
+        assert update_user_rating(100, "D") == 100.2
+        assert update_user_rating(100, "E") == 100.3
+        assert update_user_rating(100, "F") == 100.4
+        assert update_user_rating(100, "G") == 100.5
 
 
 class ForumPostTests(TestCase):
@@ -315,3 +315,25 @@ class ForumPostTests(TestCase):
             data={"id": 1, "forumPost": 2, "discuss": "test discussion"},
         )
         self.assertEqual(response.status_code, 200)
+
+
+class TestCalculateScore(TestCase):
+    def setUp(self) -> None:
+        ScoreTable.objects.create(
+            id=1,
+            zipcode=00000,
+            residentialNoise=1,
+            dirtyConditions=2,
+            sanitationCondition=3,
+            wasteDisposal=4,
+            unsanitaryCondition=5,
+            constructionImpact=1.0,
+            userAvg=0.1,
+        )
+
+    def test_calculate(self):
+        from .views import calculate_factor
+
+        object = ScoreTable.objects.get(zipcode=00000)
+        result = calculate_factor(object.zipcode)
+        self.assertEqual(result, (1.0, [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]))
