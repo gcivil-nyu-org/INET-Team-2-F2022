@@ -29,37 +29,52 @@ def index(request):
     return render(request, "app/index.html", {})
 
 
-def _get_city_normalized_noise(
-    resident_noise,
-    dirty_conditions,
-    sanitation_condition,
-    waste_disposal,
-    unsanitary_condition,
-):
-    return (
-        resident_noise
-        + dirty_conditions
-        + sanitation_condition
-        + waste_disposal
-        + unsanitary_condition
-    ) / 1000
+def calculate_factor(zipcode):
+    zipcodeFactors = ScoreTable.objects.get(zipcode=zipcode)
+    n = []
+    weights = []
+    factors = (
+        "residentialNoise",
+        "dirtyConditions",
+        "sanitationCondition",
+        "wasteDisposal",
+        "unsanitaryCondition",
+        "constructionImpact",
+        "userAvg",
+    )
+    for factor in factors:
+        currSet = ScoreTable.objects.values_list(factor, flat=True)
+        arr = np.array(currSet)
+        normal = getattr(zipcodeFactors, factor) / np.linalg.norm(arr)
+        if normal != 0:
+            n.append(normal)
+            if factor == "constructionImpact":
+                weights.append(4)
+            elif factor == "userAvg":
+                weights.append(0.5)
+            else:
+                weights.append(1)
+    n = np.array(n)
+    weights = np.array(weights)
+    score = np.average(n, weights=weights)
+    return score
 
 
-def _get_city_grade_from_noise(normalized_noise):
+def _get_grade_from_score(score):
     grade = None
-    if normalized_noise >= 7:
+    if score >= 0.4:
         grade = "G"
-    elif normalized_noise < 7 and normalized_noise >= 6:
+    elif score < 0.4 and score >= 0.3:
         grade = "F"
-    elif normalized_noise < 6 and normalized_noise >= 5:
+    elif score < 0.3 and score >= 0.2:
         grade = "E"
-    elif normalized_noise < 5 and normalized_noise >= 4:
+    elif score < 0.2 and score >= 0.15:
         grade = "D"
-    elif normalized_noise < 4 and normalized_noise >= 3:
+    elif score < 0.15 and score >= 0.1:
         grade = "C"
-    elif normalized_noise < 3 and normalized_noise >= 2:
+    elif score < 0.1 and score >= 0.05:
         grade = "B"
-    elif normalized_noise < 2 and normalized_noise >= 0:
+    elif score < 0.05 and score >= 0:
         grade = "A"
     return grade
 
@@ -70,17 +85,9 @@ def search(request):  # pragma: no cover
         search = request.POST["searched"]
         try:
             post = ScoreTable.objects.get(zipcode=search)
-            normalizeNoise = _get_city_normalized_noise(
-                post.residentialNoise,
-                post.dirtyConditions,
-                post.sanitationCondition,
-                post.wasteDisposal,
-                post.unsanitaryCondition,
-            )
-
-            post.overallScore = normalizeNoise
-            post.grade = _get_city_grade_from_noise(normalizeNoise)
-
+            score = calculate_factor(search)
+            post.overallScore = score
+            post.grade = _get_grade_from_score(score)
             return render(request, "app/search.html", {"post": post})
         except ScoreTable.DoesNotExist:
             print("entered else")
@@ -103,19 +110,19 @@ def submit_rating(request):
 
 def update_user_rating(total, grade):
     if grade == "A":
-        total += 1
+        total += 0.05
     if grade == "B":
-        total += 2
+        total += 0.1
     if grade == "C":
-        total += 3
+        total += 0.15
     if grade == "D":
-        total += 4
+        total += 0.2
     if grade == "E":
-        total += 5
+        total += 0.3
     if grade == "F":
-        total += 6
+        total += 0.4
     if grade == "G":
-        total += 7
+        total += 0.5
     return total
 
 
