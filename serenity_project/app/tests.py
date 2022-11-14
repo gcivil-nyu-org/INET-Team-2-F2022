@@ -336,4 +336,4 @@ class TestCalculateScore(TestCase):
 
         object = ScoreTable.objects.get(zipcode=00000)
         result = calculate_factor(object.zipcode)
-        self.assertEqual(result, 1.0)
+        self.assertEqual(result, (1.0, [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]))
