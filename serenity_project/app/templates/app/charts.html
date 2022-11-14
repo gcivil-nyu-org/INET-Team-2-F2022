@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+       
+                    <!-- Topbar Search -->
+                  
+                    <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+                        <form class="form-inline" action="/action_page.php">
+                          <input class="form-control mr-sm-2" type="text" placeholder="Search">
+                          <button class="btn btn-success" type="submit">Search</button>
+                        </form>
+                      </nav>
+               
+
+                      <nav class="navbar navbar-expand-md bg-dark navbar-dark">
+                        <!-- Brand -->
+                        <a class="navbar-brand" href="#">Home</a>
+                      
+                        <!-- Toggler/collapsibe Button -->
+                        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+                          <span class="navbar-toggler-icon"></span>
+                        </button>
+                      
+                        <!-- Navbar links -->
+                        <div class="collapse navbar-collapse" id="collapsibleNavbar">
+                          <ul class="navbar-nav">
+                            <li class="nav-item">
+                              <a class="nav-link" href="#">Forum</a>
+                            </li>
+                            <li class="nav-item">
+                              <a class="nav-link" href="#">Setting</a>
+                            </li>
+                            <li class="nav-item">
+                              <a class="nav-link" href="#">Log Out</a>
+                            </li>
+                          </ul>
+                        </div>
+                      </nav>
+                <!-- End of Topbar -->
+
+
+                            <!-- Bar Chart -->
+                            <div class="card shadow mb-4">
+                               <center> <hr> Search Result</center> 
+                                <div class="card-header py-3">
+                                    <h6 class="m-0 font-weight-bold text-primary">Bar Chart</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="chart-bar">
+                                        <canvas id="myBarChart"></canvas>
+                                    </div>
+                                    <hr>
+                                    <center> Grade Result is </center> 
+                                </div>
+                            </div>
+
+                        </div>
+
+
+
+
+                        <!-- Donut Chart -->
+                        <div class="col-xl-4 col-lg-5">
+                            <div class="card shadow mb-4">
+                                <!-- Card Header - Dropdown -->
+                                <div class="card-header py-3">
+                                    <h6 class="m-0 font-weight-bold text-primary">Donut Chart</h6>
+                                </div>
+                                <!-- Card Body -->
+                                <div class="card-body">
+                                    <div class="chart-pie pt-4">
+                                        <canvas id="myPieChart"></canvas>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <!-- /.container-fluid -->
+
+            </div>
+            <!-- End of Main Content -->
+
+        </div>
+        <!-- End of Content Wrapper -->
+
+    </div>
+    <!-- End of Page Wrapper -->
+
+   
+
+    <!-- Bootstrap core JavaScript-->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="js/sb-admin-2.min.js"></script>
+
+    <!-- Page level plugins -->
+    <script src="vendor/chart.js/Chart.min.js"></script>
+
+    <!-- Page level custom scripts -->
+    <script src="js/demo/chart-area-demo.js"></script>
+    <script src="js/demo/chart-pie-demo.js"></script>
+    <script src="js/demo/chart-bar-demo.js"></script>
+
+</body>
+
+</html>
