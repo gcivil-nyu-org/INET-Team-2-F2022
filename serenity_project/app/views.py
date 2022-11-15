@@ -57,7 +57,7 @@ def calculate_factor(zipcode):
                 weights.append(0.5)
             else:
                 weights.append(1)
-    if normal != 0:            
+    if normal != 0:
         n = np.array(n)
         weights = np.array(weights)
         score = round(np.average(n, weights=weights), 2)
@@ -106,9 +106,13 @@ def search(request):  # pragma: no cover
                     count += 1
             post.grade = _get_grade_from_score(norm_score)
             # post.save()
-            rounded = round(post.userAvg,2)
+            rounded = round(post.userAvg, 2)
 
-            return render(request, "app/search.html", {"post": post, "rounded":rounded,"norm_score" : norm_score})
+            return render(
+                request,
+                "app/search.html",
+                {"post": post, "rounded": rounded, "norm_score": norm_score},
+            )
         except ScoreTable.DoesNotExist:
             print("entered else")
             messages.error(
@@ -169,7 +173,7 @@ def get_rating(request):
                 count = post.gradeCount
                 total = post.userGrade
                 post.userGrade = update_user_rating(total, grade)
-                post.userAvg = (post.userGrade / count)
+                post.userAvg = post.userGrade / count
                 print(post.userAvg)
                 post.save()
                 return render(
