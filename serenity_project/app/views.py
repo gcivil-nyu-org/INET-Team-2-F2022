@@ -48,6 +48,7 @@ def calculate_factor(zipcode):
         arr = np.array(currSet)
         normal = getattr(zipcodeFactors, factor) / np.linalg.norm(arr)
         nFactors.append(round(normal, 2))
+        score = 0
         if normal != 0:
             n.append(normal)
             if factor == "constructionImpact":
@@ -56,9 +57,10 @@ def calculate_factor(zipcode):
                 weights.append(0.5)
             else:
                 weights.append(1)
-    n = np.array(n)
-    weights = np.array(weights)
-    score = round(np.average(n, weights=weights), 2)
+    if normal != 0:            
+        n = np.array(n)
+        weights = np.array(weights)
+        score = round(np.average(n, weights=weights), 2)
     return score, nFactors
 
 
@@ -87,7 +89,7 @@ def search(request):  # pragma: no cover
         search = request.POST["searched"]
         try:
             post = ScoreTable.objects.get(zipcode=search)
-            score, normals = calculate_factor(search)
+            norm_score, normals = calculate_factor(search)
             factors = (
                 "residentialNoise",
                 "dirtyConditions",
@@ -99,10 +101,14 @@ def search(request):  # pragma: no cover
             )
             count = 0
             for factor in factors:
-                setattr(post, factor, normals[count])
-                count += 1
-            post.grade = _get_grade_from_score(score)
-            return render(request, "app/search.html", {"post": post})
+                if factor != "userAvg":
+                    setattr(post, factor, normals[count])
+                    count += 1
+            post.grade = _get_grade_from_score(norm_score)
+            # post.save()
+            rounded = round(post.userAvg,2)
+
+            return render(request, "app/search.html", {"post": post, "rounded":rounded,"norm_score" : norm_score})
         except ScoreTable.DoesNotExist:
             print("entered else")
             messages.error(
@@ -163,7 +169,8 @@ def get_rating(request):
                 count = post.gradeCount
                 total = post.userGrade
                 post.userGrade = update_user_rating(total, grade)
-                post.userAvg = round((post.userGrade / count), 2)
+                post.userAvg = (post.userGrade / count)
+                print(post.userAvg)
                 post.save()
                 return render(
                     request,
