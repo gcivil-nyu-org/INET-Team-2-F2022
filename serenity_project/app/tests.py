@@ -86,6 +86,7 @@ class TestSearch(TestCase):
             wasteDisposal=4,
             unsanitaryCondition=5,
             constructionImpact=1.0,
+            treeCensus=1,
         )
 
     def testZipResults(self):
@@ -106,6 +107,7 @@ class ForumSearch(TestCase):
             wasteDisposal=4,
             unsanitaryCondition=5,
             constructionImpact=1.0,
+            treeCensus=1,
         )
 
     def testZipResults(self):
@@ -183,6 +185,7 @@ class testSearchView(TestCase):
             unsanitaryCondition=5,
             borough="Brooklyn",
             constructionImpact=1.0,
+            treeCensus=1,
         )
 
     @patch("requests.post")
@@ -205,6 +208,7 @@ class TestForumZip(TestCase):
             wasteDisposal=4,
             unsanitaryCondition=5,
             constructionImpact=1.0,
+            treeCensus=1,
         )
 
         object = ScoreTable.objects.get(zipcode=11220)
@@ -329,6 +333,7 @@ class TestCalculateScore(TestCase):
             unsanitaryCondition=5,
             constructionImpact=1.0,
             userAvg=0.1,
+            treeCensus=1,
         )
 
     def test_calculate(self):
