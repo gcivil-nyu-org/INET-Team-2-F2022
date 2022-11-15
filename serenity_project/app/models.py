@@ -18,6 +18,7 @@ class ScoreTable(models.Model):
     borough = models.CharField(max_length=100)
     constructionImpact = models.FloatField(max_length=10)
     treeCensus = models.FloatField(max_length=10)
+    parkCount = models.FloatField(max_length=10)
 
     def __str__(self):
         return f"Zipcode: {self.zipcode}, Score: {self.residentialNoise}, Grade:"
