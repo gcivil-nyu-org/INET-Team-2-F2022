@@ -13,9 +13,8 @@
         integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
 
 
-    
-    <script 
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDdv_xCiAS0nmezcZQ95VWozTJ_BHQXjlE&callback=initMap"
+
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDdv_xCiAS0nmezcZQ95VWozTJ_BHQXjlE&callback=initMap"
         type="text/javascript" async defer></script>
 
 
@@ -75,28 +74,29 @@
 
     <center>
         <form>
-        <label for="residentialNoise">
-            <input type="checkbox" id="residentialNoise" name="residentialNoise" value="yes"> Residential Noise
-        </label>
-        <label for="dirtyConditions">
-            <input type="checkbox" id="dirtyConditions" name="dirtyConditions" value="yes"> Dirty Conditions
-        </label>
-        
-        <label for="treeCensus">
-            <input type="checkbox" id="treeCensus" name="treeCensus" value="yes"> Tree Census
-        </label>
+            <label for="residentialNoise">
+                <input type="checkbox" id="residentialNoise" name="filter" value="yes"> Residential Noise
+            </label>
+            <label for="dirtyConditions">
+                <input type="checkbox" id="dirtyConditions" name="filter" value="yes"> Dirty Conditions
+            </label>
 
-        <label for="parkCount">
-            <input type="checkbox" id="parkCount" name="parkCount" value="yes"> Park Count
-        </label>
+            <label for="treeCensus">
+                <input type="checkbox" id="treeCensus" name="filter" value="yes"> Tree Census
+            </label>
 
-        <label for="constructionImpact">
-            <input type="checkbox" id="constructionImpact" name="constructionImpact" value="yes"> Construction Impact
-        </label>
-        <br>
-        <button type="submit" id ="btn" class="btn btn-outline-primary">Submit</button>
-    </form>
-        
+            <label for="parkCount">
+                <input type="checkbox" id="parkCount" name="filter" value="yes"> Park Count
+            </label>
+
+            <label for="constructionImpact">
+                <input type="checkbox" id="constructionImpact" name="filter" value="yes"> Construction
+                Impact
+            </label>
+            <br>
+            <button type="button" id="btn" class="btn btn-outline-primary">Submit</button>
+        </form>
+
         <p style="color:ForestGreen;">To start your search, please enter a 5-digit NYC zipcode:</p>
         <form action="search" method="POST">
             {% csrf_token %}
@@ -123,33 +123,33 @@
 
 
     </center>
-    
+
 
     <script>
         var map;
-        
+
         const residentialNoise = document.querySelector('#residentialNoise');
         const dirtyConditions = document.querySelector('#dirtyConditions');
         const treeCensus = document.querySelector('#treeCensus');
         const parkCount = document.querySelector('#parkCount');
         const constructionImpact = document.querySelector('#constructionImpact');
         const btn = document.querySelector('#btn');
+        var factors = document.getElementsByName("filter");
+
         btn.onclick = () => {
-           alert(residentialNoise.checked);
-        };
-        let alldata;
-        var zipDiction = {};
-        // var APIlink = "http://se-proj-develop-env.eba-yiphn7ci.us-west-2.elasticbeanstalk.com/api/table/";
-        var APIlink = "http://127.0.0.1:8000/api/table/";
-        fetch(APIlink)
-            .then((response) => response.json())
-            .then((data) => {
-                for (var i = 0; i < data.length; i++) {
-                    zipDiction[data[i]['zipcode']] = data[i];
+            var filters = [];
+            factors.forEach(factor => {
+                if(factor.checked){
+                    filters.push(factor);
+                    console.log(factor.id);
+                    console.log(factor.checked);
                 }
-            })
-            .then(() => {
-                var map;
+            });
+            // Create new grades for all zipcodes with the filters
+            // console.log(zipDiction["11220"]);
+            zipDiction = recalculate(filters, zipDiction);
+
+            var map;
                 map = new window.google.maps.Map(document.getElementById('map'), {
                     zoom: 11,
                     center: {
@@ -162,21 +162,10 @@
                 map.data.setStyle(function (feature) {
                     //TODO: Read grade from database based on zipcode
                     curzip = feature.getProperty('postalCode');
-                    // var length = alldata.length;
-                    // var grade = "N";
-
-                    // for (var i = 0; i < length; i++) {
-                    //     // console.log(typeof(alldata[i]["zipcode"]));
-                    //     // console.log(typeof(curzip));
-                    //     if (curzip == alldata[i]["zipcode"]) {
-                    //         // console.log(alldata[i]);
-                    //         grade = alldata[i].grade;
-                    //         break;
-                    //     }
-                    // }
                     var grade = "N";
-                    if(zipDiction[curzip]){
+                    if (zipDiction[curzip]) {
                         grade = zipDiction[curzip]["grade"];
+                        // grade = filterDiction[curzip];
                     }
 
                     // var SD_NAME = feature.getProperty('grade');
@@ -224,10 +213,172 @@
                     let zipcode = event.feature.getProperty("postalCode");
                     let neighborhood = event.feature.getProperty("PO_NAME");
                     var grade = "N";
-                    if (zipDiction[zipcode]){
+                    if (zipDiction[zipcode]) {
                         grade = zipDiction[zipcode]["grade"];
                     }
-                    
+
+
+
+                    let html = '' + neighborhood + ': ' + zipcode + ' Grade: ' + grade; // combine state name with a label
+                    infowindow.setContent(html); // show the html variable in the infowindow
+                    infowindow.setPosition(event.latLng); // anchor the infowindow at the marker
+                    infowindow.setOptions({ pixelOffset: new google.maps.Size(0, -30) }); // move the infowindow up slightly to the top of the marker icon
+                    infowindow.open(map);
+                });
+        };
+
+        function normalize(array){
+            // return the normalized array
+            console.log(typeof(array));
+            var max = Math.max(array);
+            var min = Math.min(array);
+            var results = [];
+            array.forEach(element => {
+                results.push((element - min)/(max-min));
+            });
+            return results;
+        }
+
+        function recalculate(filters, zipDiction){
+            //modified the scores of zipDiction
+            // factors = ["residentialNoise", "dirtyConditions", "sanitationCondition", "wasteDisposal", "unsanitaryCondition","constructionImpact","userAvg","treeCensus", "parkCount"]
+            factors = [];
+            for (let index = 0; index < filters.length; index++) {
+                const element = filters[index];
+                factors.push(element.id);
+            }
+
+            // console.log(factors);
+            var zipcodes = Object.keys(zipDiction);
+            // console.log(zipcodes);
+            bigArray = [];
+            rawList = new Array(zipcodes.length).fill(0);
+            for (let index = 0; index < factors.length; index++) {
+                const factor = factors[index];
+                var temp = [];
+                for (let j = 0; j < zipcodes.length; j++) {
+                    console.log(zipDiction[zipcodes[j]][factor]);
+                    temp.push(zipDiction[zipcodes[j]][factor]);
+                }
+                temp = normalize(...temp);
+                for (let j = 0; j < temp.length; j++) {
+                    rawList[j] = temp[j] + rawList[j];
+                }
+            }
+            console.log(rawList);
+            // start computing
+            // 1. Normalize each list and add up to get raw scores
+                
+
+            // 2. Normalize the raw score lists to final score
+            finals = normalize(...rawList);
+            filterDiction = {};
+            for (let index = 0; index < zipcodes.length; index++) {
+                const zip = zipcodes[index];
+                filterDiction[zip] = score_to_grade(finals[index]);
+            }
+            return filterDiction;
+        }
+
+        function score_to_grade(score){
+            var grade = "N"
+            if (score>=0.4){
+                grade = "G";
+            } else if(score<0.4 && score>=0.3){
+                grade = "F";
+            } else if(score<0.3 && score>=0.2){
+                grade = "E";
+            } else if(score<0.2 && score>=0.15){
+                grade = "D";
+            } else if(score<0.15 && score>=0.1){
+                grade = "C";
+            } else if(score<0.1 && score>=0.05){
+                grade = "B";
+            } else if(score<0.05 && score>=0.0){
+                grade = "A";
+            }
+            return grade;
+        }
+
+        var zipDiction = {};
+        // var APIlink = "http://se-proj-develop-env.eba-yiphn7ci.us-west-2.elasticbeanstalk.com/api/table/";
+        var APIlink = "http://127.0.0.1:8000/api/table/";
+        fetch(APIlink)
+            .then((response) => response.json())
+            .then((data) => {
+                for (var i = 0; i < data.length; i++) {
+                    zipDiction[data[i]['zipcode']] = data[i];
+                }
+            })
+            .then(() => {
+                var map;
+                map = new window.google.maps.Map(document.getElementById('map'), {
+                    zoom: 11,
+                    center: {
+                        lat: 40.7831,
+                        lng: -73.9712
+                    }
+                });
+                map.data.loadGeoJson("{% static '/json/serenity.geojson' %}");
+
+                map.data.setStyle(function (feature) {
+                    //TODO: Read grade from database based on zipcode
+                    curzip = feature.getProperty('postalCode');
+                    var grade = "N";
+                    if (zipDiction[curzip]) {
+                        grade = zipDiction[curzip]["grade"];
+                        // grade = filterDiction[curzip];
+                    }
+
+                    // var SD_NAME = feature.getProperty('grade');
+                    var color = "gray";
+                    if (grade == "A") {
+                        color = "#379237";
+                    }
+
+                    else if (grade == "B") {
+                        color = "#82CD47";
+                    }
+
+                    else if (grade == "C") {
+                        color = "#F0FF42";
+                    }
+
+                    else if (grade == "D") {
+                        color = "#FFCD38";
+                    }
+
+                    else if (grade == "E") {
+                        color = "#FF8D29";
+                    }
+
+                    else if (grade == "F") {
+                        color = "#FF4949";
+                    }
+
+                    else if (grade == "G") {
+                        color = "#F32424";
+                    }
+                    return {
+                        fillColor: color,
+                        strokeWeight: 1,
+                        fillOpacity: 0.5,
+                        strokeColor: "#55555",
+                        strokeOpacity: 1.0,
+
+                    }
+                });
+
+                var infowindow = new google.maps.InfoWindow();
+
+                map.data.addListener('click', function (event) {
+                    let zipcode = event.feature.getProperty("postalCode");
+                    let neighborhood = event.feature.getProperty("PO_NAME");
+                    var grade = "N";
+                    if (zipDiction[zipcode]) {
+                        grade = zipDiction[zipcode]["grade"];
+                    }
+
 
 
                     let html = '' + neighborhood + ': ' + zipcode + ' Grade: ' + grade; // combine state name with a label
