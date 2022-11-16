@@ -11,7 +11,7 @@ class ScoreTable(models.Model):
     sanitationCondition = models.FloatField(max_length=10)
     wasteDisposal = models.FloatField(max_length=10)
     unsanitaryCondition = models.FloatField(max_length=10)
-    grade = "A"
+    grade = models.CharField(default="N", max_length=10)
     gradeCount = models.FloatField(default=0, max_length=10)
     userAvg = models.FloatField(default=0, max_length=10)
     userGrade = models.FloatField(default=0, max_length=10)

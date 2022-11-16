@@ -1,165 +1,202 @@
-
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     {% load static %}
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Catamaran:wght@200;400;700&family=Chau+Philomene+One&display=swap" rel="stylesheet">
-    <link href="{% static 'css/map.css' %}" rel="stylesheet">     
+    <link
+        href="https://fonts.googleapis.com/css2?family=Catamaran:wght@200;400;700&family=Chau+Philomene+One&display=swap"
+        rel="stylesheet">
+    <link href="{% static 'css/map.css' %}" rel="stylesheet">
     <script src="{% static '/js/map.js' %}" type="text/javascript"></script>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
 
 
     <script>
+        let alldata;
         var map;
-    
+        // var APIlink = "http://se-proj-develop-env.eba-yiphn7ci.us-west-2.elasticbeanstalk.com/api/table/";
+        var APIlink = "http://127.0.0.1:8000/api/table/";
+        fetch(APIlink)
+            .then((response) => response.json())
+            .then((data) => {
+                alldata = data;
+            })
+            .then(() => {
+                map = new google.maps.Map(document.getElementById('map'), {
+                    zoom: 11,
+                    center: {
+                        lat: 40.7831,
+                        lng: -73.9712
+                    }
+                });
+                map.data.loadGeoJson("{% static '/json/sample.geojson' %}");
+
+                map.data.setStyle(function (feature) {
+                    //TODO: Read grade from database based on zipcode
+                    curzip = feature.getProperty('postalCode');
+                    var length = alldata.length;
+                    var grade = "N";
+
+                    for (var i = 0; i < length; i++) {
+                        // console.log(typeof(alldata[i]["zipcode"]));
+                        // console.log(typeof(curzip));
+                        if (curzip == alldata[i]["zipcode"]){
+                            // console.log(alldata[i]);
+                            grade = alldata[i].grade;
+                            break;
+                        }
+                    }
+
+                    // var SD_NAME = feature.getProperty('grade');
+                    var color = "gray";
+                    if (grade == "A") {
+                        color = "#379237";
+                    }
+
+                    else if (grade == "B") {
+                        color = "#82CD47";
+                    }
+
+                    else if (grade == "C") {
+                        color = "#F0FF42";
+                    }
+
+                    else if (grade == "D") {
+                        color = "#FFCD38";
+                    }
+
+                    else if (grade == "E") {
+                        color = "#FF8D29";
+                    }
+
+                    else if (grade == "F") {
+                        color = "#FF4949";
+                    }
+
+                    else if (grade == "G") {
+                        color = "#F32424";
+                    }
+                    return {
+                        fillColor: color,
+                        strokeWeight: 1,
+                        fillOpacity: 0.5,
+                        strokeColor: "#55555",
+                        strokeOpacity: 1.0,
+
+                    }
+                });
+
+                var infowindow = new google.maps.InfoWindow();
+
+                map.data.addListener('click', function (event) {
+                    let zipcode = event.feature.getProperty("postalCode");
+                    let neighborhood = event.feature.getProperty("PO_NAME");;
+                    // let grade = grade;
+
+                    let html = '' + neighborhood + ': ' + zipcode + ' Grade: '; // combine state name with a label
+                    infowindow.setContent(html); // show the html variable in the infowindow
+                    infowindow.setPosition(event.latLng); // anchor the infowindow at the marker
+                    infowindow.setOptions({ pixelOffset: new google.maps.Size(0, -30) }); // move the infowindow up slightly to the top of the marker icon
+                    infowindow.open(map);
+                });
+            });
+
+
         function initMap() {
-            map = new google.maps.Map(document.getElementById('map'), {
-                zoom: 11,
-                center: {
-                    lat: 40.7831,
-                    lng: -73.9712
-                }
-            });
-            map.data.loadGeoJson("{% static 'json/serenity.geojson' %}");
 
-            map.data.setStyle(function(feature) {
-                var SD_NAME = feature.getProperty('grade');
-                var color = "gray";
-                if (SD_NAME == "A") {
-                    color = "#379237";
-                }
-
-                else if (SD_NAME == "B") {
-                    color = "#82CD47";
-                }
-
-                else if (SD_NAME == "C") {
-                    color = "#F0FF42";
-                }
-
-                else if (SD_NAME == "D") {
-                    color = "#FFCD38";
-                }
-
-                else if (SD_NAME == "E") {
-                    color = "#FF8D29";
-                }
-
-                else if (SD_NAME == "F") {
-                    color = "#FF4949";
-                }
-
-                else if (SD_NAME == "G") {
-                    color = "#F32424";
-                }
-                return {
-                    fillColor: color,
-                    strokeWeight: 1,
-                    fillOpacity: 0.5,
-                    strokeColor: "#55555",
-                    strokeOpacity: 1.0,
-
-                }
-            });
-
-            var infowindow = new google.maps.InfoWindow();
-            
-            map.data.addListener('click', function(event) {
-              let zipcode = event.feature.getProperty("postalCode");
-              let neighborhood = event.feature.getProperty("PO_NAME");;
-              let grade = event.feature.getProperty("grade");
-
-              let html = '' + neighborhood + ': ' + zipcode + ' Grade: ' + grade; // combine state name with a label
-              infowindow.setContent(html); // show the html variable in the infowindow
-              infowindow.setPosition(event.latLng); // anchor the infowindow at the marker
-              infowindow.setOptions({pixelOffset: new google.maps.Size(0,-30)}); // move the infowindow up slightly to the top of the marker icon
-              infowindow.open(map);
-            });
         }
     </script>
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDdv_xCiAS0nmezcZQ95VWozTJ_BHQXjlE&callback=initMap" type="text/javascript"></script>
+    <script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDdv_xCiAS0nmezcZQ95VWozTJ_BHQXjlE&callback=initMap"
+        type="text/javascript"></script>
 
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
 </head>
+
 <body style="background-color:ECFFE8;">
 
 
 
-<nav class="navbar navbar-expand-lg navbar-light">
-    
-    <a class="navbar-brand ps-3" href="/">
-        <img src="{% static '/img/SerenitySearch-1.png' %}" alt="" width="90" height="90">
-    </a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
+    <nav class="navbar navbar-expand-lg navbar-light">
 
-    <div class="collapse navbar-collapse justify-content-center">
-        <header class="serenity-title">
-            <h1 style="color:ForestGreen;">SerenitySearch</h1>
-            <p style="color:ForestGreen;"><i>Helping New Yorkers find peace in the city that never sleeps</i></p>
-        </header>
-        
-    </div>
-
-    <!-- pe-6 is a bootstrap spacing class, need to figure out a better way to align the links and title -->
-    <ul class="navbar-nav pe-6"> 
-        <li class="nav-item align-right pe-3">
-            <a class="nav-link" href="{% url 'home' %}">Home</a>
-        </li>
-        {% block user %}
-        {% if user.is_authenticated %}
-        <li class="nav-item">
-          <p>Hi {{ user.username }}!<a class="nav-link align-right" href="{% url 'logout' %}">Log Out</a></p>
-        </li>
-        {% else %}
-        <li class="nav-item align-right">
-            <a class="nav-link" href="{% url 'login' %}">Log In</a>
-        </li>
-        {% endif %}
-        {% endblock %}
-        <li class="nav-item align-right pe-3">
-            <a class="nav-link" href="{% url 'forum_home' %}">Forum Home</a>
-        </li>
-
-    </p>
-
-</nav>
-
-{% block content %}
-<div id="map"></div>
-{% endblock %}
-
-<center>
-    <p style="color:ForestGreen;">To start your search, please enter a 5-digit NYC zipcode:</p>
-<form action="search" method = "POST">
-    {% csrf_token %}
-    <input type="text" placeholder="Enter a Zipcode" name="searched" minlength="5" maxlength="5" pattern="[0-9]+" required/>
-    <button type="submit" class = "btn btn-outline-primary">Search</button>   
-</form>
-
-{% if messages %}
-    {% for message in messages %}
-    {% endfor %}
-{% endif %}
-
-{% for message in messages %}
-    <div class="container-fluid p-0">
-      <div class="alert {{ message.tags }} alert-dismissible" role="alert" >
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-          <span aria-hidden="True">&times;</span>
+        <a class="navbar-brand ps-3" href="/">
+            <img src="{% static '/img/SerenitySearch-1.png' %}" alt="" width="90" height="90">
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
         </button>
-        {{ message }}
-      </div>
-    </div>
-    {% endfor %}
+
+        <div class="collapse navbar-collapse justify-content-center">
+            <header class="serenity-title">
+                <h1 style="color:ForestGreen;">SerenitySearch</h1>
+                <p style="color:ForestGreen;"><i>Helping New Yorkers find peace in the city that never sleeps</i></p>
+            </header>
+
+        </div>
+
+        <!-- pe-6 is a bootstrap spacing class, need to figure out a better way to align the links and title -->
+        <ul class="navbar-nav pe-6">
+            <li class="nav-item align-right pe-3">
+                <a class="nav-link" href="{% url 'home' %}">Home</a>
+            </li>
+            {% block user %}
+            {% if user.is_authenticated %}
+            <li class="nav-item">
+                <p>Hi {{ user.username }}!<a class="nav-link align-right" href="{% url 'logout' %}">Log Out</a></p>
+            </li>
+            {% else %}
+            <li class="nav-item align-right">
+                <a class="nav-link" href="{% url 'login' %}">Log In</a>
+            </li>
+            {% endif %}
+            {% endblock %}
+            <li class="nav-item align-right pe-3">
+                <a class="nav-link" href="{% url 'forum_home' %}">Forum Home</a>
+            </li>
+
+            </p>
+
+    </nav>
+
+    {% block content %}
+    <div id="map"></div>
+    {% endblock %}
+
+    <center>
+        <p style="color:ForestGreen;">To start your search, please enter a 5-digit NYC zipcode:</p>
+        <form action="search" method="POST">
+            {% csrf_token %}
+            <input type="text" placeholder="Enter a Zipcode" name="searched" minlength="5" maxlength="5"
+                pattern="[0-9]+" required />
+            <button type="submit" class="btn btn-outline-primary">Search</button>
+        </form>
+
+        {% if messages %}
+        {% for message in messages %}
+        {% endfor %}
+        {% endif %}
+
+        {% for message in messages %}
+        <div class="container-fluid p-0">
+            <div class="alert {{ message.tags }} alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="True">&times;</span>
+                </button>
+                {{ message }}
+            </div>
+        </div>
+        {% endfor %}
 
 
-</center>
+    </center>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa"
+        crossorigin="anonymous"></script>
 
 </body>

@@ -18,6 +18,7 @@ import pandas as pd
 import numpy as np
 from django.http import HttpResponse
 from django.contrib.auth import get_user
+# from .changedata import changemap
 
 
 class ScoreTableViewSet(viewsets.ModelViewSet):
@@ -26,6 +27,13 @@ class ScoreTableViewSet(viewsets.ModelViewSet):
 
 
 def index(request):
+    # TODO: iterate through all zipcodes, run calculations and save all grade
+    allposts = ScoreTable.objects.all()
+    for post in allposts:
+        # post = ScoreTable.objects.get(zipcode=search)
+        norm_score, normals = calculate_factor(post.zipcode)
+        post.grade = _get_grade_from_score(norm_score)
+        post.save()
     return render(request, "app/index.html", {})
 
 
