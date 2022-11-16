@@ -18,6 +18,7 @@ import pandas as pd
 import numpy as np
 from django.http import HttpResponse
 from django.contrib.auth import get_user
+# from .changedata import changemap
 
 
 class ScoreTableViewSet(viewsets.ModelViewSet):
@@ -26,6 +27,10 @@ class ScoreTableViewSet(viewsets.ModelViewSet):
 
 
 def index(request):
+    # allposts = ScoreTable.objects.all()
+    # for post in allposts:
+    #     post.grade = calculate_score(post.zipcode)
+    #     post.save()
     return render(request, "app/index.html", {})
 
 
@@ -63,9 +68,38 @@ def calculate_factor(zipcode):
         score = round(np.average(n, weights=weights), 2)
     return score, nFactors
 
+def calculate_score(zipcode):
+    #?: calculate the score for particular zipcode
+    post = ScoreTable.objects.get(zipcode=zipcode)
+    factors = (
+        ("residentialNoise", 1),
+        ("dirtyConditions", 1),
+        ("sanitationCondition", 1),
+        ("wasteDisposal", 1),
+        ("unsanitaryCondition", 1),
+        ("constructionImpact", 4),
+        ("userAvg", 1),
+        ("treeCensus", -1),
+        ("parkCount", -1)
+    )
+    score = 0
+    for factor, weight in factors:
+        factorSet = np.array(ScoreTable.objects.values_list(factor, flat=True))
+
+        rawScore = getattr(post, factor)
+        if rawScore==0 and factor != "userAvg":
+            return "N"
+        normScore = rawScore / np.linalg.norm(factorSet)
+        score += normScore * weight 
+    return _get_grade_from_score(score)
+
+    
+
+
+
 
 def _get_grade_from_score(score):
-    grade = None
+    grade = "N"
     if score >= 0.4:
         grade = "G"
     elif score < 0.4 and score >= 0.3:
@@ -89,29 +123,29 @@ def search(request):  # pragma: no cover
         search = request.POST["searched"]
         try:
             post = ScoreTable.objects.get(zipcode=search)
-            norm_score, normals = calculate_factor(search)
-            factors = (
-                "residentialNoise",
-                "dirtyConditions",
-                "sanitationCondition",
-                "wasteDisposal",
-                "unsanitaryCondition",
-                "constructionImpact",
-                "userAvg",
-            )
-            count = 0
-            for factor in factors:
-                if factor != "userAvg":
-                    setattr(post, factor, normals[count])
-                    count += 1
-            post.grade = _get_grade_from_score(norm_score)
+            # norm_score, normals = calculate_factor(search)
+            # factors = (
+            #     "residentialNoise",
+            #     "dirtyConditions",
+            #     "sanitationCondition",
+            #     "wasteDisposal",
+            #     "unsanitaryCondition",
+            #     "constructionImpact",
+            #     "userAvg",
+            # )
+            # count = 0
+            # for factor in factors:
+            #     if factor != "userAvg":
+            #         setattr(post, factor, normals[count])
+            #         count += 1
+            post.grade = calculate_score(zipcode=search)
             # post.save()
             rounded = round(post.userAvg, 2)
 
             return render(
                 request,
                 "app/search.html",
-                {"post": post, "rounded": rounded, "norm_score": norm_score},
+                {"post": post, "rounded": rounded},
             )
         except ScoreTable.DoesNotExist:
             print("entered else")
@@ -181,7 +215,8 @@ def get_rating(request):
                 total = post.userGrade
                 post.userGrade = update_user_rating(total, grade)
                 post.userAvg = post.userGrade / count
-                print(post.userAvg)
+                post.save()
+                post.grade = calculate_score(zipcode=zip)
                 post.save()
                 return render(
                     request,
@@ -258,6 +293,9 @@ def forum_borough(request, borough):
         "count": count,
     }
     return render(request, "app/forum_borough.html", context)
+
+
+# def find(request):
 
 
 def forum_zipcode(request, borough, pk):
