@@ -15,15 +15,18 @@
 
     <script>
         let alldata;
-        var map;
+        var zipDiction = {};
         // var APIlink = "http://se-proj-develop-env.eba-yiphn7ci.us-west-2.elasticbeanstalk.com/api/table/";
         var APIlink = "http://127.0.0.1:8000/api/table/";
         fetch(APIlink)
             .then((response) => response.json())
             .then((data) => {
-                alldata = data;
+                for (var i = 0; i < data.length; i++) {
+                    zipDiction[data[i]['zipcode']] = data[i];
+                }
             })
             .then(() => {
+                var map;
                 map = new google.maps.Map(document.getElementById('map'), {
                     zoom: 11,
                     center: {
@@ -36,17 +39,21 @@
                 map.data.setStyle(function (feature) {
                     //TODO: Read grade from database based on zipcode
                     curzip = feature.getProperty('postalCode');
-                    var length = alldata.length;
-                    var grade = "N";
+                    // var length = alldata.length;
+                    // var grade = "N";
 
-                    for (var i = 0; i < length; i++) {
-                        // console.log(typeof(alldata[i]["zipcode"]));
-                        // console.log(typeof(curzip));
-                        if (curzip == alldata[i]["zipcode"]){
-                            // console.log(alldata[i]);
-                            grade = alldata[i].grade;
-                            break;
-                        }
+                    // for (var i = 0; i < length; i++) {
+                    //     // console.log(typeof(alldata[i]["zipcode"]));
+                    //     // console.log(typeof(curzip));
+                    //     if (curzip == alldata[i]["zipcode"]) {
+                    //         // console.log(alldata[i]);
+                    //         grade = alldata[i].grade;
+                    //         break;
+                    //     }
+                    // }
+                    var grade = "N";
+                    if(zipDiction[curzip]){
+                        grade = zipDiction[curzip]["grade"];
                     }
 
                     // var SD_NAME = feature.getProperty('grade');
@@ -92,10 +99,15 @@
 
                 map.data.addListener('click', function (event) {
                     let zipcode = event.feature.getProperty("postalCode");
-                    let neighborhood = event.feature.getProperty("PO_NAME");;
-                    // let grade = grade;
+                    let neighborhood = event.feature.getProperty("PO_NAME");
+                    var grade = "N";
+                    if (zipDiction[zipcode]){
+                        grade = zipDiction[zipcode]["grade"];
+                    }
+                    
 
-                    let html = '' + neighborhood + ': ' + zipcode + ' Grade: '; // combine state name with a label
+
+                    let html = '' + neighborhood + ': ' + zipcode + ' Grade: ' + grade; // combine state name with a label
                     infowindow.setContent(html); // show the html variable in the infowindow
                     infowindow.setPosition(event.latLng); // anchor the infowindow at the marker
                     infowindow.setOptions({ pixelOffset: new google.maps.Size(0, -30) }); // move the infowindow up slightly to the top of the marker icon

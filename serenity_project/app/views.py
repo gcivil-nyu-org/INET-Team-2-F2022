@@ -27,12 +27,6 @@ class ScoreTableViewSet(viewsets.ModelViewSet):
 
 
 def index(request):
-    # TODO: iterate through all zipcodes, run calculations and save all grade
-    allposts = ScoreTable.objects.all()
-    for post in allposts:
-        post.grade = calculate_score(post.zipcode)
-        post.save()
-        
     return render(request, "app/index.html", {})
 
 
@@ -125,29 +119,29 @@ def search(request):  # pragma: no cover
         search = request.POST["searched"]
         try:
             post = ScoreTable.objects.get(zipcode=search)
-            norm_score, normals = calculate_factor(search)
-            factors = (
-                "residentialNoise",
-                "dirtyConditions",
-                "sanitationCondition",
-                "wasteDisposal",
-                "unsanitaryCondition",
-                "constructionImpact",
-                "userAvg",
-            )
-            count = 0
-            for factor in factors:
-                if factor != "userAvg":
-                    setattr(post, factor, normals[count])
-                    count += 1
-            post.grade = _get_grade_from_score(norm_score)
+            # norm_score, normals = calculate_factor(search)
+            # factors = (
+            #     "residentialNoise",
+            #     "dirtyConditions",
+            #     "sanitationCondition",
+            #     "wasteDisposal",
+            #     "unsanitaryCondition",
+            #     "constructionImpact",
+            #     "userAvg",
+            # )
+            # count = 0
+            # for factor in factors:
+            #     if factor != "userAvg":
+            #         setattr(post, factor, normals[count])
+            #         count += 1
+            post.grade = calculate_score(zipcode=search)
             # post.save()
             rounded = round(post.userAvg, 2)
 
             return render(
                 request,
                 "app/search.html",
-                {"post": post, "rounded": rounded, "norm_score": norm_score},
+                {"post": post, "rounded": rounded},
             )
         except ScoreTable.DoesNotExist:
             print("entered else")
@@ -210,7 +204,8 @@ def get_rating(request):
                 total = post.userGrade
                 post.userGrade = update_user_rating(total, grade)
                 post.userAvg = post.userGrade / count
-                print(post.userAvg)
+                post.save()
+                post.grade = calculate_score(zipcode=zip)
                 post.save()
                 return render(
                     request,
@@ -287,6 +282,9 @@ def forum_borough(request, borough):
         "count": count,
     }
     return render(request, "app/forum_borough.html", context)
+
+
+# def find(request):
 
 
 def forum_zipcode(request, borough, pk):
