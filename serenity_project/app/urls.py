@@ -16,6 +16,7 @@ urlpatterns = [
     path("", views.index, name="home"),
     path("api/", include(api_router.urls)),
     path("search", views.search, name="search"),
+    path("find", views.find, name="find"),
     path("register", views.register_request, name="register"),
     path("login", views.login_request, name="login"),
     path("logout", views.logoutUser, name="logout"),

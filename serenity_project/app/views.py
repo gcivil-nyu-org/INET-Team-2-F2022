@@ -124,6 +124,13 @@ def search(request):  # pragma: no cover
         return render(request, "app/search.html", {}, csrfContext)
 
 
+def find(request):
+    find = request.POST["find"]
+    one_entry = ScoreTable.objects.get(zipcode=find)
+    b = one_entry.borough
+    return redirect("forum_zipcode", borough=b, pk=find)
+
+
 @login_required(login_url="/login")
 def submit_rating(request):
     # csrfContext = RequestContext(request)

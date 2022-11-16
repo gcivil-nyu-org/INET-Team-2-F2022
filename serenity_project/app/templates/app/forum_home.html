@@ -57,8 +57,13 @@
         </p>
     
     </nav>
-    
-
+    <center>
+    <form  action="{% url 'find' %}" method = "POST">
+      {% csrf_token %}
+      <input type="text" placeholder="Enter a Zipcode" name="find" minlength="5" maxlength="5" pattern="[0-9]+" required/>
+      <button type="submit" class = "btn btn-outline-primary">Search</button>   
+   </form>
+   </center>
     <conteiner>
 
         <!-- Manhattan -->
