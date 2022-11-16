@@ -27,7 +27,7 @@
             })
             .then(() => {
                 var map;
-                map = new google.maps.Map(document.getElementById('map'), {
+                map = new window.google.maps.Map(document.getElementById('map'), {
                     zoom: 11,
                     center: {
                         lat: 40.7831,
@@ -120,9 +120,9 @@
 
         }
     </script>
-    <script async defer
+    <script 
         src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDdv_xCiAS0nmezcZQ95VWozTJ_BHQXjlE&callback=initMap"
-        type="text/javascript"></script>
+        type="text/javascript" async defer></script>
 
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet"
