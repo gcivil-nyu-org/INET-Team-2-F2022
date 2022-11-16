@@ -30,10 +30,9 @@ def index(request):
     # TODO: iterate through all zipcodes, run calculations and save all grade
     allposts = ScoreTable.objects.all()
     for post in allposts:
-        # post = ScoreTable.objects.get(zipcode=search)
-        norm_score, normals = calculate_factor(post.zipcode)
-        post.grade = _get_grade_from_score(norm_score)
+        post.grade = calculate_score(post.zipcode)
         post.save()
+        
     return render(request, "app/index.html", {})
 
 
@@ -71,9 +70,38 @@ def calculate_factor(zipcode):
         score = round(np.average(n, weights=weights), 2)
     return score, nFactors
 
+def calculate_score(zipcode):
+    #?: calculate the score for particular zipcode
+    post = ScoreTable.objects.get(zipcode=zipcode)
+    factors = (
+        ("residentialNoise", 1),
+        ("dirtyConditions", 1),
+        ("sanitationCondition", 1),
+        ("wasteDisposal", 1),
+        ("unsanitaryCondition", 1),
+        ("constructionImpact", 4),
+        ("userAvg", 1),
+        ("treeCensus", -1),
+        ("parkCount", -1)
+    )
+    score = 0
+    for factor, weight in factors:
+        factorSet = np.array(ScoreTable.objects.values_list(factor, flat=True))
+
+        rawScore = getattr(post, factor)
+        if rawScore==0 and factor != "userAvg":
+            return "N"
+        normScore = rawScore / np.linalg.norm(factorSet)
+        score += normScore * weight 
+    return _get_grade_from_score(score)
+
+    
+
+
+
 
 def _get_grade_from_score(score):
-    grade = None
+    grade = "N"
     if score >= 0.4:
         grade = "G"
     elif score < 0.4 and score >= 0.3:
