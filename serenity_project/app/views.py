@@ -18,6 +18,7 @@ import pandas as pd
 import numpy as np
 from django.http import HttpResponse
 from django.contrib.auth import get_user
+
 # from .changedata import changemap
 
 
@@ -48,7 +49,7 @@ def calculate_factor(zipcode):
         ("constructionImpact", 4),
         ("userAvg", 1),
         ("treeCensus", -1),
-        ("parkCount", -1)
+        ("parkCount", -1),
     )
     for factor, weight in factors:
         currSet = ScoreTable.objects.values_list(factor, flat=True)
@@ -65,8 +66,9 @@ def calculate_factor(zipcode):
         score = round(np.average(n, weights=weights), 2)
     return score, nFactors
 
+
 def calculate_score(zipcode):
-    #?: calculate the score for particular zipcode
+    # ?: calculate the score for particular zipcode
     post = ScoreTable.objects.get(zipcode=zipcode)
     factors = (
         ("residentialNoise", 1),
@@ -77,16 +79,16 @@ def calculate_score(zipcode):
         ("constructionImpact", 4),
         ("userAvg", 1),
         ("treeCensus", -1),
-        ("parkCount", -1)
+        ("parkCount", -1),
     )
     score = 0
     for factor, weight in factors:
         factorSet = np.array(ScoreTable.objects.values_list(factor, flat=True))
         rawScore = getattr(post, factor)
-        if rawScore==0 and factor != "userAvg":
+        if rawScore == 0 and factor != "userAvg":
             return "N"
         normScore = rawScore / np.linalg.norm(factorSet)
-        score += normScore * weight 
+        score += normScore * weight
     return _get_grade_from_score(score)
 
 
@@ -125,14 +127,14 @@ def search(request):  # pragma: no cover
                 "constructionImpact",
                 "userAvg",
                 "treeCensus",
-                "parkCount"
+                "parkCount",
             )
             count = 0
             for factor in factors:
                 if factor != "userAvg":
                     setattr(post, factor, normals[count])
                     count += 1
-           # norm_score, normals = calculate_factor(zipcode=search)
+            # norm_score, normals = calculate_factor(zipcode=search)
             post.raw = norm_score
             post.grade = _get_grade_from_score(norm_score)
             # post.save()

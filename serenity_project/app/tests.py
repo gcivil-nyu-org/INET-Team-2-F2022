@@ -274,25 +274,25 @@ class TestViews(TestCase):
     def test_get_grade_from_score(self):
         from .views import _get_grade_from_score
 
-        assert _get_grade_from_score(0.4) == "G"
-        assert _get_grade_from_score(0.3) == "F"
-        assert _get_grade_from_score(0.2) == "E"
-        assert _get_grade_from_score(0.15) == "D"
-        assert _get_grade_from_score(0.1) == "C"
-        assert _get_grade_from_score(0.05) == "B"
-        assert _get_grade_from_score(0.01) == "A"
+        assert _get_grade_from_score(0.6) == "G"
+        assert _get_grade_from_score(0.5) == "F"
+        assert _get_grade_from_score(0.4) == "E"
+        assert _get_grade_from_score(0.3) == "D"
+        assert _get_grade_from_score(0.2) == "C"
+        assert _get_grade_from_score(0.1) == "B"
+        # assert _get_grade_from_score(0.1) == "A"
         assert _get_grade_from_score(0.0) == "A"
 
     def test_update_user_rating(self):
         from .views import update_user_rating
 
-        assert update_user_rating(100, "A") == 100.05
-        assert update_user_rating(100, "B") == 100.1
-        assert update_user_rating(100, "C") == 100.15
-        assert update_user_rating(100, "D") == 100.2
-        assert update_user_rating(100, "E") == 100.3
-        assert update_user_rating(100, "F") == 100.4
-        assert update_user_rating(100, "G") == 100.5
+        assert update_user_rating(100, "A") == 100.1
+        assert update_user_rating(100, "B") == 100.2
+        assert update_user_rating(100, "C") == 100.3
+        assert update_user_rating(100, "D") == 100.4
+        assert update_user_rating(100, "E") == 100.5
+        assert update_user_rating(100, "F") == 100.6
+        assert update_user_rating(100, "G") == 100.7
 
 
 class ForumPostTests(TestCase):
@@ -346,4 +346,4 @@ class TestCalculateScore(TestCase):
 
         object = ScoreTable.objects.get(zipcode=00000)
         result = calculate_factor(object.zipcode)
-        self.assertEqual(result, (1.0, [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]))
+        self.assertEqual(result, (1.0, [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]))
