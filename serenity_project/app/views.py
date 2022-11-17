@@ -28,9 +28,14 @@ class ScoreTableViewSet(viewsets.ModelViewSet):
 
 
 def index(request):
+
+    #RUN THE BELOW COMMENTED CODE TO UPDATE GRADES ACROSS THE MAP
+    #LOAD THE SITE, THEN COMMENT THE CODE OUT AGAIN.
+
     # allposts = ScoreTable.objects.all()
     # for post in allposts:
-    #     post.grade = calculate_score(post.zipcode)
+    #     score = calculate_factor(post.zipcode)[0] #only getting score
+    #     post.grade = _get_grade_from_score(score)
     #     post.save()
     return render(request, "app/index.html", {})
 
@@ -213,7 +218,8 @@ def get_rating(request):
                 post.userGrade = update_user_rating(total, grade)
                 post.userAvg = post.userGrade / count
                 post.save()
-                post.grade = calculate_score(zipcode=zip)
+                score = calculate_factor(zipcode=zip)[0] #only getting score
+                post.grade = _get_grade_from_score(score)
                 post.save()
                 return render(
                     request,
