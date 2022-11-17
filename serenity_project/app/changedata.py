@@ -2,12 +2,15 @@ import json
 import numpy as np
 import requests
 from django.contrib.staticfiles.storage import staticfiles_storage
-# from django.conf.urls.static import static
-  
 
-MAP_PATH = staticfiles_storage.path('json/sample.geojson')
+# from django.conf.urls.static import static
+
+
+MAP_PATH = staticfiles_storage.path("json/sample.geojson")
 # MAP_PATH = static('/static/json/sample.geojson')[0]
-response = requests.get("http://se-proj-develop-env.eba-yiphn7ci.us-west-2.elasticbeanstalk.com/api/table/")
+response = requests.get(
+    "http://se-proj-develop-env.eba-yiphn7ci.us-west-2.elasticbeanstalk.com/api/table/"
+)
 data = response.json()
 
 
@@ -15,7 +18,8 @@ def set_of_factor(data, factor):
     ans = []
     for piece in data:
         ans.append(piece[factor])
-    return ans 
+    return ans
+
 
 def calculate_factor(data, datapiece):
     # zipcodeFactors = ScoreTable.objects.get(zipcode=zipcode)
@@ -53,6 +57,7 @@ def calculate_factor(data, datapiece):
     score = round(np.average(n, weights=weights), 2)
     return score, nFactors
 
+
 def _get_grade_from_score(score):
     grade = None
     if score >= 0.4:
@@ -71,28 +76,25 @@ def _get_grade_from_score(score):
         grade = "A"
     return grade
 
+
 def changemap():
     grade_dic = {}
-    for piece in data: 
+    for piece in data:
         score, nFactors = calculate_factor(data, piece)
-        grade_dic[piece['zipcode']] = _get_grade_from_score(score)
+        grade_dic[piece["zipcode"]] = _get_grade_from_score(score)
         # print(_get_grade_from_score(score))
 
-    #! change mapdata with new grades
+    # change mapdata with new grades
     print(MAP_PATH)
     f = open(MAP_PATH)
     mapdata = json.load(f)
     f.close()
 
-
     for i in range(len(mapdata["features"])):
-        curpiece = mapdata['features'][i]['properties']
-        zipcode = curpiece['postalCode']
+        curpiece = mapdata["features"][i]["properties"]
+        zipcode = curpiece["postalCode"]
         if zipcode in grade_dic:
-            curpiece['grade'] = grade_dic[zipcode]
-
+            curpiece["grade"] = grade_dic[zipcode]
 
     with open(MAP_PATH, "w") as outfile:
         json.dump(mapdata, outfile)
-
-

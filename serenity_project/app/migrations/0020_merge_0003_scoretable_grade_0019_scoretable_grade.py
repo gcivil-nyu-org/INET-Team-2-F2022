@@ -6,9 +6,8 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('app', '0003_scoretable_grade'),
-        ('app', '0019_scoretable_grade'),
+        ("app", "0003_scoretable_grade"),
+        ("app", "0019_scoretable_grade"),
     ]
 
-    operations = [
-    ]
+    operations = []
