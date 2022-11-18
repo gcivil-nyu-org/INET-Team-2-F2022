@@ -29,8 +29,8 @@ class ScoreTableViewSet(viewsets.ModelViewSet):
 
 def index(request):
 
-    #RUN THE BELOW COMMENTED CODE TO UPDATE GRADES ACROSS THE MAP
-    #LOAD THE SITE, THEN COMMENT THE CODE OUT AGAIN.
+    # RUN THE BELOW COMMENTED CODE TO UPDATE GRADES ACROSS THE MAP
+    # LOAD THE SITE, THEN COMMENT THE CODE OUT AGAIN.
 
     # allposts = ScoreTable.objects.all()
     # for post in allposts:
@@ -54,22 +54,31 @@ def calculate_factor(zipcode):
         ("constructionImpact", 4),
         ("userAvg", 1),
         ("treeCensus", -1),
-        ("parkCount", -1),
+        ("parkCount", -2),
     )
+    score = 0
     for factor, weight in factors:
         currSet = ScoreTable.objects.values_list(factor, flat=True)
         arr = np.array(currSet)
         normal = getattr(zipcodeFactors, factor) / np.linalg.norm(arr)
         nFactors.append(round(normal, 2))
-        score = 0
-        if normal != 0:
+        if factor == "userAvg":
+            currUserScore = normal
+        elif normal != 0:
             n.append(normal)
             weights.append(weight)
-    if normal != 0:
-        n = np.array(n)
-        weights = np.array(weights)
-        score = round(np.average(n, weights=weights), 2)
+    score = round(np.average(n, weights=weights), 2)
+    if currUserScore != 0:
+        if currUserScore > score:
+            score = round(((score + (0.5 * currUserScore)) / 2), 2)
+        else:
+            score = round(((score - (0.5 * currUserScore)) / 2), 2)
     return score, nFactors
+
+
+testScore, testFactors = calculate_factor(11215)
+print("test user score: ", testFactors[6])
+print("total score: ", testScore)
 
 
 def calculate_score(zipcode):
@@ -218,7 +227,7 @@ def get_rating(request):
                 post.userGrade = update_user_rating(total, grade)
                 post.userAvg = post.userGrade / count
                 post.save()
-                score = calculate_factor(zipcode=zip)[0] #only getting score
+                score = calculate_factor(zipcode=zip)[0]  # only getting score
                 post.grade = _get_grade_from_score(score)
                 post.save()
                 return render(
