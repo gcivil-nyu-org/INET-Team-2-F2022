@@ -18,6 +18,7 @@ import pandas as pd
 import numpy as np
 from django.http import HttpResponse
 from django.contrib.auth import get_user
+
 # from .changedata import changemap
 
 
@@ -81,7 +82,7 @@ def calculate_score(zipcode):
         ("constructionImpact", 4),
         ("userAvg", 1),
         ("treeCensus", -1),
-        ("parkCount", -1)
+        ("parkCount", -1),
     )
     score = 0
     for factor, weight in factors:
