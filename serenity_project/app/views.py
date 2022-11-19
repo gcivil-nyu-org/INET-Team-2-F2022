@@ -68,8 +68,9 @@ def calculate_factor(zipcode):
         score = round(np.average(n, weights=weights), 2)
     return score, nFactors
 
+
 def calculate_score(zipcode):
-    #?: calculate the score for particular zipcode
+    #  ?: calculate the score for particular zipcode
     post = ScoreTable.objects.get(zipcode=zipcode)
     factors = (
         ("residentialNoise", 1),
@@ -87,15 +88,11 @@ def calculate_score(zipcode):
         factorSet = np.array(ScoreTable.objects.values_list(factor, flat=True))
 
         rawScore = getattr(post, factor)
-        if rawScore==0 and factor != "userAvg":
+        if rawScore == 0 and factor != "userAvg":
             return "N"
         normScore = rawScore / np.linalg.norm(factorSet)
-        score += normScore * weight 
+        score += normScore * weight
     return _get_grade_from_score(score)
-
-    
-
-
 
 
 def _get_grade_from_score(score):
