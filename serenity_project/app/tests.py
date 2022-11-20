@@ -86,6 +86,7 @@ class TestSearch(TestCase):
             wasteDisposal=4,
             unsanitaryCondition=5,
             constructionImpact=1.0,
+            userAvg=1,
             treeCensus=1,
             parkCount=1,
         )
@@ -94,6 +95,7 @@ class TestSearch(TestCase):
         testZip = ScoreTable.objects.get(zipcode=11220)
         self.assertEqual(testZip.residentialNoise, 1)
         self.assertEqual(testZip.zipcode, 11220)
+        self.assertEqual(testZip.dirtyConditions, 2)
 
 
 class ForumSearch(TestCase):
@@ -280,7 +282,6 @@ class TestViews(TestCase):
         assert _get_grade_from_score(0.3) == "D"
         assert _get_grade_from_score(0.2) == "C"
         assert _get_grade_from_score(0.1) == "B"
-        # assert _get_grade_from_score(0.1) == "A"
         assert _get_grade_from_score(0.0) == "A"
 
     def test_update_user_rating(self):

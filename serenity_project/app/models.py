@@ -23,9 +23,6 @@ class ScoreTable(models.Model):
     def __str__(self):
         return f"Zipcode: {self.zipcode}, Score: {self.residentialNoise}, Grade:"
 
-    # def serenity_score(self):
-    #     return str(self.residential_Noise)
-
 
 # parent model
 class ForumPost(models.Model):

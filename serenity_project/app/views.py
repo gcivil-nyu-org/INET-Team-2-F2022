@@ -76,31 +76,6 @@ def calculate_factor(zipcode):
     return score, nFactors
 
 
-def calculate_score(zipcode):
-    # ?: calculate the score for particular zipcode
-    post = ScoreTable.objects.get(zipcode=zipcode)
-    factors = (
-        ("residentialNoise", 1),
-        ("dirtyConditions", 1),
-        ("sanitationCondition", 1),
-        ("wasteDisposal", 1),
-        ("unsanitaryCondition", 1),
-        ("constructionImpact", 4),
-        ("userAvg", 1),
-        ("treeCensus", -1),
-        ("parkCount", -1),
-    )
-    score = 0
-    for factor, weight in factors:
-        factorSet = np.array(ScoreTable.objects.values_list(factor, flat=True))
-        rawScore = getattr(post, factor)
-        if rawScore == 0 and factor != "userAvg":
-            return "N"
-        normScore = rawScore / np.linalg.norm(factorSet)
-        score += normScore * weight
-    return _get_grade_from_score(score)
-
-
 def _get_grade_from_score(score):
     grade = "N"
     if score >= 0.6:
