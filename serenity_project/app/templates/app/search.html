@@ -96,6 +96,8 @@
     <p>The 'Waste Disposal' score is <b>{{post.wasteDisposal}}</b></p>
     <p>The 'Unsanitary Conditions' score is <b>{{post.unsanitaryCondition}}</b></p>
     <p>The 'Construction Impact' score is <b>{{post.constructionImpact}}</b></p>
+    <p>The 'Tree Census' score is <b>{{post.treeCensus}}</b></p>
+    <p>The 'Parks Properties' score is <b>{{post.parkCount}}</b> </p>
     <h2>Overall SerenityScore: {{post.grade}}</h2>
     <p> Raw SerenityScore: {{post.raw}} </p>
     <br>
@@ -141,8 +143,6 @@
 </body>
 
 
-
-
 {%block scripts%}
 <script>
 // jquery function
@@ -157,7 +157,9 @@ $(document).ready(function(){
                         "Sanitation Conditions",
                         "Waste Disposal",
                         "Unsanitary Conditoins",
-                        "Construction Impact"], //loop through queryset,
+                        "Construction Impact",
+                        "Tree Census",
+                        "Parks Properties"], //loop through queryset,
                 datasets: [{
                     label: '# of users',
                     data: [
@@ -166,23 +168,29 @@ $(document).ready(function(){
                         {{post.sanitationCondition}},
                         {{post.wasteDisposal}},
                         {{post.unsanitaryCondition}},
-                        {{post.constructionImpact}}
+                        {{post.constructionImpact}},
+                        {{post.treeCensus}},
+                        {{post.parkCount}}
                     ],
                     backgroundColor: [
                         'rgba(255, 99, 132, 0.2)',
                         'rgba(54, 162, 235, 0.2)',
                         'rgba(255, 206, 86, 0.2)',
-                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(202, 171, 145, 0.2)',
                         'rgba(153, 102, 255, 0.2)',
-                        'rgba(255, 159, 64, 0.2)'
+                        'rgba(255, 159, 64, 0.2)',
+                        'rgba(175, 225, 175, 0.2)',
+                        'rgba(34, 139, 34, 0.2)'
                     ],
                     borderColor: [
                         'rgba(255, 99, 132, 1)',
                         'rgba(54, 162, 235, 1)',
                         'rgba(255, 206, 86, 1)',
-                        'rgba(75, 192, 192, 1)',
+                        'rgba(202, 171, 145 1)',
                         'rgba(153, 102, 255, 1)',
-                        'rgba(255, 159, 64, 1)'
+                        'rgba(255, 159, 64, 1)',
+                        'rgba(175, 225, 175, 1)',
+                        'rgba(34, 139, 34, 1)'
                     ],
                     borderWidth: 1
                 }]

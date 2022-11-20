@@ -76,11 +76,6 @@ def calculate_factor(zipcode):
     return score, nFactors
 
 
-testScore, testFactors = calculate_factor(11215)
-print("test user score: ", testFactors[6])
-print("total score: ", testScore)
-
-
 def calculate_score(zipcode):
     # ?: calculate the score for particular zipcode
     post = ScoreTable.objects.get(zipcode=zipcode)
