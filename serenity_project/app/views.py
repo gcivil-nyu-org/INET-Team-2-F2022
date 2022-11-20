@@ -143,7 +143,6 @@ def search(request):  # pragma: no cover
                 if factor != "userAvg":
                     setattr(post, factor, normals[count])
                     count += 1
-            # norm_score, normals = calculate_factor(zipcode=search)
             post.raw = norm_score
             post.grade = _get_grade_from_score(norm_score)
             # post.save()
