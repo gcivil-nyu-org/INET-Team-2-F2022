@@ -143,6 +143,12 @@
                     filters.push(factor.id);
                 }
             });
+            console.log(filters);
+            if (!filters.length) {
+                console.log("No filters selected");
+                location.reload(true);;
+            } else {
+                
             // Create new grades for all zipcodes with the filters
             // console.log(zipDiction["11220"]);
             var filterDiction1 = {};
@@ -292,6 +298,7 @@
                     infowindow.setOptions({ pixelOffset: new google.maps.Size(0, -30) }); // move the infowindow up slightly to the top of the marker icon
                     infowindow.open(map);
                 });
+            }
         };
 
 
