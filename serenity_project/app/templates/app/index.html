@@ -143,21 +143,21 @@
                     filters.push(factor.id);
                 }
             });
-            console.log(filters);
+            
             if (!filters.length) {
                 console.log("No filters selected");
                 location.reload(true);;
             } else {
                 
             // Create new grades for all zipcodes with the filters
-            // console.log(zipDiction["11220"]);
+            
             var filterDiction1 = {};
             var zipcodes = Object.keys(zipDiction);
             function sum( obj ) {
                 var sum = 0;
                 for( var el in obj ) {
                 if( obj.hasOwnProperty( el ) ) {
-                    console.log(el);
+                    
 
                     if (el == "parkCount") {
                         sum += -parseFloat( obj[el] );
@@ -216,10 +216,7 @@
                 var subset = filterDiction1[zipcode]
                 filterDiction1[zipcode]["grade"] = score_to_grade((sum(subset) - min) / (max - min));
             }
-            console.log(filterDiction1)
             
-
-            console.log(subset);
 
 
             var map;
@@ -392,6 +389,7 @@
 
                     }
                 });
+                
 
                 var infowindow = new google.maps.InfoWindow();
 
