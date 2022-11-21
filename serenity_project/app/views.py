@@ -28,9 +28,14 @@ class ScoreTableViewSet(viewsets.ModelViewSet):
 
 
 def index(request):
+
+    # RUN THE BELOW COMMENTED CODE TO UPDATE GRADES ACROSS THE MAP
+    # LOAD THE SITE, THEN COMMENT THE CODE OUT AGAIN.
+
     # allposts = ScoreTable.objects.all()
     # for post in allposts:
-    #     post.grade = calculate_score(post.zipcode)
+    #     score = calculate_factor(post.zipcode)[0] #only getting score
+    #     post.grade = _get_grade_from_score(score)
     #     post.save()
     return render(request, "app/index.html", {})
 
@@ -41,39 +46,6 @@ def calculate_factor(zipcode):
     weights = []
     nFactors = []
     factors = (
-        "residentialNoise",
-        "dirtyConditions",
-        "sanitationCondition",
-        "wasteDisposal",
-        "unsanitaryCondition",
-        "constructionImpact",
-        "userAvg",
-    )
-    for factor in factors:
-        currSet = ScoreTable.objects.values_list(factor, flat=True)
-        arr = np.array(currSet)
-        normal = getattr(zipcodeFactors, factor) / np.linalg.norm(arr)
-        nFactors.append(round(normal, 2))
-        score = 0
-        if normal != 0:
-            n.append(normal)
-            if factor == "constructionImpact":
-                weights.append(4)
-            elif factor == "userAvg":
-                weights.append(0.5)
-            else:
-                weights.append(1)
-    if normal != 0:
-        n = np.array(n)
-        weights = np.array(weights)
-        score = round(np.average(n, weights=weights), 2)
-    return score, nFactors
-
-
-def calculate_score(zipcode):
-    #  ?: calculate the score for particular zipcode
-    post = ScoreTable.objects.get(zipcode=zipcode)
-    factors = (
         ("residentialNoise", 1),
         ("dirtyConditions", 1),
         ("sanitationCondition", 1),
@@ -82,35 +54,43 @@ def calculate_score(zipcode):
         ("constructionImpact", 4),
         ("userAvg", 1),
         ("treeCensus", -1),
-        ("parkCount", -1),
+        ("parkCount", -2),
     )
     score = 0
     for factor, weight in factors:
-        factorSet = np.array(ScoreTable.objects.values_list(factor, flat=True))
-
-        rawScore = getattr(post, factor)
-        if rawScore == 0 and factor != "userAvg":
-            return "N"
-        normScore = rawScore / np.linalg.norm(factorSet)
-        score += normScore * weight
-    return _get_grade_from_score(score)
+        currSet = ScoreTable.objects.values_list(factor, flat=True)
+        arr = np.array(currSet)
+        normal = getattr(zipcodeFactors, factor) / np.linalg.norm(arr)
+        nFactors.append(round(normal, 2))
+        if factor == "userAvg":
+            currUserScore = normal
+        elif normal != 0:
+            n.append(normal)
+            weights.append(weight)
+    score = round(np.average(n, weights=weights), 2)
+    if currUserScore != 0:
+        if currUserScore > score:
+            score = round(((score + (0.5 * currUserScore)) / 2), 2)
+        else:
+            score = round(((score - (0.5 * currUserScore)) / 2), 2)
+    return score, nFactors
 
 
 def _get_grade_from_score(score):
     grade = "N"
-    if score >= 0.4:
+    if score >= 0.6:
         grade = "G"
-    elif score < 0.4 and score >= 0.3:
+    elif score < 0.6 and score >= 0.5:
         grade = "F"
-    elif score < 0.3 and score >= 0.2:
+    elif score < 0.5 and score >= 0.4:
         grade = "E"
-    elif score < 0.2 and score >= 0.15:
+    elif score < 0.4 and score >= 0.3:
         grade = "D"
-    elif score < 0.15 and score >= 0.1:
+    elif score < 0.3 and score >= 0.2:
         grade = "C"
-    elif score < 0.1 and score >= 0.05:
+    elif score < 0.2 and score >= 0.1:
         grade = "B"
-    elif score < 0.05 and score >= 0:
+    elif score < 0.1 and score >= 0:
         grade = "A"
     return grade
 
@@ -121,25 +101,27 @@ def search(request):  # pragma: no cover
         search = request.POST["searched"]
         try:
             post = ScoreTable.objects.get(zipcode=search)
-            # norm_score, normals = calculate_factor(search)
-            # factors = (
-            #     "residentialNoise",
-            #     "dirtyConditions",
-            #     "sanitationCondition",
-            #     "wasteDisposal",
-            #     "unsanitaryCondition",
-            #     "constructionImpact",
-            #     "userAvg",
-            # )
-            # count = 0
-            # for factor in factors:
-            #     if factor != "userAvg":
-            #         setattr(post, factor, normals[count])
-            #         count += 1
-            post.grade = calculate_score(zipcode=search)
+            norm_score, normals = calculate_factor(search)
+            factors = (
+                "residentialNoise",
+                "dirtyConditions",
+                "sanitationCondition",
+                "wasteDisposal",
+                "unsanitaryCondition",
+                "constructionImpact",
+                "userAvg",
+                "treeCensus",
+                "parkCount",
+            )
+            count = 0
+            for factor in factors:
+                if factor != "userAvg":
+                    setattr(post, factor, normals[count])
+                    count += 1
+            post.raw = norm_score
+            post.grade = _get_grade_from_score(norm_score)
             # post.save()
             rounded = round(post.userAvg, 2)
-
             return render(
                 request,
                 "app/search.html",
@@ -173,19 +155,19 @@ def submit_rating(request):
 
 def update_user_rating(total, grade):
     if grade == "A":
-        total += 0.05
-    if grade == "B":
         total += 0.1
-    if grade == "C":
-        total += 0.15
-    if grade == "D":
+    if grade == "B":
         total += 0.2
-    if grade == "E":
+    if grade == "C":
         total += 0.3
-    if grade == "F":
+    if grade == "D":
         total += 0.4
-    if grade == "G":
+    if grade == "E":
         total += 0.5
+    if grade == "F":
+        total += 0.6
+    if grade == "G":
+        total += 0.7
     return total
 
 
@@ -214,7 +196,8 @@ def get_rating(request):
                 post.userGrade = update_user_rating(total, grade)
                 post.userAvg = post.userGrade / count
                 post.save()
-                post.grade = calculate_score(zipcode=zip)
+                score = calculate_factor(zipcode=zip)[0]  # only getting score
+                post.grade = _get_grade_from_score(score)
                 post.save()
                 return render(
                     request,

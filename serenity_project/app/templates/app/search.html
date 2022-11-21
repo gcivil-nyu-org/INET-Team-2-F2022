@@ -96,7 +96,10 @@
     <p>The 'Waste Disposal' score is <b>{{post.wasteDisposal}}</b></p>
     <p>The 'Unsanitary Conditions' score is <b>{{post.unsanitaryCondition}}</b></p>
     <p>The 'Construction Impact' score is <b>{{post.constructionImpact}}</b></p>
+    <p>The 'Tree Census' score is <b>{{post.treeCensus}}</b></p>
+    <p>The 'Parks Properties' score is <b>{{post.parkCount}}</b> </p>
     <h2>Overall SerenityScore: {{post.grade}}</h2>
+    <p> Raw SerenityScore: {{post.raw}} </p>
     <br>
     <h3>User Rating:
         {% if post.userAvg == 0 %}
@@ -122,13 +125,13 @@
     {% endblock %}
     <h3>About our scoring system:</h3>
     <p>Scores are on the range [0,1] with the lower scores representing zip codes are more peaceful.</p>
-    <p>A = [0,0.05)</p>
-    <p>B = [0.05,1)</p>
-    <p>C = [1,0.15)</p>
-    <p>D = [0.15,0.2)</p>
-    <p>E = [0.2,0.3)</p>
-    <p>F = [0.3,0.4)</p>
-    <p>G = 0.4+</p>
+    <p>A = [0,0.1)</p>
+    <p>B = [0.1,0.2)</p>
+    <p>C = [0.2,0.3)</p>
+    <p>D = [0.3,0.4)</p>
+    <p>E = [0.4,0.5)</p>
+    <p>F = [0.5,0.6)</p>
+    <p>G = 0.6+</p>
     <br>
 
     <h5 class="card-title">
@@ -138,8 +141,6 @@
     <a class="btn btn-success" href="{% url 'home' %}">New Search</a>
     </div>
 </body>
-
-
 
 
 {%block scripts%}
@@ -156,7 +157,9 @@ $(document).ready(function(){
                         "Sanitation Conditions",
                         "Waste Disposal",
                         "Unsanitary Conditoins",
-                        "Construction Impact"], //loop through queryset,
+                        "Construction Impact",
+                        "Tree Census",
+                        "Parks Properties"], //loop through queryset,
                 datasets: [{
                     label: '# of users',
                     data: [
@@ -165,23 +168,29 @@ $(document).ready(function(){
                         {{post.sanitationCondition}},
                         {{post.wasteDisposal}},
                         {{post.unsanitaryCondition}},
-                        {{post.constructionImpact}}
+                        {{post.constructionImpact}},
+                        {{post.treeCensus}},
+                        {{post.parkCount}}
                     ],
                     backgroundColor: [
                         'rgba(255, 99, 132, 0.2)',
                         'rgba(54, 162, 235, 0.2)',
                         'rgba(255, 206, 86, 0.2)',
-                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(202, 171, 145, 0.2)',
                         'rgba(153, 102, 255, 0.2)',
-                        'rgba(255, 159, 64, 0.2)'
+                        'rgba(255, 159, 64, 0.2)',
+                        'rgba(175, 225, 175, 0.2)',
+                        'rgba(34, 139, 34, 0.2)'
                     ],
                     borderColor: [
                         'rgba(255, 99, 132, 1)',
                         'rgba(54, 162, 235, 1)',
                         'rgba(255, 206, 86, 1)',
-                        'rgba(75, 192, 192, 1)',
+                        'rgba(202, 171, 145 1)',
                         'rgba(153, 102, 255, 1)',
-                        'rgba(255, 159, 64, 1)'
+                        'rgba(255, 159, 64, 1)',
+                        'rgba(175, 225, 175, 1)',
+                        'rgba(34, 139, 34, 1)'
                     ],
                     borderWidth: 1
                 }]
