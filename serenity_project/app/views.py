@@ -25,6 +25,7 @@ from django.contrib.auth import get_user
 class ScoreTableViewSet(viewsets.ModelViewSet):
     queryset = ScoreTable.objects.all()
     serializer_class = ScoreTableSerializer
+    http_method_names = ["get"]
 
 
 def index(request):
@@ -134,23 +135,30 @@ def search(request):  # pragma: no cover
             )
             return render(request, "app/index.html", {})
     else:
-
-        return render(request, "app/search.html", {}, csrfContext)
+        # return render(request, "app/search.html", {}, csrfContext)
+        return redirect("home")
 
 
 def find(request):
     find = request.POST["find"]
-    one_entry = ScoreTable.objects.get(zipcode=find)
-    b = one_entry.borough
-    return redirect("forum_zipcode", borough=b, pk=find)
+    try:
+        one_entry = ScoreTable.objects.get(zipcode=find)
+    except:
+        messages.error(
+            request, "Invalid NYC zipcode OR We don't have data for this zipcode."
+        )
+        return render(request, "app/forum_home.html", {})
+    return redirect("forum_zipcode", pk=find)
 
 
 @login_required(login_url="/login")
 def submit_rating(request):
     # csrfContext = RequestContext(request)
-    zip = request.POST.get("zip")
-    form = RatingForm(request.POST)
-    return render(request, "app/rate.html", {"form": form, "zip": zip})
+    if request.method == "POST":
+        zip = request.POST.get("zip")
+        form = RatingForm(request.POST)
+        return render(request, "app/rate.html", {"form": form, "zip": zip})
+    return redirect("home")
 
 
 def update_user_rating(total, grade):
@@ -211,6 +219,8 @@ def get_rating(request):
 
 
 def register_request(request):
+    if not request.user.is_anonymous:
+        return redirect("home")
     if request.method == "POST":
         form = NewUserForm(request.POST)
         if form.is_valid():
@@ -228,6 +238,8 @@ def register_request(request):
 
 
 def login_request(request):  # pragma: no cover
+    if not request.user.is_anonymous:
+        return redirect("home")
     if request.method == "POST":
         form = AuthenticationForm(request, data=request.POST)
         if form.is_valid():
@@ -262,6 +274,9 @@ def forum_home(request):
 
 def forum_borough(request, borough):
     # TODO: show zipcodes filtered by burough
+    boroughs = ["Manhattan", "Brooklyn", "Staten Island", "Queens", "Bronx"]
+    if borough not in boroughs:
+        return render(request, "404.html", status=404)
     forumPosts = ForumPost.objects.all()
     forumPosts = forumPosts.filter(zipcode__borough=borough)
     zipcodes = set()
@@ -276,10 +291,7 @@ def forum_borough(request, borough):
     return render(request, "app/forum_borough.html", context)
 
 
-# def find(request):
-
-
-def forum_zipcode(request, borough, pk):
+def forum_zipcode(request, pk):
     posts = ForumPost.objects.all()
     posts = posts.filter(zipcode__zipcode=pk)
     count = posts.count()
@@ -287,16 +299,20 @@ def forum_zipcode(request, borough, pk):
     for i in posts:
         comments.append(i.comment_set.all())
     context = {
-        "borough": borough,
         "zipcode": pk,
         "forumPosts": posts,
         "count": count,
         "comments": comments,
     }
+
+    allZips = ScoreTable.objects.all()
+    checkZip = allZips.filter(zipcode=pk)
+    if len(checkZip) == 0:
+        return render(request, "404.html", status=404)
     return render(request, "app/forum_zipcode.html", context)
 
 
-def forum_post(request, borough, pk, id):
+def forum_post(request, pk, id):
     id = int(id)
     posts = ForumPost.objects.all()
     posts = posts.filter(zipcode__zipcode=pk)
@@ -304,12 +320,16 @@ def forum_post(request, borough, pk, id):
     for i in posts:
         comments.append(i.comment_set.all())
     context = {
-        "borough": borough,
         "zipcode": pk,
         "forumPosts": posts,
         "comments": comments,
         "id": id,
     }
+
+    checkId = posts.filter(id=id)
+    if len(checkId) == 0:
+        return render(request, "404.html", status=404)
+
     return render(request, "app/forum_post.html", context)
 
 
