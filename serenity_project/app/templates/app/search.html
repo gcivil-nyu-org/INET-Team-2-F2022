@@ -135,7 +135,7 @@
     <br>
 
     <h5 class="card-title">
-        <a href="{% url 'forum_zipcode' borough=post.borough pk=post.zipcode %}"><h3>Check out the forum for {{post.zipcode}}</h3></a>
+        <a href="{% url 'forum_zipcode' pk=post.zipcode %}"><h3>Check out the forum for {{post.zipcode}}</h3></a>
     </h5>
 
     <a class="btn btn-success" href="{% url 'home' %}">New Search</a>

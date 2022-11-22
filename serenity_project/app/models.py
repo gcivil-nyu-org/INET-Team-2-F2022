@@ -21,7 +21,7 @@ class ScoreTable(models.Model):
     parkCount = models.FloatField(max_length=10)
 
     def __str__(self):
-        return f"Zipcode: {self.zipcode}, Score: {self.residentialNoise}, Grade:"
+        return f"{self.zipcode}"
 
 
 # parent model
