@@ -32,7 +32,6 @@ urlpatterns = [
     ),  # post
     path("addInForumPost/", views.addInForumPost, name="addInForumPost"),
     path("addInComment/", views.addInComment, name="addInComment"),
-    path("forumZipCodeList", views.forum_zipcode, name="forumZipCodeList"),
 ]
 
 handler404 = "app.views.page_not_found_view"

@@ -135,8 +135,8 @@ def search(request):  # pragma: no cover
             )
             return render(request, "app/index.html", {})
     else:
-
-        return render(request, "app/search.html", {}, csrfContext)
+        # return render(request, "app/search.html", {}, csrfContext)
+        return redirect("home")
 
 
 def find(request):
@@ -154,9 +154,11 @@ def find(request):
 @login_required(login_url="/login")
 def submit_rating(request):
     # csrfContext = RequestContext(request)
-    zip = request.POST.get("zip")
-    form = RatingForm(request.POST)
-    return render(request, "app/rate.html", {"form": form, "zip": zip})
+    if request.method == "POST":
+        zip = request.POST.get("zip")
+        form = RatingForm(request.POST)
+        return render(request, "app/rate.html", {"form": form, "zip": zip})
+    return redirect("home")
 
 
 def update_user_rating(total, grade):
@@ -217,6 +219,8 @@ def get_rating(request):
 
 
 def register_request(request):
+    if not request.user.is_anonymous:
+        return redirect("home")
     if request.method == "POST":
         form = NewUserForm(request.POST)
         if form.is_valid():
@@ -234,6 +238,8 @@ def register_request(request):
 
 
 def login_request(request):  # pragma: no cover
+    if not request.user.is_anonymous:
+        return redirect("home")
     if request.method == "POST":
         form = AuthenticationForm(request, data=request.POST)
         if form.is_valid():
@@ -268,6 +274,9 @@ def forum_home(request):
 
 def forum_borough(request, borough):
     # TODO: show zipcodes filtered by burough
+    boroughs = ["Manhattan", "Brooklyn", "Staten Island", "Queens", "Bronx"]
+    if borough not in boroughs:
+        return render(request, "404.html", status=404)
     forumPosts = ForumPost.objects.all()
     forumPosts = forumPosts.filter(zipcode__borough=borough)
     zipcodes = set()
