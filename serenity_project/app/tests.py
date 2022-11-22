@@ -246,7 +246,7 @@ class TestForumZip(TestCase):
         req = HttpRequest()
         req.method = "POST"
         req.POST = {"searched": 11220}
-        response = forum_zipcode(req, "Manhattan", "10012")
+        response = forum_zipcode(req, "11220")
         self.assertEqual(response.status_code, 200)
 
 
