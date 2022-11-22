@@ -11,18 +11,17 @@ class ScoreTable(models.Model):
     sanitationCondition = models.FloatField(max_length=10)
     wasteDisposal = models.FloatField(max_length=10)
     unsanitaryCondition = models.FloatField(max_length=10)
-    grade = "A"
+    grade = models.CharField(default="N", max_length=10)
     gradeCount = models.FloatField(default=0, max_length=10)
     userAvg = models.FloatField(default=0, max_length=10)
     userGrade = models.FloatField(default=0, max_length=10)
     borough = models.CharField(max_length=100)
     constructionImpact = models.FloatField(max_length=10)
+    treeCensus = models.FloatField(max_length=10)
+    parkCount = models.FloatField(max_length=10)
 
     def __str__(self):
         return f"Zipcode: {self.zipcode}, Score: {self.residentialNoise}, Grade:"
-
-    # def serenity_score(self):
-    #     return str(self.residential_Noise)
 
 
 # parent model
