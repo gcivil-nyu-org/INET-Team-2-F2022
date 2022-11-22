@@ -25,7 +25,7 @@ from django.contrib.auth import get_user
 class ScoreTableViewSet(viewsets.ModelViewSet):
     queryset = ScoreTable.objects.all()
     serializer_class = ScoreTableSerializer
-    http_method_names = ['get']
+    http_method_names = ["get"]
 
 
 def index(request):
@@ -145,8 +145,8 @@ def find(request):
         one_entry = ScoreTable.objects.get(zipcode=find)
     except:
         messages.error(
-                request, "Invalid NYC zipcode OR We don't have data for this zipcode."
-            )
+            request, "Invalid NYC zipcode OR We don't have data for this zipcode."
+        )
         return render(request, "app/forum_home.html", {})
     return redirect("forum_zipcode", pk=find)
 
@@ -291,8 +291,6 @@ def forum_borough(request, borough):
     return render(request, "app/forum_borough.html", context)
 
 
-
-
 def forum_zipcode(request, pk):
     posts = ForumPost.objects.all()
     posts = posts.filter(zipcode__zipcode=pk)
@@ -301,7 +299,6 @@ def forum_zipcode(request, pk):
     for i in posts:
         comments.append(i.comment_set.all())
     context = {
-        
         "zipcode": pk,
         "forumPosts": posts,
         "count": count,
@@ -309,7 +306,7 @@ def forum_zipcode(request, pk):
     }
 
     allZips = ScoreTable.objects.all()
-    checkZip = allZips.filter(zipcode = pk)
+    checkZip = allZips.filter(zipcode=pk)
     if len(checkZip) == 0:
         return render(request, "404.html", status=404)
     return render(request, "app/forum_zipcode.html", context)
@@ -329,7 +326,7 @@ def forum_post(request, pk, id):
         "id": id,
     }
 
-    checkId = posts.filter(id = id)
+    checkId = posts.filter(id=id)
     if len(checkId) == 0:
         return render(request, "404.html", status=404)
 

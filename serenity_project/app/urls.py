@@ -27,9 +27,7 @@ urlpatterns = [
     path(
         "forumPosts/zipcode/<pk>/", views.forum_zipcode, name="forum_zipcode"
     ),  # zipcode
-    path(
-        "forumPosts/zipcode/<pk>/<id>/", views.forum_post, name="forum_post"
-    ),  # post
+    path("forumPosts/zipcode/<pk>/<id>/", views.forum_post, name="forum_post"),  # post
     path("addInForumPost/", views.addInForumPost, name="addInForumPost"),
     path("addInComment/", views.addInComment, name="addInComment"),
 ]
