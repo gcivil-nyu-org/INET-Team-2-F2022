@@ -20,9 +20,9 @@ deploy:
   secret_access_key:
     secure: "iou6zea4+bYnjwK2fnaQaG9lRTWPSKvJuzCUcizdoSeruXXidSIMs/XgKSrsB7ccDeV709vDBz/nb41iCo/4X4L6+yzofuHRoIV2/3pqMRAwxd+h1fpwllXRACD1T10IHN5YJTzqZeX2wjpU3c+5+dn6gWK9tn17H1EufrEGubT9Iol3soIIjAilz+dwYMdJ+m4rh2ot3AVA5/l4iVzwVheOxtE/VDkBK5zd6PNGsslihOCrQHxJL5BRS7s6qJlftMlo0aJQSBLA77/brw9eYtxC/XYr7giIR4KadYdNnCa+AY7NOEGZI9ivOTnCGvwjrVrhNqlEekpOsjEswGwBncK96+q/u/e+LbXuRYyfRhhB0d3VxnuiMKQMidDzGx0sSiuMm5ZaJ25MSt3vVrGSKUuYiYGlGVaTzinLlFPcPxc7kGMIJ2jCm6xue3ydPklc/pI+DrKqnDaM2JA4MGecoFmnTm6h4xzeVPPg8O2UTEF72pyV9L4pMvtY2z7hueRhUVfy/9foTsSZmQloe/n0+BZgwBlKq7sSC5pf+1M1jt+lPX05wp0PkQasczeOFZMMY4RYR/i3oUwViU0FNP76+gieB47yYyPSzOPE6bk9J4UwxGq5gdX8MkWgU/prEIuf+0MuFDthzKjEwwXLid+0lMfRZsBMSs7G0Eolcu1w2bY="
   region: "us-west-2"
-  app: "se-proj-main"
-  env: "se-proj-main-env"
-  bucket_name: "se-proj-main-bucket"
+  app: "se-proj-develop"
+  env: "se-proj-develop-env"
+  bucket_name: "elasticbeanstalk-us-west-2-356581229861"
   on:
     all_branches: true
 
