@@ -96,7 +96,7 @@
     <p>The 'Waste Disposal' score is <b>{{post.wasteDisposal}}</b></p>
     <p>The 'Unsanitary Conditions' score is <b>{{post.unsanitaryCondition}}</b></p>
     <p>The 'Construction Impact' score is <b>{{post.constructionImpact}}</b></p>
-    <p>The 'Tree Census' score is <b>{{post.treeCensus}}</b></p>
+    
     <p>The 'Parks Properties' score is <b>{{post.parkCount}}</b> </p>
     <h2>Overall SerenityScore: {{post.grade}}</h2>
     <p> Raw SerenityScore: {{post.raw}} </p>
@@ -144,6 +144,43 @@
 
 
 {%block scripts%}
+<div style="display: flex; justify-content: space-around">
+    <div>
+        
+        {% autoescape off %}
+        {{ plot_div }}
+        {% endautoescape %}</div>
+        <br>
+        
+    <div>
+        
+        {% autoescape off %}
+        {{ plot_div1 }}
+        {% endautoescape %}</div>
+        <br>
+
+  </div>
+<br>
+  <div style="display: flex; justify-content: space-around">
+    <div>
+        
+        {% autoescape off %}
+        {{ plot_div2 }}
+        {% endautoescape %}</div>
+        <br>
+        
+    <div>
+        
+        {% autoescape off %}
+        {{ plot_div3 }}
+        {% endautoescape %}</div>
+        <br>
+  </div>
+<center>
+  {% autoescape off %}
+        {{ plot_div4 }}
+        {% endautoescape %}
+    </center>
 <script>
 // jquery function
 $(document).ready(function(){

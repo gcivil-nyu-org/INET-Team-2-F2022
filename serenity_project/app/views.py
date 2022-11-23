@@ -18,6 +18,8 @@ import pandas as pd
 import numpy as np
 from django.http import HttpResponse
 from django.contrib.auth import get_user
+from plotly.offline import plot
+import plotly.figure_factory as ff
 
 # from .changedata import changemap
 
@@ -102,6 +104,10 @@ def search(request):  # pragma: no cover
         search = request.POST["searched"]
         try:
             post = ScoreTable.objects.get(zipcode=search)
+            parkCountPoint = post.parkCount
+            treeCensusPoint = post.treeCensus
+            residentialNoisePoint = post.residentialNoise
+            dirtyConditionsPoint = post.dirtyConditions
             norm_score, normals = calculate_factor(search)
             factors = (
                 "residentialNoise",
@@ -123,10 +129,125 @@ def search(request):  # pragma: no cover
             post.grade = _get_grade_from_score(norm_score)
             # post.save()
             rounded = round(post.userAvg, 2)
+            constructionImpact = []
+            residentialNoise = []
+            dirtyConditions = []
+            sanitationCondition = []
+            wasteDisposal = []
+            unsanitaryCondition = []
+            treeCensus = []
+            parkCount = []
+            grade = []
+            allposts = ScoreTable.objects.all()
+            for row in allposts:
+                constructionImpact.append(row.constructionImpact)
+                residentialNoise.append(row.residentialNoise)
+                dirtyConditions.append(row.dirtyConditions)
+                sanitationCondition.append(row.sanitationCondition)
+                wasteDisposal.append(row.wasteDisposal)
+                unsanitaryCondition.append(row.unsanitaryCondition)
+                treeCensus.append(row.treeCensus)
+                parkCount.append(row.parkCount)
+                grade.append(row.grade)
+
+            group_labels = ["Park Count"]  # name of the dataset
+            # plot_div = px.histogram(df, x="total_bill", y="tip",
+            # color="sex", marginal="rug", hover_data=df.columns)
+            park_div = ff.create_distplot([parkCount], group_labels, colors=["#FF33E9"])
+
+            park_div.update_traces(
+                x=[parkCountPoint],
+                marker=dict(
+                    color="red", line=dict(width=5, color="DarkSlateGrey"), size=12
+                ),
+                selector=dict(mode="markers"),
+            )
+            park_div.update_layout(
+                width=650,
+                height=500,
+                title_text="Park Count Distribution",
+                template="ggplot2",
+            )
+
+            group_labels = ["Tree Count"]
+
+            tree_div = ff.create_distplot(
+                [treeCensus], group_labels, bin_size=100, colors=["#FFC300"]
+            )
+
+            tree_div.update_traces(
+                x=[treeCensusPoint],
+                marker=dict(
+                    color="red", line=dict(width=5, color="DarkSlateGrey"), size=12
+                ),
+                selector=dict(mode="markers"),
+            )
+            tree_div.update_layout(
+                width=650,
+                height=500,
+                title_text="Tree Count Distribution",
+                template="ggplot2",
+            )
+
+            group_labels = ["Residential Noise"]
+            res_div = ff.create_distplot(
+                [residentialNoise], group_labels, bin_size=10, colors=["#9C33FF"]
+            )
+
+            res_div.update_traces(
+                x=[residentialNoisePoint],
+                marker=dict(
+                    color="red", line=dict(width=5, color="DarkSlateGrey"), size=12
+                ),
+                selector=dict(mode="markers"),
+            )
+            res_div.update_layout(
+                width=650,
+                height=500,
+                title_text="Residential Noise Distribution",
+                template="ggplot2",
+            )
+
+            group_labels = ["Dirty Conditions"]
+            dirty_div = ff.create_distplot(
+                [dirtyConditions], group_labels, colors=["#C70039"]
+            )
+
+            dirty_div.update_traces(
+                x=[dirtyConditionsPoint],
+                marker=dict(
+                    color="red", line=dict(width=5, color="DarkSlateGrey"), size=12
+                ),
+                selector=dict(mode="markers"),
+            )
+            dirty_div.update_layout(
+                width=650,
+                height=500,
+                title_text="Dirty Conditions Distribution",
+                template="ggplot2",
+            )
+
+            import plotly.express as px
+
+            fig = px.scatter_3d(
+                x=np.log(parkCount),
+                y=np.log(treeCensus),
+                z=np.log(residentialNoise),
+                color=grade,
+            ).to_html(full_html=False, default_height=500, default_width=500)
+
             return render(
                 request,
                 "app/search.html",
-                {"post": post, "rounded": rounded},
+                {
+                    "post": post,
+                    "rounded": rounded,
+                    "plot_div": park_div.to_html(full_html=False),
+                    "plot_div1": tree_div.to_html(full_html=False),
+                    "plot_div2": res_div.to_html(full_html=False),
+                    "plot_div3": dirty_div.to_html(full_html=False),
+                    "plot_div4": fig,
+                },
             )
         except ScoreTable.DoesNotExist:
             print("entered else")
