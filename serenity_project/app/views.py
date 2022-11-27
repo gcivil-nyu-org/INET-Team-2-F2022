@@ -65,7 +65,7 @@ def calculate_factor(zipcode):
         nFactors.append(round(normal, 2))
         if factor == "userAvg":
             currUserScore = normal
-        elif normal != 0:
+        elif factor != "userAvg" and normal != 0:
             n.append(normal)
             weights.append(weight)
     score = round(np.average(n, weights=weights), 2)
@@ -118,6 +118,8 @@ def search(request):  # pragma: no cover
             for factor in factors:
                 if factor != "userAvg":
                     setattr(post, factor, normals[count])
+                    count += 1
+                else:
                     count += 1
             post.raw = norm_score
             post.grade = _get_grade_from_score(norm_score)
