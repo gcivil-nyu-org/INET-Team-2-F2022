@@ -198,7 +198,7 @@ class testSearchView(TestCase):
         req = HttpRequest()
         req.method = "POST"
         req.POST = {"searched": 11220}
-        response = search(req)
+        response = search(req, True)
         assert response.status_code == 200
 
 

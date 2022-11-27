@@ -99,7 +99,7 @@ def _get_grade_from_score(score):
     return grade
 
 
-def search(request):  # pragma: no cover
+def search(request, test=False):  # pragma: no cover
     csrfContext = RequestContext(request)
     if request.method == "POST":
 
@@ -191,7 +191,7 @@ def search(request):  # pragma: no cover
             #     return fig
 
             # test1=multiplot(menu)
-            if True:
+            if not test:
                 group_labels = ["Park Count"]
                 park_div = ff.create_distplot(
                     [parkCount], group_labels, colors=["#FF33E9"]
@@ -289,6 +289,8 @@ def search(request):  # pragma: no cover
                         "plot_div4": fig,
                     },
                 )
+            else:
+                return render(request, "app/search.html", {"post": post})
 
         except ScoreTable.DoesNotExist:
             print("entered else")
