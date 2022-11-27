@@ -18,8 +18,9 @@ import pandas as pd
 import numpy as np
 from django.http import HttpResponse
 from django.contrib.auth import get_user
-from plotly.offline import plot
+import plotly.express as px
 import plotly.figure_factory as ff
+import plotly.graph_objects as go
 
 # from .changedata import changemap
 
@@ -101,6 +102,7 @@ def _get_grade_from_score(score):
 def search(request):  # pragma: no cover
     csrfContext = RequestContext(request)
     if request.method == "POST":
+
         search = request.POST["searched"]
         try:
             post = ScoreTable.objects.get(zipcode=search)
@@ -149,106 +151,145 @@ def search(request):  # pragma: no cover
                 treeCensus.append(row.treeCensus)
                 parkCount.append(row.parkCount)
                 grade.append(row.grade)
+            # menu=["constructionImpact","residentialNoise","sanitationCondition","treeCensus","parkCount"]
 
-            group_labels = ["Park Count"]  # name of the dataset
-            # plot_div = px.histogram(df, x="total_bill", y="tip",
-            # color="sex", marginal="rug", hover_data=df.columns)
-            park_div = ff.create_distplot([parkCount], group_labels, colors=["#FF33E9"])
+            # def multiplot(menu):
+            #     #fig = ff.create_distplot([constructionImpact,residentialNoise,
+            # sanitationCondition,treeCensus,parkCount], menu, bin_size=.2)
+            #     dt=[constructionImpact,residentialNoise,sanitationCondition,treeCensus,parkCount]
+            #     first_title = menu[0]
+            #     traces = []
+            #     buttons = []
+            #     for i,d in enumerate(menu):
+            #         visible = [False] * len(menu)
+            #         visible[i] = True
+            #         name = d
+            #         print(visible)
+            #         traces.append(go.Histogram(x=dt[i],visible=True if i==0 else False))
+            #         if name == "constructionImpact":
+            #              traces.append(go.Histogram(x=constructionImpact, name=name, visible=visible[0]))
+            #         elif name == "residentialNoise":
+            #              traces.append(go.Histogram(x=residentialNoise, name=name, visible=visible[1]))
+            #         elif name == "sanitationCondition":
+            #              traces.append(go.Histogram(x=sanitationCondition, name=name, visible=visible[2]))
+            #         elif name == "treeCensus":
+            #              traces.append(go.Histogram(x=treeCensus, name=name, visible=visible[3]))
+            #         elif name == "parkCount":
+            #              traces.append(go.Histogram(x=parkCount, name=name,  visible=visible[4]))
+            #         buttons.append(dict(label=name,
+            #             method="update",
+            #             args=[{"title":f"{name}"}]))
 
-            park_div.update_traces(
-                x=[parkCountPoint],
-                marker=dict(
-                    color="red", line=dict(width=5, color="DarkSlateGrey"), size=12
-                ),
-                selector=dict(mode="markers"),
-            )
-            park_div.update_layout(
-                width=650,
-                height=500,
-                title_text="Park Count Distribution",
-                template="ggplot2",
-            )
+            #     updatemenus = [{'active':0, "buttons":buttons}]
+            #     print(updatemenus)
 
-            group_labels = ["Tree Count"]
+            #     fig = go.Figure(data=traces,
+            #      layout=dict(updatemenus=updatemenus))
+            #     fig.update_layout(title=first_title, title_x=0.5)
 
-            tree_div = ff.create_distplot(
-                [treeCensus], group_labels, bin_size=100, colors=["#FFC300"]
-            )
+            #     #fig = px.histogram(x=treeCensus)
+            #     return fig
 
-            tree_div.update_traces(
-                x=[treeCensusPoint],
-                marker=dict(
-                    color="red", line=dict(width=5, color="DarkSlateGrey"), size=12
-                ),
-                selector=dict(mode="markers"),
-            )
-            tree_div.update_layout(
-                width=650,
-                height=500,
-                title_text="Tree Count Distribution",
-                template="ggplot2",
-            )
+            # test1=multiplot(menu)
+            if True:
+                group_labels = ["Park Count"]
+                park_div = ff.create_distplot(
+                    [parkCount], group_labels, colors=["#FF33E9"]
+                )
 
-            group_labels = ["Residential Noise"]
-            res_div = ff.create_distplot(
-                [residentialNoise], group_labels, bin_size=10, colors=["#9C33FF"]
-            )
+                park_div.update_traces(
+                    x=[parkCountPoint],
+                    marker=dict(
+                        color="red", line=dict(width=5, color="DarkSlateGrey"), size=12
+                    ),
+                    selector=dict(mode="markers"),
+                )
+                park_div.update_layout(
+                    width=650,
+                    height=500,
+                    title_text="Park Count Distribution",
+                    template="ggplot2",
+                )
 
-            res_div.update_traces(
-                x=[residentialNoisePoint],
-                marker=dict(
-                    color="red", line=dict(width=5, color="DarkSlateGrey"), size=12
-                ),
-                selector=dict(mode="markers"),
-            )
-            res_div.update_layout(
-                width=650,
-                height=500,
-                title_text="Residential Noise Distribution",
-                template="ggplot2",
-            )
+                group_labels = ["Tree Count"]
 
-            group_labels = ["Dirty Conditions"]
-            dirty_div = ff.create_distplot(
-                [dirtyConditions], group_labels, colors=["#C70039"]
-            )
+                tree_div = ff.create_distplot(
+                    [treeCensus], group_labels, bin_size=100, colors=["#FFC300"]
+                )
 
-            dirty_div.update_traces(
-                x=[dirtyConditionsPoint],
-                marker=dict(
-                    color="red", line=dict(width=5, color="DarkSlateGrey"), size=12
-                ),
-                selector=dict(mode="markers"),
-            )
-            dirty_div.update_layout(
-                width=650,
-                height=500,
-                title_text="Dirty Conditions Distribution",
-                template="ggplot2",
-            )
+                tree_div.update_traces(
+                    x=[treeCensusPoint],
+                    marker=dict(
+                        color="red", line=dict(width=5, color="DarkSlateGrey"), size=12
+                    ),
+                    selector=dict(mode="markers"),
+                )
+                tree_div.update_layout(
+                    width=650,
+                    height=500,
+                    title_text="Tree Count Distribution",
+                    template="ggplot2",
+                )
 
-            import plotly.express as px
+                group_labels = ["Residential Noise"]
+                res_div = ff.create_distplot(
+                    [residentialNoise], group_labels, bin_size=10, colors=["#9C33FF"]
+                )
 
-            fig = px.scatter_3d(
-                x=np.log(parkCount),
-                y=np.log(treeCensus),
-                z=np.log(residentialNoise),
-                color=grade,
-            ).to_html(full_html=False, default_height=500, default_width=500)
+                res_div.update_traces(
+                    x=[residentialNoisePoint],
+                    marker=dict(
+                        color="red", line=dict(width=5, color="DarkSlateGrey"), size=12
+                    ),
+                    selector=dict(mode="markers"),
+                )
+                res_div.update_layout(
+                    width=650,
+                    height=500,
+                    title_text="Residential Noise Distribution",
+                    template="ggplot2",
+                )
 
-            return render(
-                request,
-                "app/search.html",
-                {
-                    "post": post,
-                    "rounded": rounded,
-                    "plot_div": park_div.to_html(full_html=False),
-                    "plot_div1": tree_div.to_html(full_html=False),
-                    "plot_div2": res_div.to_html(full_html=False),
-                    "plot_div3": dirty_div.to_html(full_html=False),
-                    "plot_div4": fig,
-                },
-            )
+                group_labels = ["Dirty Conditions"]
+                dirty_div = ff.create_distplot(
+                    [dirtyConditions], group_labels, colors=["#C70039"]
+                )
+
+                dirty_div.update_traces(
+                    x=[dirtyConditionsPoint],
+                    marker=dict(
+                        color="red", line=dict(width=5, color="DarkSlateGrey"), size=12
+                    ),
+                    selector=dict(mode="markers"),
+                )
+                dirty_div.update_layout(
+                    width=650,
+                    height=500,
+                    title_text="Dirty Conditions Distribution",
+                    template="ggplot2",
+                )
+
+                fig = px.scatter_3d(
+                    x=np.log(parkCount),
+                    y=np.log(treeCensus),
+                    z=np.log(residentialNoise),
+                    color=grade,
+                ).to_html(full_html=False, default_height=500, default_width=500)
+
+                return render(
+                    request,
+                    "app/search.html",
+                    {
+                        "post": post,
+                        "rounded": rounded,
+                        "plot_div": park_div.to_html(full_html=False),
+                        "plot_div1": tree_div.to_html(full_html=False),
+                        "plot_div2": res_div.to_html(full_html=False),
+                        "plot_div3": dirty_div.to_html(full_html=False),
+                        "plot_div4": fig,
+                    },
+                )
+
         except ScoreTable.DoesNotExist:
             print("entered else")
             messages.error(
