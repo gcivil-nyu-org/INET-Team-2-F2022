@@ -1,24 +1,44 @@
 <!DOCTYPE html>
 {%load static%}
 <html>
-    <head>
-        <style>
-            h1 {text-align: center;}
-            p {color:darkolivegreen; margin:30px;}
-            h2 {color:forestgreen; margin:30px;}
-            p {text-align: right;}
-            div {text-align: center;}
-        </style>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Serenity Search Result</title>
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Catamaran:wght@200;400;700&family=Chau+Philomene+One&display=swap" rel="stylesheet">
-        <link href="{% static 'css/forum.css' %}" rel="stylesheet">
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous"0>
-    
-    </head>
+
+<head>
+    <style>
+        h1 {
+            text-align: center;
+        }
+
+        p {
+            color: darkolivegreen;
+            margin: 30px;
+        }
+
+        h2 {
+            color: forestgreen;
+            margin: 30px;
+        }
+
+        p {
+            text-align: right;
+        }
+
+        div {
+            text-align: center;
+        }
+    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Serenity Search Result</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Catamaran:wght@200;400;700&family=Chau+Philomene+One&display=swap"
+        rel="stylesheet">
+    <link href="{% static 'css/styles.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+        integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous" 0>
+
+</head>
 
 <body style="background-color:ECFFE8;">
 
@@ -67,16 +87,117 @@
 
     </nav>
     <br><br>
-<h2 style="color:ForestGreen;"> Why Search for Serenity? </h2>
-<p> ...because mental health reasons...</p>
-<br>
+    <div class="container">
+        <div class="container">
+            <h2> Why Search for Serenity? </h2>
 
-<h2> About Our Scoring </h2>
-<p> Our team pulled publicly available datasets containing information we believe is fundamental or detrimental to healthy, peaceful living.</p>
-<p> blah blah blah</p>  
+            <p> ...because mental health reasons...</p>
+        </div>
 
-<h2> Why User Feedback? </h2>
-<p> No one knows your own neighborhood better than you! </p>
+
+
+    </div>
+    <br>
+
+    <div class="container">
+        <h2> About Our Scoring </h2>
+
+        <div class="container">
+            <p> Our team pulled publicly available datasets containing information we believe is fundamental or
+                detrimental to healthy, peaceful living.</p>
+
+            <h3>NYC 311 Dataset</h3>
+            <p>This 311 data contains information about
+                more than 24 million service requests made since 2010. For those who aren’t familiar,
+                311 is a phone number used in the U.S. that allows callers to access non-emergency municipal services,
+                report problems to government agencies, and request information.</p>
+            <p>From this dataset we collected reports related to Residential Noise Complaints, Dirty Condition
+                Complaints, Sanitation Complaints, and Waste Disposal Requests.</p>
+        </div>
+
+        <div class="container">
+            <p> Our team pulled publicly available datasets containing information we believe is fundamental or
+                detrimental to healthy, peaceful living.</p>
+
+            <h3>DOF Construction Permits</h3>
+            <p>The Department of Buildings (DOB) issues permits for construction and demolition activities in the City
+                of New York. The construction industry must submit an application to DOB with details of the
+                construction job they would like to complete. The primary types of application, aka job type, are: New
+                Building, Demolition, and Alterations Type 1, 2, and 3. Each job type can have multiple work types, such
+                as general construction, boiler, elevator, and plumbing. Each work type will receive a separate permit.
+                Each row/record in this dataset represents the life cycle of one permit for one work type. The dataset
+                is
+                updated daily with new records, and each existing record will be updated as the permit application moves
+                through the approval process to reflect the latest status of the application.</p>
+
+            <p>
+                We estimated scores on the impact the work will have, higher scores mean more impact.
+            <ul>
+                <h5>Actitivties and estimated relative impact:</h5>
+                <li>
+                    A1 = Alteration Type I, A major alteration that will change the use, egress, or occupancy of the
+                    building.
+                    <h6>IMPACT = 4</h6>
+                </li>
+                <li>
+                    A2 = Alteration Type II, An application with multiple types of work that do not affect the use,
+                    egress, or occupancy of the building.
+                    <h6>IMPACT = 3</h6>
+                </li>
+                <li>
+                    A3 = Alteration Type III, One type of minor work that doesn't affect the use, egress, or occupancy
+                    of the building.
+                    <h6>IMPACT = 2</h6>
+                </li>
+                <li>
+                    NB = New Building, An application to build a new structure. "NB" cannot be selected if any existing
+                    building elements are to remain—for example a part of
+                    <h6>IMPACT = 10</h6>
+                </li>
+                <li>
+                    DM = Demolition, An application to fully or partially demolish an existing building.
+                    <h6>IMPACT = 10</h6>
+                </li>
+                <li>
+                    SG = Sign, An application to install or remove an outdoor sign.
+                    <h6>IMPACT = 1</h6>
+                </li>
+            </ul>
+            </p>
+        </div>
+
+
+    </div>
+
+    <div class="container">
+
+        <h3>NYC Street Tree Census 2015</h3>
+        <p>Street tree data from the TreesCount! 2015 Street Tree Census, conducted by volunteers and staff organized by
+            NYC Parks & Recreation and partner organizations. Tree data collected includes tree species, diameter and
+            perception of health. Accompanying blockface data is available indicating status of data collection and data
+            release citywide.</p>
+        <p>From this dataset we simply summed the number of street trees in every zipcode, more trees improve the
+            SerenityScore.</p>
+    </div>
+
+    <div class="container">
+
+        <h3>NYC Parks Properties</h3>
+        <p>This dataset identifies property managed partially or solely by NYC Parks. This data has been produced in
+            whole or part using secondary data. Data accuracy is limited by the scale and accuracy of the original
+            sources. Site-specific conditions should be field-verified.
+
+            Records are added as more land is designated under NYC Parks’ jurisdiction. Each record represents an
+            acquisition.</p>
+
+    </div>
+
+    <div class="container">
+        <div class="container">
+            <h2> Why User Feedback? </h2>
+            <p> No one knows your own neighborhood better than you! </p>
+        </div>
+    </div>
 
 </body>
 
