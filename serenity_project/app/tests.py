@@ -31,6 +31,11 @@ class AppViewTests(TestCase):
         assert response.status_code == 200
         self.assertTemplateUsed(response, "app/index.html")
 
+    def test_about_page(self):
+        response = self.client.get(path="/about/")
+        assert response.status_code == 200
+        self.assertTemplateUsed(response, "app/about.html")
+
     def test_register_page(self):
         response = self.client.get(path="/register")
         assert response.status_code == 200

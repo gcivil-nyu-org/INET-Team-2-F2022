@@ -41,6 +41,10 @@ def index(request):
     return render(request, "app/index.html", {})
 
 
+def get_info(request):
+    return render(request, "app/about.html", {})
+
+
 def calculate_factor(zipcode):
     zipcodeFactors = ScoreTable.objects.get(zipcode=zipcode)
     n = []
