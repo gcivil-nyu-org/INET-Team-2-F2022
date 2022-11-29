@@ -1,30 +1,29 @@
+---
 language: python
 python:
-- 3.7.9
+  - 3.7.9
 install:
-- pip install -r serenity_project/requirements.txt
+  - pip install -r serenity_project/requirements.txt
 before_script:
-- python serenity_project/manage.py migrate
+  - python serenity_project/manage.py migrate
 script:
-- black --check .
-- flake8 .
-- cd serenity_project
-- coverage run --source=serenity_project,app manage.py test
+  - black --check .
+  - flake8 .
+  - cd serenity_project
+  - coverage run --source=serenity_project,app manage.py test
 after_script:
   - coveralls
-
 deploy:
   provider: elasticbeanstalk
   access_key_id:
-    secure: "ASCialFHdqRWI725gfMtWDXRgEcYR0EdY/jSuEaRtN66SpdlpD0M17JlqWtuXRyz0TUzlCQfVve0lO1hbuEazRah+QrNgQkMfTzmmxEqzm7MM6hGfQJ0f1qbbJPkJdWn8fvyjB7mXVNfjgQyIf0K2YFGkyi6T+gU+vLMipVIBZ6RKPS4tcNK+9MRLHJkYobVV15lKenUi6hFBx2XJoh6ZFP8GITgU5b92ToFGbnlrsQOyk+7h50HM8af48r/aq/An0nzlnstIb6C0ozKK/8rTtlrY8j5czLX18Jk/xrQS87+NoBi8A/1nYOF6wt3IZ7GFd76yv9Y5MwdrVztf44I9LwMBI9f8zOD0N5g8GosrWAgcWBQStWjmbZUWEyFN0SMSnqs4pqm3t+5k4IhLQ2CRVpCAOWXrcYe5v71uYkK/fXoneOhMW2fnomFJT4TwNIkGOXTtuoBZbWkF2csqoepiJC29cedSVYNVgT/UtvdPcqeENKun5DlAkqLJtc7lja0gIF7TfnGU6LBGWrx70o3IDyabYkZu+uL7egtjlMWXpQ2KYd7z7V28h3zbIiBxSdwQ82mW/LTMb2a/LLG5PeA8BVU1fr/RpS4emVMYQllOUtsHNgcmUEOhfb2SXNPxsQpLih01pzIlN3HISYbuR5oulGhWTVuh6lG5dpfJFriVso="
+    secure: mkOTfaNpx9i2s4zuhksNksN+fnVqFPopnaKqTQdSa7o+y/WGatS/eAnvj+1hc3NpWfaHNR2ckdqLRViBUmCiyQfGHLEBVqQMA0YsSXHlppA9H5yQT5J1HIrVM0F8fDA6hzSz+Mw/HR4JOw0oSFctkc/k4nohgz2gWetk0MqCMq7uZi7m1IPegfFHhk+VhqMfQfrprbXDlt/2zy9O3ILQYW8EAP/qLZgkaIy98g8nD0l+wy4xnIHLpyvdb2IYmfuZJrSEbikwEIs7rFHsO5F2JLEe6WpSC1/26wHBWttC3BmTujFq3RIPhuRFlaWelQ7IvMODUiqSXm0JCadT6Zc9NX9UBYYZkHer5xDFPSlocN4Jg1cpnQQbVtFQoj2oRF5RwincNrHqxaG2kZczhXtrTfa6TewAViFrGqn9VtW90K2otu9v/oV0d6wwj/ycn3Jf0MsF65wXcwp8VlwkMS28LCzi2cJfLLSpRYm3MhRynsjyu0AJeCMFl4PpaTr7MGdU03I+ucm64R0MUs/anmpsc8u7gHAAkeZnxk0xREwXtAyM/G+oFzCAO9mjnP3ICTctxxplQQKB52ttFtT9Ob7UC6AjxIWEbZ39K1SOGIJP1olVUoxQgNPVIZrck2bcnY+IWQEgP8l7vDIYW4h48Zq11ee63+P0sf4Xq+obIYNcg7s=
   secret_access_key:
-    secure: "iou6zea4+bYnjwK2fnaQaG9lRTWPSKvJuzCUcizdoSeruXXidSIMs/XgKSrsB7ccDeV709vDBz/nb41iCo/4X4L6+yzofuHRoIV2/3pqMRAwxd+h1fpwllXRACD1T10IHN5YJTzqZeX2wjpU3c+5+dn6gWK9tn17H1EufrEGubT9Iol3soIIjAilz+dwYMdJ+m4rh2ot3AVA5/l4iVzwVheOxtE/VDkBK5zd6PNGsslihOCrQHxJL5BRS7s6qJlftMlo0aJQSBLA77/brw9eYtxC/XYr7giIR4KadYdNnCa+AY7NOEGZI9ivOTnCGvwjrVrhNqlEekpOsjEswGwBncK96+q/u/e+LbXuRYyfRhhB0d3VxnuiMKQMidDzGx0sSiuMm5ZaJ25MSt3vVrGSKUuYiYGlGVaTzinLlFPcPxc7kGMIJ2jCm6xue3ydPklc/pI+DrKqnDaM2JA4MGecoFmnTm6h4xzeVPPg8O2UTEF72pyV9L4pMvtY2z7hueRhUVfy/9foTsSZmQloe/n0+BZgwBlKq7sSC5pf+1M1jt+lPX05wp0PkQasczeOFZMMY4RYR/i3oUwViU0FNP76+gieB47yYyPSzOPE6bk9J4UwxGq5gdX8MkWgU/prEIuf+0MuFDthzKjEwwXLid+0lMfRZsBMSs7G0Eolcu1w2bY="
-  region: "us-west-2"
-  app: "se-proj-develop"
-  env: "se-proj-develop-env"
-  bucket_name: "se-proj-develop-bcsdbdndsjc"
+    secure: SVTwpNqA3ISOfeyDtVr8BOZfgDdwFlOT0+De9/j0EsIdFlfXTaB0IhRGiwka85s+JFUmkzhievia01Ib+1vAShlS0yigogE7T2yOg0pW32PEhIt7bMT1TXgAiHAtC/KkuTuLI6fxBwvULtgfLyecz6Se44jQ+ZC9xxWzj7vsOrfzTV2Jq2zrKMwT1tFokAZSAhTqAoF5LChenNTSVOO2sV+P4tYLU6oKmuAx136QA/22+sYZnhb5hbLvsRlkhes1HDa80I71Km+UM4BtG210iKknn/bjelfJZLJf8twgeRKxRGJYFKbIV7mMuT4CA2ejRuRzVgvPjUOubq348x45HD/6HafeCPbcGqlK8WxVfl079Nw2e8bPez4gWcXTlacNFuhcpEYOzf20dITMzVAsTdJLti7ykSF2h05x4Cgm/tqaV89pjFXheCjDtjnDN2KyxXEnNQk5BAiap3fS1cuw7BoxO43gPJa5woehHXN6CM9MrJP4LZHu8120cdgpFIvm8hMYJDAXbLmGK4oxUyZqKqlKPJFGTkHcdZT8gu/H9J/SESJY9aoQBkPvd3geffftr3ZFxNo2r0owV7wNVSxfu33lUun+PGWNpVvdxx6W74oabgULxN00tOT2cNOsxb+gH2/9IJ+WWzmCnMKyI6NCXzoMIh6cNalPDnaXg/ouvBQ=
+  region: us-west-2
+  app: se-proj-develop
+  env: se-proj-develop-env
+  bucket_name: se-proj-develop-bcsdbdndsjc
   on:
     all_branches: true
-
 notifications:
   slack: gcivil-nyu:OjvKzBFGWm6Zr6Ro0Y1D7gfh
