@@ -22,7 +22,7 @@ deploy:
   region: "us-west-2"
   app: "se-proj-develop"
   env: "se-proj-develop-env"
-  bucket_name: "se-proj-develop-bcsdbdndsjc"
+  bucket_name: "elasticbeanstalk-us-west-2-328602044501"
   on:
     all_branches: true
 
