@@ -26,5 +26,5 @@ deploy:
   on:
     all_branches: true
 
-notifications:
+notifications:vv
   slack: gcivil-nyu:OjvKzBFGWm6Zr6Ro0Y1D7gfh
