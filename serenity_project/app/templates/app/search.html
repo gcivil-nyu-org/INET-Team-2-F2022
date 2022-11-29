@@ -143,8 +143,41 @@
 
     <a class="btn btn-success" href="{% url 'home' %}">New Search</a>
     </div>
-</body>
 
+
+<div style="display: flex; justify-content: space-around">
+    <div>
+        
+        {% autoescape off %}
+        {{ plot_div }}
+        {% endautoescape %}</div>
+        <br>
+        
+    <div>
+        
+        {% autoescape off %}
+        {{ plot_div1 }}
+        {% endautoescape %}</div>
+        <br>
+
+  </div>
+<br>
+  <div style="display: flex; justify-content: space-around">
+    <div>
+        
+        {% autoescape off %}
+        {{ plot_div2 }}
+        {% endautoescape %}</div>
+        <br>
+        
+    <div>
+        
+        {% autoescape off %}
+        {{ plot_div3 }}
+        {% endautoescape %}</div>
+        <br>
+  </div>
+</body>
 
 {%block scripts%}
 <script>
