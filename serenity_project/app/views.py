@@ -339,6 +339,16 @@ def forum_post(request, pk, id):
     return render(request, "app/forum_post.html", context)
 
 
+def _id_to_zipcode(id):
+    table = ScoreTable.objects.get(id=id)
+    return table.zipcode
+
+
+def _zipcode_to_id(zipcode):
+    table = ScoreTable.objects.get(zipcode=zipcode)
+    return table.id
+
+
 @login_required(login_url="/login")
 def addInForumPost(request):
     form = CreateInForumPost()
@@ -347,9 +357,16 @@ def addInForumPost(request):
         if form.is_valid():
             form.save()
             return redirect("/forumPosts")
+
+    curzip = "11205"
+    if "curzip" in request.POST:
+        curzip = request.POST["curzip"]
+
     user = get_user(request)
     email = user.email
-    form = CreateInForumPost(initial={"name": user, "email": email})
+    form = CreateInForumPost(
+        initial={"name": user, "email": email, "zipcode": _zipcode_to_id(int(curzip))}
+    )
     form.fields["name"].widget = forms.HiddenInput()
     form.fields["email"].widget = forms.HiddenInput()
     context = {"form": form, "user": user, "email": email}
@@ -364,9 +381,14 @@ def addInComment(request):
         if form.is_valid():
             form.save()
             return redirect("/forumPosts")
+
+    curpost = "1"
+    if "post" in request.POST:
+        curpost = request.POST["post"]
+
     user = get_user(request)
     email = user.email
-    form = CreateInComment(initial={"name": user, "email": email})
+    form = CreateInComment(initial={"name": user, "email": email, "forumPost": curpost})
     form.fields["name"].widget = forms.HiddenInput()
     form.fields["email"].widget = forms.HiddenInput()
     context = {"form": form, "user": user, "email": email}
