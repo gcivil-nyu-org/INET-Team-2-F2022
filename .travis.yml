@@ -21,7 +21,7 @@ deploy:
     secure: SVTwpNqA3ISOfeyDtVr8BOZfgDdwFlOT0+De9/j0EsIdFlfXTaB0IhRGiwka85s+JFUmkzhievia01Ib+1vAShlS0yigogE7T2yOg0pW32PEhIt7bMT1TXgAiHAtC/KkuTuLI6fxBwvULtgfLyecz6Se44jQ+ZC9xxWzj7vsOrfzTV2Jq2zrKMwT1tFokAZSAhTqAoF5LChenNTSVOO2sV+P4tYLU6oKmuAx136QA/22+sYZnhb5hbLvsRlkhes1HDa80I71Km+UM4BtG210iKknn/bjelfJZLJf8twgeRKxRGJYFKbIV7mMuT4CA2ejRuRzVgvPjUOubq348x45HD/6HafeCPbcGqlK8WxVfl079Nw2e8bPez4gWcXTlacNFuhcpEYOzf20dITMzVAsTdJLti7ykSF2h05x4Cgm/tqaV89pjFXheCjDtjnDN2KyxXEnNQk5BAiap3fS1cuw7BoxO43gPJa5woehHXN6CM9MrJP4LZHu8120cdgpFIvm8hMYJDAXbLmGK4oxUyZqKqlKPJFGTkHcdZT8gu/H9J/SESJY9aoQBkPvd3geffftr3ZFxNo2r0owV7wNVSxfu33lUun+PGWNpVvdxx6W74oabgULxN00tOT2cNOsxb+gH2/9IJ+WWzmCnMKyI6NCXzoMIh6cNalPDnaXg/ouvBQ=
   region: us-west-2
   app: se-proj-develop
-  env: se-proj-develop-env
+  env: se-proj-develop
   bucket_name: se-proj-develop-bcsdbdndsjc
   on:
     all_branches: true
