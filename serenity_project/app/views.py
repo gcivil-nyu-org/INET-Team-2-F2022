@@ -34,8 +34,12 @@ class ScoreTableViewSet(viewsets.ModelViewSet):
 
 def index(request):
 
-    # RUN THE BELOW COMMENTED CODE TO UPDATE GRADES ACROSS THE MAP
-    # LOAD THE SITE, THEN COMMENT THE CODE OUT AGAIN.
+    #Steps to update map:
+    # 1) Uncomment the below code within this function
+    # 2) Go to index.html line ~331 and change the Var APILink to local
+    # 3) Runserver manage.py and refresh the home page
+    # 4) Undo steps 1 and 2 before pushing code, include db.sqlite3 file in push
+    
 
     # allposts = ScoreTable.objects.all()
     # for post in allposts:
