@@ -34,12 +34,11 @@ class ScoreTableViewSet(viewsets.ModelViewSet):
 
 def index(request):
 
-    #Steps to update map:
+    # Steps to update map:
     # 1) Uncomment the below code within this function
     # 2) Go to index.html line ~331 and change the Var APILink to local
     # 3) Runserver manage.py and refresh the home page
     # 4) Undo steps 1 and 2 before pushing code, include db.sqlite3 file in push
-    
 
     # allposts = ScoreTable.objects.all()
     # for post in allposts:
@@ -524,7 +523,7 @@ def addInForumPost(request):
         form = CreateInForumPost(request.POST)
         if form.is_valid():
             form.save()
-            current_zip = form.cleaned_data['zipcode']
+            current_zip = form.cleaned_data["zipcode"]
             form.save()
             return redirect(f"/forumPosts/zipcode/{current_zip}")
 
@@ -551,7 +550,7 @@ def addInComment(request):
         if form.is_valid():
             print(form)
             form.save()
-            current_zip = form.cleaned_data['forumPost']
+            current_zip = form.cleaned_data["forumPost"]
             current_zip = current_zip.zipcode
             post_id = form["forumPost"].value()
             return redirect(f"/forumPosts/zipcode/{current_zip}/{post_id}")
