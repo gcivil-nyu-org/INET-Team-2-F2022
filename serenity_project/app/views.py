@@ -524,7 +524,9 @@ def addInForumPost(request):
         form = CreateInForumPost(request.POST)
         if form.is_valid():
             form.save()
-            return redirect("/forumPosts")
+            current_zip = form.cleaned_data['zipcode']
+            form.save()
+            return redirect(f"/forumPosts/zipcode/{current_zip}")
 
     curzip = "11205"
     if "curzip" in request.POST:
@@ -547,8 +549,12 @@ def addInComment(request):
     if request.method == "POST":
         form = CreateInComment(request.POST)
         if form.is_valid():
+            print(form)
             form.save()
-            return redirect("/forumPosts")
+            current_zip = form.cleaned_data['forumPost']
+            current_zip = current_zip.zipcode
+            post_id = form["forumPost"].value()
+            return redirect(f"/forumPosts/zipcode/{current_zip}/{post_id}")
 
     curpost = "1"
     if "post" in request.POST:
