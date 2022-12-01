@@ -228,6 +228,8 @@ def search(request, test=False):  # pragma: no cover
                     paper_bgcolor = paper_bg,
                 )
 
+                # park_div.update_yaxes(visible=False, showticklabels=True)
+
                 group_labels = ["Tree Count"]
 
                 tree_div = ff.create_distplot(
