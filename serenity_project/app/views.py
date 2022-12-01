@@ -29,7 +29,7 @@ import plotly.graph_objects as go
 class ScoreTableViewSet(viewsets.ModelViewSet):
     queryset = ScoreTable.objects.all()
     serializer_class = ScoreTableSerializer
-    http_method_names = ["get"]
+    http_method_names = ["get","post"]
 
 
 def index(request):
