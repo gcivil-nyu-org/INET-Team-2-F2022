@@ -288,7 +288,7 @@
                 map.data.addListener('click', function (event) {
                     let zipcode = event.feature.getProperty("postalCode");
                     let neighborhood = event.feature.getProperty("PO_NAME");
-                    let forum_url = "http://127.0.0.1:8000/forumPosts/zipcode/" + zipcode;
+                    let forum_url = "http://se-proj-develop.eba-hksnzcxj.us-west-2.elasticbeanstalk.com/forumPosts/zipcode/" + zipcode;
                     var grade = "N";
                     if (zipDiction[zipcode]) {
                         grade = filterDiction1[zipcode]["grade"];
@@ -403,7 +403,7 @@
 
                     let zipcode = event.feature.getProperty("postalCode");
                     let neighborhood = event.feature.getProperty("PO_NAME");
-                    let forum_url = "http://127.0.0.1:8000/forumPosts/zipcode/" + zipcode;
+                    let forum_url = "http://se-proj-develop.eba-hksnzcxj.us-west-2.elasticbeanstalk.com/forumPosts/zipcode/" + zipcode;
                     var grade = "N";
                     if (zipDiction[zipcode]) {
                         grade = zipDiction[zipcode]["grade"];
