@@ -29,7 +29,7 @@ import plotly.graph_objects as go
 class ScoreTableViewSet(viewsets.ModelViewSet):
     queryset = ScoreTable.objects.all()
     serializer_class = ScoreTableSerializer
-    http_method_names = ["get","post"]
+    http_method_names = ["get", "post"]
 
 
 def index(request):
@@ -201,7 +201,7 @@ def search(request, test=False):  # pragma: no cover
             #     return fig
 
             # test1=multiplot(menu)
-            
+
             width = 300
             height = 250
             paper_bg = "#68B984"
@@ -225,7 +225,7 @@ def search(request, test=False):  # pragma: no cover
                     template="plotly",
                     margin=dict(l=20, r=20, t=50, b=20),
                     showlegend=False,
-                    paper_bgcolor = paper_bg,
+                    paper_bgcolor=paper_bg,
                 )
 
                 # park_div.update_yaxes(visible=False, showticklabels=True)
@@ -250,7 +250,7 @@ def search(request, test=False):  # pragma: no cover
                     template="plotly",
                     margin=dict(l=20, r=20, t=50, b=20),
                     showlegend=False,
-                    paper_bgcolor = paper_bg,
+                    paper_bgcolor=paper_bg,
                 )
 
                 group_labels = ["Residential Noise"]
@@ -272,7 +272,7 @@ def search(request, test=False):  # pragma: no cover
                     template="plotly",
                     margin=dict(l=20, r=20, t=50, b=20),
                     showlegend=False,
-                    paper_bgcolor = paper_bg,
+                    paper_bgcolor=paper_bg,
                 )
 
                 group_labels = ["Dirty Conditions"]
@@ -294,7 +294,7 @@ def search(request, test=False):  # pragma: no cover
                     template="plotly",
                     margin=dict(l=20, r=20, t=50, b=20),
                     showlegend=False,
-                    paper_bgcolor = paper_bg,
+                    paper_bgcolor=paper_bg,
                 )
 
                 fig = px.scatter_3d(
