@@ -180,7 +180,7 @@ def search(request, test=False):  # pragma: no cover
                     lat=source.Latitude,
                     lon=source.longitude,
                     color_discrete_sequence=["green"],
-                    zoom=14,
+                    zoom=16,
                 )
                 zipmap.update_layout(
                     width=600,
@@ -189,8 +189,13 @@ def search(request, test=False):  # pragma: no cover
                     margin=dict(l=20, r=20, t=50, b=20),
                     showlegend=False,
                     paper_bgcolor=paper_bg,
+                    mapbox=dict(
+                        pitch=60,
+                    ),
                 )
-                zipmap.update_layout(mapbox_style="stamen-toner")
+                zipmap.update_layout(
+                    mapbox_style="mapbox://styles/abhidasari1289/clb67vwkt000214mkgynh4pb7"
+                )
 
                 group_labels = ["Park Count"]
                 park_div = ff.create_distplot(
