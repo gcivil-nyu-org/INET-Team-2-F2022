@@ -170,7 +170,7 @@ def search(request, test=False):  # pragma: no cover
             paper_bg = "#68B984"
 
             if not test:
-                data = pd.read_csv(parent + "/serenity_project/static/data/tree.csv")
+                data = pd.read_csv("app/data/tree.csv")
                 px.set_mapbox_access_token(
                     "pk.eyJ1IjoiYWJoaWRhc2FyaTEyODkiLCJhIjoiY2xiNXloZnI2MGJkajNwbXF4ZmVxNzJvdCJ9.60A0wnYJlzI-vUcTMUkU5Q"
                 )
