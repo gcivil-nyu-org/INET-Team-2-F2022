@@ -201,6 +201,10 @@ def search(request, test=False):  # pragma: no cover
             #     return fig
 
             # test1=multiplot(menu)
+            
+            width = 300
+            height = 250
+            paper_bg = "#68B984"
             if not test:
                 group_labels = ["Park Count"]
                 park_div = ff.create_distplot(
@@ -215,11 +219,16 @@ def search(request, test=False):  # pragma: no cover
                     selector=dict(mode="markers"),
                 )
                 park_div.update_layout(
-                    width=650,
-                    height=500,
+                    width=width,
+                    height=height,
                     title_text="Park Count Distribution",
-                    template="ggplot2",
+                    template="plotly",
+                    margin=dict(l=20, r=20, t=50, b=20),
+                    showlegend=False,
+                    paper_bgcolor = paper_bg,
                 )
+
+                # park_div.update_yaxes(visible=False, showticklabels=True)
 
                 group_labels = ["Tree Count"]
 
@@ -235,10 +244,13 @@ def search(request, test=False):  # pragma: no cover
                     selector=dict(mode="markers"),
                 )
                 tree_div.update_layout(
-                    width=650,
-                    height=500,
+                    width=width,
+                    height=height,
                     title_text="Tree Count Distribution",
-                    template="ggplot2",
+                    template="plotly",
+                    margin=dict(l=20, r=20, t=50, b=20),
+                    showlegend=False,
+                    paper_bgcolor = paper_bg,
                 )
 
                 group_labels = ["Residential Noise"]
@@ -254,10 +266,13 @@ def search(request, test=False):  # pragma: no cover
                     selector=dict(mode="markers"),
                 )
                 res_div.update_layout(
-                    width=650,
-                    height=500,
+                    width=width,
+                    height=height,
                     title_text="Residential Noise Distribution",
-                    template="ggplot2",
+                    template="plotly",
+                    margin=dict(l=20, r=20, t=50, b=20),
+                    showlegend=False,
+                    paper_bgcolor = paper_bg,
                 )
 
                 group_labels = ["Dirty Conditions"]
@@ -273,10 +288,13 @@ def search(request, test=False):  # pragma: no cover
                     selector=dict(mode="markers"),
                 )
                 dirty_div.update_layout(
-                    width=650,
-                    height=500,
+                    width=width,
+                    height=height,
                     title_text="Dirty Conditions Distribution",
-                    template="ggplot2",
+                    template="plotly",
+                    margin=dict(l=20, r=20, t=50, b=20),
+                    showlegend=False,
+                    paper_bgcolor = paper_bg,
                 )
 
                 fig = px.scatter_3d(
