@@ -14,6 +14,7 @@ from django.shortcuts import HttpResponseRedirect
 from django.template.response import TemplateResponse
 from .forms import RatingForm, NewUserForm, CreateInForumPost, CreateInComment
 
+import os
 import pandas as pd
 import numpy as np
 from django.http import HttpResponse
@@ -161,51 +162,36 @@ def search(request, test=False):  # pragma: no cover
                 treeCensus.append(row.treeCensus)
                 parkCount.append(row.parkCount)
                 grade.append(row.grade)
-            # menu=["constructionImpact","residentialNoise","sanitationCondition","treeCensus","parkCount"]
 
-            # def multiplot(menu):
-            #     #fig = ff.create_distplot([constructionImpact,residentialNoise,
-            # sanitationCondition,treeCensus,parkCount], menu, bin_size=.2)
-            #     dt=[constructionImpact,residentialNoise,sanitationCondition,treeCensus,parkCount]
-            #     first_title = menu[0]
-            #     traces = []
-            #     buttons = []
-            #     for i,d in enumerate(menu):
-            #         visible = [False] * len(menu)
-            #         visible[i] = True
-            #         name = d
-            #         print(visible)
-            #         traces.append(go.Histogram(x=dt[i],visible=True if i==0 else False))
-            #         if name == "constructionImpact":
-            #              traces.append(go.Histogram(x=constructionImpact, name=name, visible=visible[0]))
-            #         elif name == "residentialNoise":
-            #              traces.append(go.Histogram(x=residentialNoise, name=name, visible=visible[1]))
-            #         elif name == "sanitationCondition":
-            #              traces.append(go.Histogram(x=sanitationCondition, name=name, visible=visible[2]))
-            #         elif name == "treeCensus":
-            #              traces.append(go.Histogram(x=treeCensus, name=name, visible=visible[3]))
-            #         elif name == "parkCount":
-            #              traces.append(go.Histogram(x=parkCount, name=name,  visible=visible[4]))
-            #         buttons.append(dict(label=name,
-            #             method="update",
-            #             args=[{"title":f"{name}"}]))
-
-            #     updatemenus = [{'active':0, "buttons":buttons}]
-            #     print(updatemenus)
-
-            #     fig = go.Figure(data=traces,
-            #      layout=dict(updatemenus=updatemenus))
-            #     fig.update_layout(title=first_title, title_x=0.5)
-
-            #     #fig = px.histogram(x=treeCensus)
-            #     return fig
-
-            # test1=multiplot(menu)
-
+            path = os.getcwd()
+            parent = os.path.dirname(path)
             width = 300
             height = 250
             paper_bg = "#68B984"
+
             if not test:
+                data = pd.read_csv(parent + "/serenity_project/static/data/tree.csv")
+                px.set_mapbox_access_token(
+                    "pk.eyJ1IjoiYWJoaWRhc2FyaTEyODkiLCJhIjoiY2xiNXloZnI2MGJkajNwbXF4ZmVxNzJvdCJ9.60A0wnYJlzI-vUcTMUkU5Q"
+                )
+                source = data[data["zipcode"] == int(search)]
+                zipmap = px.scatter_mapbox(
+                    source,
+                    lat=source.Latitude,
+                    lon=source.longitude,
+                    color_discrete_sequence=["green"],
+                    zoom=14,
+                )
+                zipmap.update_layout(
+                    width=600,
+                    height=500,
+                    title_text="Tree Mapper",
+                    margin=dict(l=20, r=20, t=50, b=20),
+                    showlegend=False,
+                    paper_bgcolor=paper_bg,
+                )
+                zipmap.update_layout(mapbox_style="stamen-toner")
+
                 group_labels = ["Park Count"]
                 park_div = ff.create_distplot(
                     [parkCount], group_labels, colors=["#FF33E9"]
@@ -297,13 +283,6 @@ def search(request, test=False):  # pragma: no cover
                     paper_bgcolor=paper_bg,
                 )
 
-                fig = px.scatter_3d(
-                    x=np.log(parkCount),
-                    y=np.log(treeCensus),
-                    z=np.log(residentialNoise),
-                    color=grade,
-                ).to_html(full_html=False, default_height=500, default_width=500)
-
                 return render(
                     request,
                     "app/search.html",
@@ -314,7 +293,7 @@ def search(request, test=False):  # pragma: no cover
                         "plot_div1": tree_div.to_html(full_html=False),
                         "plot_div2": res_div.to_html(full_html=False),
                         "plot_div3": dirty_div.to_html(full_html=False),
-                        "plot_div4": fig,
+                        "plot_div4": zipmap.to_html(full_html=False),
                     },
                 )
             else:
