@@ -61,7 +61,7 @@ class Profile(models.Model):
     # each user may only have one profile
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
 
-    avatar = models.ImageField(default="/media/default.jpg", upload_to="media")
+    # avatar = models.ImageField(default="/media/default.jpg", upload_to="media")
     bio = models.TextField()
 
     def __str__(self):
@@ -70,9 +70,9 @@ class Profile(models.Model):
     def save(self, *args, **kwargs):
         super().save()
 
-        img = Image.open(self.avatar.path)
+        # img = Image.open(self.avatar.path)
 
-        if img.height > 100 or img.width > 100:
-            new_img = (100, 100)
-            img.thumbnail(new_img)
-            img.save(self.avatar.path)
+        # if img.height > 100 or img.width > 100:
+        #   new_img = (100, 100)
+        #  img.thumbnail(new_img)
+        # img.save(self.avatar.path)
