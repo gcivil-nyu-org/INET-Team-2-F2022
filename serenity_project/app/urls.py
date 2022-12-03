@@ -31,7 +31,8 @@ urlpatterns = [
     path("addInForumPost/", views.addInForumPost, name="addInForumPost"),
     path("addInComment/", views.addInComment, name="addInComment"),
     path("about/", views.get_info, name="about"),
-]
+    path("users/profile/", views.profile, name="profile"),
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 handler404 = "app.views.page_not_found_view"
 handler500 = "app.views.internal_error_view"

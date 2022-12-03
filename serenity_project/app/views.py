@@ -10,9 +10,17 @@ from django.contrib import messages
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
-from django.shortcuts import HttpResponseRedirect
+from django.shortcuts import HttpResponseRedirect, redirect
 from django.template.response import TemplateResponse
-from .forms import RatingForm, NewUserForm, CreateInForumPost, CreateInComment
+from .forms import (
+    RatingForm,
+    NewUserForm,
+    CreateInForumPost,
+    CreateInComment,
+    UpdateUserForm,
+    UpdateProfileForm,
+)
+from django.shortcuts import render
 
 import os
 import pandas as pd
@@ -568,6 +576,31 @@ def addInComment(request):
     form.fields["email"].widget = forms.HiddenInput()
     context = {"form": form, "user": user, "email": email}
     return render(request, "app/addInComment.html", context)
+
+
+@login_required
+def profile(request):
+    if request.method == "POST":
+        user_form = UpdateUserForm(request.POST, instance=request.user)
+        profile_form = UpdateProfileForm(
+            request.POST, request.FILES, instance=request.user.profile
+        )
+
+        if user_form.is_valid() and profile_form.is_valid():
+            user_form.save()
+            profile_form.save()
+            messages.success(request, "Your profile is updated successfully")
+            return redirect(to="profile")
+    else:
+        print(request.user)
+        user_form = UpdateUserForm(instance=request.user)
+        profile_form = UpdateProfileForm(instance=request.user.profile)
+
+    return render(
+        request,
+        "app/users/profile.html",
+        {"user_form": user_form, "profile_form": profile_form},
+    )
 
 
 def page_not_found_view(request, exception):
