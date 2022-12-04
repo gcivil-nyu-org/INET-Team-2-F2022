@@ -291,12 +291,12 @@
                     let forum_url = "http://se-proj-develop.eba-hksnzcxj.us-west-2.elasticbeanstalk.com/forumPosts/zipcode/" + zipcode;
                     var grade = "N";
                     if (zipDiction[zipcode]) {
-                        grade = filterDiction1[zipcode]["grade"];
+                        grade = zipDiction[zipcode]["grade"];
                     }
 
+                    let html = '' + neighborhood + '<br>' + zipcode + "<br>" + ' Grade: ' + grade + "<br>" + "<a href=" + forum_url + ">" + "Forum" + "</a>"; // combine state name with a label
 
 
-                    let html = '' + neighborhood + ': ' + zipcode + ' Grade: ' + grade + " " + "Forum URL: " + forum_url; // combine state name with a label
                     infowindow.setContent(html); // show the html variable in the infowindow
                     infowindow.setPosition(event.latLng); // anchor the infowindow at the marker
                     infowindow.setOptions({ pixelOffset: new google.maps.Size(0, -30) }); // move the infowindow up slightly to the top of the marker icon
