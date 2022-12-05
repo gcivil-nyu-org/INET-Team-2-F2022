@@ -142,7 +142,7 @@
         btn.onclick = () => {
             var filters = [];
             factors.forEach(factor => {
-                if(factor.checked){
+                if (factor.checked) {
                     filters.push(factor.id);
                 }
             });
@@ -151,81 +151,81 @@
                 console.log("No filters selected");
                 location.reload(true);;
             } else {
-                
-            // Create new grades for all zipcodes with the filters
-            // console.log(zipDiction["11220"]);
-            var filterDiction1 = {};
-            var zipcodes = Object.keys(zipDiction);
-            function sum( obj ) {
-                var sum = 0;
-                for( var el in obj ) {
-                if( obj.hasOwnProperty( el ) ) {
-                    console.log(el);
 
-                    if (el == "parkCount") {
-                        sum += -parseFloat( obj[el] );
+                // Create new grades for all zipcodes with the filters
+                // console.log(zipDiction["11220"]);
+                var filterDiction1 = {};
+                var zipcodes = Object.keys(zipDiction);
+                function sum(obj) {
+                    var sum = 0;
+                    for (var el in obj) {
+                        if (obj.hasOwnProperty(el)) {
+                            console.log(el);
+
+                            if (el == "parkCount") {
+                                sum += -parseFloat(obj[el]);
+                            }
+                            else if (el == "treeCensus") {
+                                sum += -parseFloat(obj[el]);
+                            }
+                            else if (el == "residentialNoise") {
+                                sum += 0.05 * parseFloat(obj[el]);
+                            }
+                            else {
+                                sum += parseFloat(obj[el]);
+                            }
+                        }
                     }
-                    else if (el == "treeCensus") {
-                        sum += -parseFloat( obj[el] );
-                    }
-                    else if (el == "residentialNoise") {
-                        sum += 0.05*parseFloat( obj[el] );
-                    }
-                    else{
-                    sum += parseFloat( obj[el] );
-                    }
-                    }
-                } 
-                return sum;
+                    return sum;
                 }
 
-                const deepCopy = function(src) {
-                let target = {};
-                // using for/in on object also returns prototype properties
-                for (let prop in src) {
-                // .hasOwnProperty() filters out these prototype properties.
-                if (src.hasOwnProperty(prop)) {
-                    target[prop] = src[prop]; //iteratively copies over values, not references
+                const deepCopy = function (src) {
+                    let target = {};
+                    // using for/in on object also returns prototype properties
+                    for (let prop in src) {
+                        // .hasOwnProperty() filters out these prototype properties.
+                        if (src.hasOwnProperty(prop)) {
+                            target[prop] = src[prop]; //iteratively copies over values, not references
+                        }
+                    }
+                    return target;
                 }
-                }
-            return target;
-                }
-                var min=1000000;
-                var max=0;
-            for (let j = 0; j < zipcodes.length; j++) {
-                
+                var min = 1000000;
+                var max = 0;
+                for (let j = 0; j < zipcodes.length; j++) {
+
                     var zipcode = zipcodes[j];
                     var transform = zipDiction[zipcode];
                     var subset = filters
-                    .reduce(function (obj2, key) {
-                    if (key in transform) // line can be removed to make it inclusive
-                    obj2[key] = transform[key];
-                    return obj2;
-                    }, {});
-                    
+                        .reduce(function (obj2, key) {
+                            if (key in transform) // line can be removed to make it inclusive
+                                obj2[key] = transform[key];
+                            return obj2;
+                        }, {});
+
                     if (sum(subset) > max) {
                         max = sum(subset);
                     }
                     if (sum(subset) < min) {
                         min = sum(subset);
                     }
-                    filterDiction1[zipcode] =subset ;
-                    filterDiction1[zipcode]["sum"] =  sum(subset);
-                        
+                    filterDiction1[zipcode] = subset;
+                    filterDiction1[zipcode]["sum"] = sum(subset);
+
                 }
-            zips=Object.keys(filterDiction1);
-            for (let j = 0; j < zips.length; j++) { 
-                var zipcode = zips[j];
-                var subset = filterDiction1[zipcode]
-                filterDiction1[zipcode]["grade"] = score_to_grade((sum(subset) - min) / (max - min));
-            }
-            console.log(filterDiction1)
-            
-
-            console.log(subset);
+                zips = Object.keys(filterDiction1);
+                for (let j = 0; j < zips.length; j++) {
+                    var zipcode = zips[j];
+                    var subset = filterDiction1[zipcode]
+                    filterDiction1[zipcode]["grade"] = score_to_grade((sum(subset) - min) / (max - min));
+                }
+                console.log(filterDiction1)
 
 
-            var map;
+                console.log(subset);
+
+
+                var map;
                 map = new window.google.maps.Map(document.getElementById('map'), {
                     zoom: 11,
                     center: {
@@ -288,14 +288,15 @@
                 map.data.addListener('click', function (event) {
                     let zipcode = event.feature.getProperty("postalCode");
                     let neighborhood = event.feature.getProperty("PO_NAME");
+                    let forum_url = "http://se-proj-develop.eba-hksnzcxj.us-west-2.elasticbeanstalk.com/forumPosts/zipcode/" + zipcode;
                     var grade = "N";
                     if (zipDiction[zipcode]) {
-                        grade = filterDiction1[zipcode]["grade"];
+                        grade = zipDiction[zipcode]["grade"];
                     }
 
+                    let html = '' + neighborhood + '<br>' + zipcode + "<br>" + ' Grade: ' + grade + "<br>" + "<a href=" + forum_url + ">" + "Forum" + "</a>"; // combine state name with a label
 
 
-                    let html = '' + neighborhood + ': ' + zipcode + ' Grade: ' + grade; // combine state name with a label
                     infowindow.setContent(html); // show the html variable in the infowindow
                     infowindow.setPosition(event.latLng); // anchor the infowindow at the marker
                     infowindow.setOptions({ pixelOffset: new google.maps.Size(0, -30) }); // move the infowindow up slightly to the top of the marker icon
@@ -305,31 +306,31 @@
         };
 
 
-        
 
-        function score_to_grade(score){
+
+        function score_to_grade(score) {
             var grade = "N"
-            if (score>=0.95){
+            if (score >= 0.95) {
                 grade = "G";
-            } else if(score<0.95 && score>=0.7){
+            } else if (score < 0.95 && score >= 0.7) {
                 grade = "F";
-            } else if(score<0.7 && score>=0.5){
+            } else if (score < 0.7 && score >= 0.5) {
                 grade = "E";
-            } else if(score<0.5 && score>=0.25){
+            } else if (score < 0.5 && score >= 0.25) {
                 grade = "D";
-            } else if(score<0.25 && score>=0.15){
+            } else if (score < 0.25 && score >= 0.15) {
                 grade = "C";
-            } else if(score<0.15 && score>=0.02){
+            } else if (score < 0.15 && score >= 0.02) {
                 grade = "B";
-            } else if(score<0.02 ){
+            } else if (score < 0.02) {
                 grade = "A";
             }
             return grade;
         }
 
         var zipDiction = {};
-        // var APIlink = "http://se-proj-develop-env.eba-yiphn7ci.us-west-2.elasticbeanstalk.com/api/table/";
-        var APIlink = "http://se-proj-develop-env.eba-yiphn7ci.us-west-2.elasticbeanstalk.com/api/table/";
+        // var APIlink = "http://127.0.0.1:8000/api/table/";
+        var APIlink = "http://se-proj-develop.eba-hksnzcxj.us-west-2.elasticbeanstalk.com/api/table/";
         fetch(APIlink)
             .then((response) => response.json())
             .then((data) => {
@@ -399,8 +400,10 @@
                 var infowindow = new google.maps.InfoWindow();
 
                 map.data.addListener('click', function (event) {
+
                     let zipcode = event.feature.getProperty("postalCode");
                     let neighborhood = event.feature.getProperty("PO_NAME");
+                    let forum_url = "http://se-proj-develop.eba-hksnzcxj.us-west-2.elasticbeanstalk.com/forumPosts/zipcode/" + zipcode;
                     var grade = "N";
                     if (zipDiction[zipcode]) {
                         grade = zipDiction[zipcode]["grade"];
@@ -408,7 +411,9 @@
 
 
 
-                    let html = '' + neighborhood + ': ' + zipcode + ' Grade: ' + grade; // combine state name with a label
+                    let html = '' + neighborhood + '<br>' + zipcode + "<br>" + ' Grade: ' + grade + "<br>" + "<a href=" + forum_url + ">" + "Forum" + "</a>"; // combine state name with a label
+
+
                     infowindow.setContent(html); // show the html variable in the infowindow
                     infowindow.setPosition(event.latLng); // anchor the infowindow at the marker
                     infowindow.setOptions({ pixelOffset: new google.maps.Size(0, -30) }); // move the infowindow up slightly to the top of the marker icon

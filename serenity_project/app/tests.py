@@ -203,7 +203,7 @@ class testSearchView(TestCase):
         req = HttpRequest()
         req.method = "POST"
         req.POST = {"searched": 11220}
-        response = search(req)
+        response = search(req, True)
         assert response.status_code == 200
 
 
@@ -307,6 +307,18 @@ class ForumPostTests(TestCase):
         self.user = User.objects.create_user(
             "john", "lennon@thebeatles.com", "johnpassword"
         )
+        ScoreTable.objects.create(
+            id=2,
+            zipcode=11220,
+            residentialNoise=1,
+            dirtyConditions=2,
+            sanitationCondition=3,
+            wasteDisposal=4,
+            unsanitaryCondition=5,
+            constructionImpact=1.0,
+            treeCensus=1,
+            parkCount=1,
+        )
 
     def testaddForumPost(self):
         self.client.login(username="john", password="johnpassword")
@@ -314,7 +326,7 @@ class ForumPostTests(TestCase):
             "/addInForumPost/",
             data={
                 "id": 1,
-                "zipcode": 11220,
+                "curzip": 11220,
                 "topic": "test topic",
                 "description": "test description",
                 "date_created": "2021-05-05",

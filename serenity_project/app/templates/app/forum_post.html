@@ -64,6 +64,7 @@
         Add to Forum:
         <form method="POST" action="{% url 'addInForumPost' %}">
             {% csrf_token %}
+            <input value= {{zipcode}} name="curzip" type="hidden">
         <button class="btn btn-success" style="width:fit-content; padding: 4px; margin:10px;">Add more</button>
         </form>
     </h2>
@@ -97,6 +98,7 @@
                             {%endfor%}
                             <form method="POST" action="{% url 'addInComment' %}">
                                 {% csrf_token %}
+                                <input value= {{post.id}} name="post" type="hidden" >
                             <button class="btn btn-success" style="width:fit-content; padding: 4px; margin:10px;">Add more</button>
                             </form>
                         </div>

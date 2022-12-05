@@ -1,0 +1,80 @@
+
+/* Optional: Makes the sample page fill the window. */
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    background-color:#ECFFE8 !important; 
+
+}
+
+br {
+    background-color:#ECFFE8;
+}
+
+h1 {
+    font-family: 'Chau Philomene One', sans-serif;
+}
+
+p {
+    font-family: 'Catamaran', sans-serif;
+}
+
+.serenity-title {
+    text-align:center;
+    
+}
+
+.navbar-nav > li > a {
+    display: flex;
+    align-items: center;  
+    height: 80px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    line-height: 20px;
+    background-color:#ECFFE8;
+  }
+
+.navbar {
+    display: flex;
+    height: 100px;
+    line-height: 20px;
+    padding: 0px;
+    margin: 0px;
+    background-color:#ECFFE8;
+}
+
+.jumbotron {
+    background-color:#ECFFE8;
+}
+
+.container {
+    background-color:#ECFFE8;
+}
+
+.container-fluid{
+    background-color:#ECFFE8;
+}
+
+
+.card-title {
+    background-color:#ECFFE8;
+}
+
+.card-columns {
+    background-color:#ECFFE8;
+}
+
+.card-body {
+    background-color:#ECFFE8;
+    margin:0px;
+    padding:0px;
+
+}
+
+.box{
+    border: 4px solid black;
+    margin: 0 auto;
+    background-color:#ECFFE8;
+}
+
