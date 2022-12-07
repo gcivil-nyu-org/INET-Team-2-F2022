@@ -1,6 +1,6 @@
 from django.test import TestCase
 from django.urls import reverse
-from .models import ScoreTable, ForumPost, Profile
+from .models import ScoreTable, ForumPost
 from .serializers import ScoreTableSerializer
 from django.contrib.auth.models import User
 from .views import search
@@ -25,7 +25,6 @@ class AppViewTests(TestCase):
         self.user = User.objects.create_user(
             "john", "lennon@thebeatles.com", "johnpassword"
         )
-        self.profile = Profile.objects.create(user=self.user)
 
     def test_home_endpoint_returns_welcome_page(self):
         response = self.client.get(path="/")
@@ -77,12 +76,6 @@ class AppViewTests(TestCase):
     def test_add_forum_post_login(self):
         self.client.login(username="john", password="johnpassword")
         response = self.client.get(path="/addInComment/")
-        assert response.status_code == 200
-
-    def test_profile_view(self):
-        self.client.login(username="john", password="johnpassword")
-        response = self.client.get(path="/users/profile/")
-        self.assertTemplateUsed(response, "app/users/profile.html")
         assert response.status_code == 200
 
 
@@ -272,7 +265,6 @@ class TestForms(TestCase):
         form.cleaned_data["password1"] = "test_password"
 
         user = form.save(False)
-
         email = form.cleaned_data["email"]
         assert email == user.email
 
@@ -283,34 +275,6 @@ class TestForms(TestCase):
         meta = NewUserForm.Meta()
         assert meta.model == User
         assert meta.fields == ("username", "email", "password1", "password2")
-
-    def test_user_update(self):
-        from .forms import UpdateUserForm, NewUserForm
-
-        form2 = UpdateUserForm()
-
-        form2.cleaned_data = {}
-        form2.cleaned_data["username"] = "test_user"
-        form2.cleaned_data["email"] = "new@email.com"
-
-        email = form2.cleaned_data["email"]
-        username = form2.cleaned_data["username"]
-        assert email == "new@email.com"
-        assert username == "test_user"
-
-    def test_profile_update(self):
-        from .forms import UpdateProfileForm
-
-        form = UpdateProfileForm
-
-        form.cleaned_data = {}
-        form.cleaned_data["bio"] = "blah"
-        form.cleaned_data["avatar"] = "test.jpg"
-
-        bio = form.cleaned_data["bio"]
-        avatar = form.cleaned_data["avatar"]
-        assert bio == "blah"
-        assert avatar == "test.jpg"
 
 
 class TestViews(TestCase):
