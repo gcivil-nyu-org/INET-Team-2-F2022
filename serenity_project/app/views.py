@@ -19,6 +19,7 @@ import pandas as pd
 import numpy as np
 from django.http import HttpResponse
 from django.contrib.auth import get_user
+from scipy.stats import percentileofscore
 import plotly.express as px
 import plotly.figure_factory as ff
 import plotly.graph_objects as go
@@ -42,10 +43,15 @@ def index(request):
     # 4) Undo steps 1 and 2 before pushing code, include db.sqlite3 file in push
 
     # allposts = ScoreTable.objects.all()
+    # scores=[]
     # for post in allposts:
-    #     score = calculate_factor(post.zipcode)[0] #only getting score
-    #     post.grade = _get_grade_from_score(score)
-    #     post.save()
+    #      score = calculate_factor(post.zipcode)[0] #only getting score
+    #      scores.append(score)
+    # for post in allposts:
+    #      curr_score = calculate_factor(post.zipcode)[0]
+    #      sorted_scores = sorted(scores)
+    #      post.grade = _get_grade_from_score(percentileofscore(sorted_scores, curr_score ))
+    #      post.save()
     return render(request, "app/index.html", {})
 
 
@@ -60,50 +66,55 @@ def calculate_factor(zipcode):
     nFactors = []
     factors = (
         ("residentialNoise", 1),
-        ("dirtyConditions", 1),
-        ("sanitationCondition", 1),
-        ("wasteDisposal", 1),
-        ("unsanitaryCondition", 1),
-        ("constructionImpact", 4),
+        ("dirtyConditions", 0.6),
+        ("sanitationCondition", 0.6),
+        ("wasteDisposal", 0.6),
+        ("unsanitaryCondition", 0.6),
+        ("constructionImpact", 1),
         ("userAvg", 1),
-        ("treeCensus", -0.5),
+        ("treeCensus", -1),
         ("parkCount", -1),
     )
     score = 0
     for factor, weight in factors:
         currSet = ScoreTable.objects.values_list(factor, flat=True)
         arr = np.array(currSet)
-        normal = 3 * (getattr(zipcodeFactors, factor) / np.linalg.norm(arr))
+        # normal = 3 * (getattr(zipcodeFactors, factor) / np.linalg.norm(arr))
+        arr_sorted = np.sort(arr)
+        normal = percentileofscore(arr_sorted, getattr(zipcodeFactors, factor))
         nFactors.append(round(normal, 2))
+
         if factor == "userAvg":
             currUserScore = getattr(zipcodeFactors, factor)
         elif factor != "userAvg" and normal != 0:
             n.append(normal)
             weights.append(weight)
-    score = round(np.average(n, weights=weights), 2)
+
+    score = np.dot(n, weights)
     if currUserScore != 0:
+        score = score / 9
         if currUserScore > score:
             score = round(((score + (0.5 * currUserScore)) / 2), 2)
         else:
             score = round(((score - (0.5 * currUserScore)) / 2), 2)
+    else:
+        score = score / 8
     return score, nFactors
 
 
 def _get_grade_from_score(score):
     grade = "N"
-    if score >= 0.6:
-        grade = "G"
-    elif score < 0.6 and score >= 0.5:
+    if score >= 90:
         grade = "F"
-    elif score < 0.5 and score >= 0.4:
+    elif score < 90 and score >= 75:
         grade = "E"
-    elif score < 0.4 and score >= 0.3:
+    elif score < 75 and score >= 60:
         grade = "D"
-    elif score < 0.3 and score >= 0.2:
+    elif score < 60 and score >= 40:
         grade = "C"
-    elif score < 0.2 and score >= 0.1:
+    elif score < 40 and score >= 15:
         grade = "B"
-    elif score < 0.1 and score >= 0:
+    elif score < 15 and score >= 0:
         grade = "A"
     return grade
 

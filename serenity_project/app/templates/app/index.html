@@ -293,6 +293,9 @@
                     if (zipDiction[zipcode]) {
                         grade = zipDiction[zipcode]["grade"];
                     }
+                    if(filterDiction1[zipcode]){
+                        grade = filterDiction1[zipcode]["grade"];
+                    }
 
                     let html = '' + neighborhood + '<br>' + zipcode + "<br>" + ' Grade: ' + grade + "<br>" + "<a href=" + forum_url + ">" + "Forum" + "</a>"; // combine state name with a label
 
@@ -329,7 +332,7 @@
         }
 
         var zipDiction = {};
-        // var APIlink = "http://127.0.0.1:8000/api/table/";
+        //var APIlink = "http://127.0.0.1:8000/api/table/";
         var APIlink = "http://se-proj-develop.eba-hksnzcxj.us-west-2.elasticbeanstalk.com/api/table/";
         fetch(APIlink)
             .then((response) => response.json())
