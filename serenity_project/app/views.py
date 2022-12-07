@@ -546,7 +546,7 @@ def addInForumPost(request):
             form.save()
             current_zip = form.cleaned_data["zipcode"]
             form.save()
-            return redirect(f"/forumPosts/zipcode/{current_zip}/")
+            return redirect(f"/forumPosts/zipcode/{current_zip}")
 
     curzip = "11205"
     if "curzip" in request.POST:
@@ -591,7 +591,7 @@ def addInComment(request):
 
 @login_required
 def profile(request):
-    # ?: list all the posts
+    #?: list all the posts
     posts = ForumPost.objects.filter(name=request.user)
     if request.method == "POST":
         user_form = UpdateUserForm(request.POST, instance=request.user)
@@ -608,20 +608,20 @@ def profile(request):
         user_form = UpdateUserForm(instance=request.user)
         profile_form = UpdateProfileForm(instance=request.user.profile)
 
+        
     return render(
         request,
         "app/users/profile.html",
         {"user_form": user_form, "profile_form": profile_form, "forumPosts": posts},
     )
 
-
 def get_others(request, name):
-    # ?: list all the posts
+    #?: list all the posts
     posts = ForumPost.objects.filter(name=name)
 
     try:
         profile = Profile.objects.get(user__username=name)
-
+            
         return render(
             request,
             "app/users/other_profile.html",
