@@ -580,14 +580,16 @@ def addInComment(request):
 
 @login_required
 def profile(request):
+    #?: list all the posts
+    posts = ForumPost.objects.filter(name=request.user)
     if request.method == "POST":
         user_form = UpdateUserForm(request.POST, instance=request.user)
         profile_form = UpdateProfileForm(
             request.POST, request.FILES, instance=request.user.profile
         )
 
-        if user_form.is_valid() and profile_form.is_valid():
-            user_form.save()
+        if profile_form.is_valid():
+            # user_form.save()
             profile_form.save()
             messages.success(request, "Your profile is updated successfully")
             return redirect(to="profile")
@@ -595,8 +597,6 @@ def profile(request):
         user_form = UpdateUserForm(instance=request.user)
         profile_form = UpdateProfileForm(instance=request.user.profile)
 
-        #?: list all the posts
-        posts = ForumPost.objects.filter(name=request.user)
         
     return render(
         request,

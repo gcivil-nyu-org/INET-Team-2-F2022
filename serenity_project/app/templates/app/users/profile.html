@@ -111,11 +111,16 @@
             </button>
         </div>
         {% endif %}
+        <h2>
+            user: {{user.username}}
+            <br>
+            email: {{user.email}}
+        </h2>
         <div class="form-content">
             <form method="post" enctype="multipart/form-data">
                 {% csrf_token %}
                 <div class="form-row">
-                    <div class="col-md-5">
+                    <!-- <div class="col-md-5">
                         <div class="form-group">
                             <label class="small mb-1">Username: {{user.username}}</label>
                                 {{ user_form.username }}
@@ -125,7 +130,7 @@
                         <div class="form-group">
                             <a href="#">Change Password</a>
                             <hr>
-                        </div>
+                        </div> -->
                         <label class="small mb-1">Bio:</label> {{ profile_form.bio }}
                     </div>
                 </div>
