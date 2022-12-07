@@ -87,7 +87,9 @@
                                 <p>{{post.description}} </p>
                             </h5>
                             <hr>
-                            <p> By: {{post.name}}</p>
+                            <a href="{% url 'get_others' name=post.name %}">
+                                <p> By: {{post.name}}</p>
+                            </a>
                             email- {{post.email}}
                             <hr>     
                             <h4>Comments from other users</h4>

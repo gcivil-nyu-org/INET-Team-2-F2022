@@ -90,67 +90,49 @@
             </p>
 
     </nav>
-<body>
+
+    <body>
 
 
 
-    {% block content %}
-    <h1>This is the profile page for {{user.username}}</h1>
+        {% block content %}
+        <h1>This is the profile page for {{username}}</h1>
         <div class="row my-3 p-3">
-            <img class="rounded-circle account-img" src="{{ user.profile.avatar.url }} " style="cursor: pointer;"/>
+            <img class="rounded-circle account-img" src="{{ user.profile.avatar.url }} " style="cursor: pointer;" />
         </div>
-        {% if user_form.errors %}
-        <div class="alert alert-danger alert-dismissible" role="alert">
-            <div id="form_errors">
-                {% for key, value in user_form.errors.items %}
-                    <strong>{{ value }}</strong>
-                {% endfor %}
-            </div>
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-        {% endif %}
+
         <div class="form-content">
-            <form method="post" enctype="multipart/form-data">
-                {% csrf_token %}
-                <div class="form-row">
-                    <div class="col-md-5">
-                        <div class="form-group">
-                            <label class="small mb-1">Username: {{user.username}}</label>
-                                {{ user_form.username }}
-                            <label class="small mb-1">Email: {{user.email}}</label>
-                                {{ user_form.email }}
-                        </div>
-                        <div class="form-group">
-                            <a href="#">Change Password</a>
-                            <hr>
-                        </div>
-                        <label class="small mb-1">Bio:</label> {{ profile_form.bio }}
+            {% csrf_token %}
+            <div class="form-row">
+                <div class="col-md-5">
+                    <div class="form-group">
+                        <label class="small mb-1">Username: {{username}}</label>
                     </div>
-                </div>
-                <br><br>
-                <button type="submit" class="btn btn-dark btn-lg">Save Changes</button>
-                <button type="reset" class="btn btn-dark btn-lg">Reset</button>
-            </form>
-        </div>
-        
-{% endblock content %}
-
-{%for post in forumPosts %}
-            
-                <div class="box container">
-                    <br>
-                    <h5 class="card-title">
-                        <a href="{% url 'forum_post' pk=post.zipcode.zipcode id=post.id %}"><h3>{{post.topic}} | {{post.zipcode.zipcode}} Grade: {{post.zipcode.grade}}</h3></a>
-                        <div class="card-box container">
-                                <p>{{post.description}} </p>
-                            </h5>   
-                        </div>
+                    <label class="small mb-1">Bio: {{ profile.bio }}</label>
                 </div>
             </div>
-            
-            {%endfor%}
+            <br><br>
+        </div>
 
-</body>
+        {% endblock content %}
+
+        {%for post in forumPosts %}
+
+        <div class="box container">
+            <br>
+            <h5 class="card-title">
+                <a href="{% url 'forum_post' pk=post.zipcode.zipcode id=post.id %}">
+                    <h3>{{post.topic}} | {{post.zipcode.zipcode}} Grade: {{post.zipcode.grade}}</h3>
+                </a>
+                <div class="card-box container">
+                    <p>{{post.description}} </p>
+            </h5>
+        </div>
+        </div>
+        </div>
+
+        {%endfor%}
+
+    </body>
+
 </html>
