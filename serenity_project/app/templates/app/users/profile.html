@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+{%load static%}
+<html>
+
+<head>
+    <style>
+        h1 {
+            text-align: center;
+        }
+
+        p {
+            color: darkolivegreen;
+            margin: 30px;
+        }
+
+        h2 {
+            color: forestgreen;
+            margin: 30px;
+        }
+
+        p {
+            text-align: right;
+        }
+
+        div {
+            text-align: left;
+            margin: 30px;
+        }
+    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{user.username}}'s Profile</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Catamaran:wght@200;400;700&family=Chau+Philomene+One&display=swap"
+        rel="stylesheet">
+    <link href="{% static 'css/styles.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+        integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous" 0>
+
+</head>
+
+<body style="background-color:ECFFE8;">
+
+    <nav class="navbar navbar-expand-lg navbar-light">
+
+        <a class="navbar-brand ps-3" href="/">
+            <img src="{% static '/img/SerenitySearch-1.png' %}" alt="" width="90" height="90">
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse justify-content-center">
+            <header class="serenity-title">
+                <h1 style="color:ForestGreen;">SerenitySearch</h1>
+                <p style="color:ForestGreen;"><i>Helping New Yorkers find peace in the city that never sleeps</i></p>
+            </header>
+
+        </div>
+
+        <!-- pe-6 is a bootstrap spacing class, need to figure out a better way to align the links and title -->
+        <ul class="navbar-nav pe-6">
+            <li class="nav-item align-right pe-3">
+                <a class="nav-link" href="{% url 'home' %}">Home</a>
+            </li>
+            <li class="nav-item align-right pe-3">
+                <a class="nav-link" href="{%url 'about' %}">About SerenityScores</a>
+            </li>
+            {% block user %}
+            {% if user.is_authenticated %}
+            <li class="nav-item align-right pe-3">
+                <a class="nav-link align-left" href="{% url 'profile' %}">View {{user.username}}'s Profile</a>
+            </li>
+            <li class="nav-item align-right pe-3">
+                <a class="nav-link align-right" href="{% url 'logout' %}">Log Out</a>
+            </li>
+            {% else %}
+            <li class="nav-item align-right">
+                <a class="nav-link" href="{% url 'login' %}">Log In</a>
+            </li>
+            {% endif %}
+            {% endblock %}
+            <li class="nav-item align-right pe-3">
+                <a class="nav-link" href="{% url 'forum_home' %}">Forum Home</a>
+            </li>
+
+            </p>
+
+    </nav>
+<body>
+
+
+
+    {% block content %}
+    <h1>This is the profile page for {{user.username}}</h1>
+        <div class="row my-3 p-3">
+            <img class="rounded-circle account-img" src="{{ user.profile.avatar.url }} " style="cursor: pointer;"/>
+        </div>
+        {% if user_form.errors %}
+        <div class="alert alert-danger alert-dismissible" role="alert">
+            <div id="form_errors">
+                {% for key, value in user_form.errors.items %}
+                    <strong>{{ value }}</strong>
+                {% endfor %}
+            </div>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        {% endif %}
+        <h2>
+            user: {{user.username}}
+            <br>
+            email: {{user.email}}
+        </h2>
+        <div class="form-content">
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="form-row">
+                    <!-- <div class="col-md-5">
+                        <div class="form-group">
+                            <label class="small mb-1">Username: {{user.username}}</label>
+                                {{ user_form.username }}
+                            <label class="small mb-1">Email: {{user.email}}</label>
+                                {{ user_form.email }}
+                        </div>
+                        <div class="form-group">
+                            <a href="#">Change Password</a>
+                            <hr>
+                        </div> -->
+                        <label class="small mb-1">Bio:</label> {{ profile_form.bio }}
+                    </div>
+                </div>
+                <br><br>
+                <button type="submit" class="btn btn-dark btn-lg">Save Changes</button>
+                <button type="reset" class="btn btn-dark btn-lg">Reset</button>
+            </form>
+        </div>
+        
+{% endblock content %}
+
+{%for post in forumPosts %}
+            
+                <div class="box container">
+                    <br>
+                    <h5 class="card-title">
+                        <a href="{% url 'forum_post' pk=post.zipcode.zipcode id=post.id %}"><h3>{{post.topic}} | {{post.zipcode.zipcode}} Grade: {{post.zipcode.grade}}</h3></a>
+                        <div class="card-box container">
+                                <p>{{post.description}} </p>
+                            </h5>   
+                        </div>
+                </div>
+            </div>
+            
+            {%endfor%}
+
+</body>
+</html>
