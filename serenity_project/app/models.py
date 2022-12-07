@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 # Create your models here.
 
@@ -53,3 +54,24 @@ class Comment(models.Model):  # change to Comment
 
     def __str__(self):
         return str(self.forumPost)
+
+
+class Profile(models.Model):
+    # each user may only have one profile
+    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
+
+    # avatar = models.ImageField(default="/media/default.jpg", upload_to="media")
+    bio = models.TextField()
+
+    def __str__(self):
+        return self.user.username
+
+    def save(self, *args, **kwargs):
+        super().save()
+
+        # img = Image.open(self.avatar.path)
+
+        # if img.height > 100 or img.width > 100:
+        #   new_img = (100, 100)
+        #  img.thumbnail(new_img)
+        # img.save(self.avatar.path)

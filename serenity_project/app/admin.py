@@ -1,8 +1,9 @@
 from django.contrib import admin
-from .models import ScoreTable, ForumPost, Comment
+from .models import ScoreTable, ForumPost, Comment, Profile
 
 # Register your models here.
 
 admin.site.register(ScoreTable)
 admin.site.register(ForumPost)
 admin.site.register(Comment)
+admin.site.register(Profile)

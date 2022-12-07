@@ -1,28 +1,47 @@
-{% load static %}
 <!DOCTYPE html>
-<html lang="en">
+{%load static%}
+<html>
 
 <head>
+    <style>
+        h1 {
+            text-align: center;
+        }
+
+        p {
+            color: darkolivegreen;
+            margin: 30px;
+        }
+
+        h2 {
+            color: forestgreen;
+            margin: 30px;
+        }
+
+        p {
+            text-align: right;
+        }
+
+        div {
+            text-align: left;
+            margin: 30px;
+        }
+    </style>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Serenity Discussion Forum Zipcode {{zipcode}}</title>
+    <title>{{user.username}}'s Profile</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
         href="https://fonts.googleapis.com/css2?family=Catamaran:wght@200;400;700&family=Chau+Philomene+One&display=swap"
         rel="stylesheet">
-    <link href="{% static 'css/forum.css' %}" rel="stylesheet">
+    <link href="{% static 'css/styles.css' %}" rel="stylesheet">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
         integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous" 0>
-    <style>
-        .box {
-            border: 4px solid black;
-            margin: 0 auto;
-        }
-    </style>
+
 </head>
 
-<body>
+<body style="background-color:ECFFE8;">
 
     <nav class="navbar navbar-expand-lg navbar-light">
 
@@ -47,6 +66,9 @@
             <li class="nav-item align-right pe-3">
                 <a class="nav-link" href="{% url 'home' %}">Home</a>
             </li>
+            <li class="nav-item align-right pe-3">
+                <a class="nav-link" href="{%url 'about' %}">About SerenityScores</a>
+            </li>
             {% block user %}
             {% if user.is_authenticated %}
             <li class="nav-item align-right pe-3">
@@ -66,21 +88,33 @@
             </li>
 
             </p>
+
     </nav>
 
-    <h2 class="navbar">
-        Currently active forum Posts: {{count}}
-        <form method="POST" action="{% url 'addInForumPost' %}">
+    <body>
+
+
+
+        {% block content %}
+        <h1>This is the profile page for {{username}}</h1>
+        <div class="row my-3 p-3">
+            <img class="rounded-circle account-img" src="{{ user.profile.avatar.url }} " style="cursor: pointer;" />
+        </div>
+
+        <div class="form-content">
             {% csrf_token %}
-            <input value={{zipcode}} name="curzip" type="hidden">
-            <button class="btn btn-success" style="width:fit-content; padding: 4px; margin:10px;">Add more</button>
-        </form>
-    </h2>
-    <div class="container-fluid">
+            <div class="form-row">
+                <div class="col-md-5">
+                    <div class="form-group">
+                        <label class="small mb-1">Username: {{username}}</label>
+                    </div>
+                    <label class="small mb-1">Bio: {{ profile.bio }}</label>
+                </div>
+            </div>
+            <br><br>
+        </div>
 
-
-
-
+        {% endblock content %}
 
         {%for post in forumPosts %}
 
@@ -93,44 +127,12 @@
                 <div class="card-box container">
                     <p>{{post.description}} </p>
             </h5>
-            <hr>
-            <a href="{% url 'get_others' name=post.name %}">
-                <p> By: {{post.name}}</p>
-            </a>
-            email- {{post.email}}
-            <hr>
-            <h4>Comments from other users</h4>
-            {%for comment in comments%}
-            {%for objs in comment%}
-            {% if objs.forumPost == post %}
-            {{objs.comment}}
-            <br>
-            {% endif %}
-            {%endfor%}
-            {%endfor%}
-            <form method="POST" action="{% url 'addInComment' %}">
-                {% csrf_token %}
-                <input value={{post.id}} name="post" type="hidden">
-                <button class="btn btn-success" style="width:fit-content; padding: 4px; margin:10px;">Add more</button>
-            </form>
         </div>
-    </div>
-    </div>
+        </div>
+        </div>
 
-    {%endfor%}
-    </div>
+        {%endfor%}
 
-
-
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
-        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
-        crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
-        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
-        crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
-        integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
-        crossorigin="anonymous"></script>
-</body>
+    </body>
 
 </html>

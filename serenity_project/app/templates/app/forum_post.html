@@ -43,8 +43,11 @@
             </li>
             {% block user %}
             {% if user.is_authenticated %}
-            <li class="nav-item">
-              <p>Hi {{ user.username }}!<a class="nav-link align-right" href="{% url 'logout' %}">Log Out</a></p>
+            <li class="nav-item align-right pe-3">
+                <a class="nav-link align-left" href="{% url 'profile' %}">View {{user.username}}'s Profile</a>
+            </li>
+            <li class="nav-item align-right pe-3">
+                <a class="nav-link align-right" href="{% url 'logout' %}">Log Out</a>
             </li>
             {% else %}
             <li class="nav-item align-right">
@@ -84,7 +87,9 @@
                                 <p>{{post.description}} </p>
                             </h5>
                             <hr>
-                            <p> By: {{post.name}}</p>
+                            <a href="{% url 'get_others' name=post.name %}">
+                                <p> By: {{post.name}}</p>
+                            </a>
                             email- {{post.email}}
                             <hr>     
                             <h4>Comments from other users</h4>
