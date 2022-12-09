@@ -1,3 +1,6 @@
+
+
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -21,16 +24,30 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
 </head>
+<style>.aigo {
+    height: 100px;
+    width: 500px;
+    border:1.8px solid black;
+    
+  }
+  ::placeholder { 
+  color: lightblue;
+  opacity: 0.5; 
+}
+  </style>
+
+
 
 <body style="background-color:ECFFE8;">
 
-
-
+<!-- 
     <nav class="navbar navbar-expand-lg navbar-light">
-
+    
+       <center>
         <a class="navbar-brand ps-3" href="/">
-            <img src="{% static '/img/SerenitySearch-1.png' %}" alt="" width="90" height="90">
+            <img src="{% static '/img/SerenitySearch-1.png' %}" alt="" width="70" height="85">
         </a>
+    </center>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -43,41 +60,135 @@
             </header>
 
         </div>
+        </nav> -->
 
-        <!-- pe-6 is a bootstrap spacing class, need to figure out a better way to align the links and title -->
-        <ul class="navbar-nav pe-6">
-            <li class="nav-item align-right pe-3">
-                <a class="nav-link" href="{% url 'home' %}">Home</a>
-            </li>
-            <li class="nav-item align-right pe-3">
-                <a class="nav-link" href="{%url 'about' %}">About SerenityScores</a>
-            </li>
-            {% block user %}
-            {% if user.is_authenticated %}
-            <li class="nav-item align-right pe-3">
-                <a class="nav-link align-left" href="{% url 'profile' %}">View {{user.username}}'s Profile</a>
-            </li>
-            <li class="nav-item align-right pe-3">
-                <a class="nav-link align-right" href="{% url 'logout' %}">Log Out</a>
-            </li>
-            {% else %}
-            <li class="nav-item align-right">
-                <a class="nav-link" href="{% url 'login' %}">Log In</a>
-            </li>
-            {% endif %}
-            {% endblock %}
-            <li class="nav-item align-right pe-3">
-                <a class="nav-link" href="{% url 'forum_home' %}">Forum Home</a>
-            </li>
 
-            </p>
+ 
 
+
+
+
+
+        <!-- <nav class="navbar navbar-dark bg-primary"> -->
+    <nav class="navbar navbar-expand-sm bg-primary navbar-dark">
+        <div class="d-flex flex-grow-1">
+            <ul class="navbar-nav text-left">
+            <a href="/" class="navbar-brand">
+                <a class="nav-link" href="{% url 'home' %}">
+
+                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-house-heart" viewBox="0 0 16 16">
+                        <path d="M8 6.982C9.664 5.309 13.825 8.236 8 12 2.175 8.236 6.336 5.309 8 6.982Z"/>
+                        <path d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.707L2 8.207V13.5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5V8.207l.646.646a.5.5 0 0 0 .708-.707L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.707 1.5ZM13 7.207V13.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V7.207l5-5 5 5Z"/>
+                      </svg>
+                      Home
+                </a>
+            </a>
+     
+    
+    
+            <a class="nav-link" href="{%url 'about' %}">
+                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-clipboard-data-fill" viewBox="0 0 16 16">
+                    <path d="M6.5 0A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3Zm3 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3Z"/>
+                    <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1A2.5 2.5 0 0 1 9.5 5h-3A2.5 2.5 0 0 1 4 2.5v-1ZM10 8a1 1 0 1 1 2 0v5a1 1 0 1 1-2 0V8Zm-6 4a1 1 0 1 1 2 0v1a1 1 0 1 1-2 0v-1Zm4-3a1 1 0 0 1 1 1v3a1 1 0 1 1-2 0v-3a1 1 0 0 1 1-1Z"/>
+                  </svg>
+                  Info
+                </i></a>  
+  
+        </a>  
+        <a href="/" class="navbar-brand">
+    
+            <a class="nav-link" href="{% url 'forum_home' %}">
+                <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" class="bi bi-card-list" viewBox="0 0 16 16">
+                    <path d="M14.5 3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h13zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-13z"/>
+                    <path d="M5 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 5 8zm0-2.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zm0 5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zm-1-5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0zM4 8a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0zm0 2.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0z"/>
+                  </svg>Forum </a> 
+  
+        </a>  
+    </ul>
+    </div>
+     
+    <div class="collapse navbar-collapse justify-content-left">
+        <header class="serenity-title">
+            <!-- <h1 style="color:rgb(229, 237, 229);">SerenitySearch</h1> -->
+            
+            <p style="font-size:300% rem1.7; color: #e2e9e5;"><i>Helping New Yorkers find peace in the city</i></p>
+            
+        </header>
+
+    </div>
+        <div class="collapse navbar-collapse flex-grow-0" id="navbarSupportedContent">
+            <ul class="navbar-nav text-right">
+                            <a class="nav-link" href="{% url 'login' %}">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-check-circle-fill" viewBox="0 0 16 16">
+                                    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+                                  </svg>Log In
+                                </a>
+                        
+                                <a href="/" class="navbar-brand">
+
+                            <a class="nav-link" href="{% url 'register' %}">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-check-circle" viewBox="0 0 16 16">
+                                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                                    <path d="M10.97 4.97a.235.235 0 0 0-.02.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05z"/>
+                                  </svg>Sign In
+                                </a>
+                                
+                        </li>
+                    </ul>
+                    </div>
     </nav>
+<!-- <center> 
+    <p style="color:ForestGreen;">To start your search, please enter a 5-digit NYC zipcode:</p>
+    <form action="search" method="POST">
+        {% csrf_token %}
+        <input type="text" placeholder="Enter a Zipcode" name="searched" minlength="5" maxlength="5"
+            pattern="[0-9]+" required />
+        <button type="submit" class="btn btn-outline-primary">Search</button>
+    </form>
+</center> -->
 
+
+
+
+
+
+     <!-- Background image -->
+     <div
+     class="bg-image"
+     style="
+       background-image: url('static/img/fr.jpg');
+         -webkit-background-size: cover;
+         -moz-background-size: cover;
+         -o-background-size: cover;
+         background-size: cover;
+       height: 65vh;"
+   >
+     <div class="mask gradient-custom">
+       <div class="d-flex justify-content-center align-items-center h-100">
+         <h1 style="color:rgb(27, 108, 208)">To start your search, please enter a 5-digit NYC zipcode:
+             <!-- <p style="color:ForestGreen;">To start your search, please enter a 5-digit NYC zipcode:</p> -->
+             <center>
+             <form action="search" style="color:rgb(27, 108, 208)" method="POST">
+                
+                 {% csrf_token %}
+                 <input type="text"  placeholder="Enter a Zipcode" name="searched" minlength="5" maxlength="5"
+                     pattern="[0-9]+" required />
+                 <button type="submit" class="btn btn-outline-primary">Search</button>
+               
+             </form>
+            </center>
+         </h1>
+       </div>
+     </div>
+   </div>
+   <!-- Background image -->
+<br>
+   <center> 
     {% block content %}
-    <div id="map"></div>
+    
+    <div id="map" class="aigo"></div>
     {% endblock %}
-
+   </center>
     <center>
         <form>
             <label for="residentialNoise">
@@ -103,13 +214,7 @@
             <button type="button" id="btn" class="btn btn-outline-primary">Submit</button>
         </form>
 
-        <p style="color:ForestGreen;">To start your search, please enter a 5-digit NYC zipcode:</p>
-        <form action="search" method="POST">
-            {% csrf_token %}
-            <input type="text" placeholder="Enter a Zipcode" name="searched" minlength="5" maxlength="5"
-                pattern="[0-9]+" required />
-            <button type="submit" class="btn btn-outline-primary">Search</button>
-        </form>
+
 
         {% if messages %}
         {% for message in messages %}
@@ -130,6 +235,10 @@
 
     </center>
 
+
+
+
+   
 
     <script>
         var map;
@@ -437,3 +546,81 @@
         crossorigin="anonymous"></script>
 
 </body>
+
+
+
+
+
+    <!-- <div class="border p-5"> -->
+      <!-- Copy this code to have a working example -->
+      <footer class="bg-primary text-white text-center text-lg-start">
+        <!-- Grid container -->
+        <div class="container p-4">
+          <!--Grid row-->
+          <div class="row">
+            <!--Grid column-->
+            <div class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
+              <!-- Content -->
+              <h6 class="text-uppercase fw-bold mb-4">
+                <i class="fas fa-gem me-3"></i>Serenity Search
+              </h6>
+              <p>
+                  Explore the peaceful and safest neighborhoods in NYC based on 311 complaints, construction permits, tree census, 
+                  park properties, and other data by city, for more information check the info section. 
+                  Ranking based on Serenity Search we can help you be aware of your neighborhood by providing a grading system. 
+                   Read more on how this ranking was calculated in the info section.
+              </p>
+            </div>
+            <!--Grid column-->
+
+            <!-- Grid column -->
+          <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
+            <!-- Links -->
+            <h6 class="text-uppercase fw-bold mb-4">
+              Products
+            </h6>
+            <p>
+              <a href="#!" class="text-reset">Bootstrap</a>
+            </p>
+            <p>
+              <a href="#!" class="text-reset">Django</a>
+            </p>
+            <p>
+              <a href="#!" class="text-reset">Sqlite3</a>
+            </p>
+          
+          </div>
+          <!-- Grid column -->
+  
+          <!-- Grid column -->
+          <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4">
+            <!-- Links -->
+            <h6 class="text-uppercase fw-bold mb-4">
+              Our Data
+            </h6>
+            <p>
+              <a href="https://data.cityofnewyork.us/Environment/2015-Street-Tree-Census-Tree-Data/pi5s-9p35" class="text-reset">
+                Street Tree Census</a>
+            </p>
+            <p>
+              <a href="https://data.cityofnewyork.us/Recreation/Parks-Properties/enfh-gkve" class="text-reset">Parks Properties </a>
+            </p>
+            <p>
+              <a href="https://data.cityofnewyork.us/Social-Services/311-Service-Requests-from-2010-to-Present/erm2-nwe9" class="text-reset">
+                311 Dataset</a>
+            </p>
+            <p>
+              <a href="https://data.cityofnewyork.us/Transportation/Street-Construction-Permits/tqtj-sjs8" class="text-reset">DOB Permit</a>
+            </p>
+          </div>
+
+        <!-- Copyright -->
+        <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2)">
+          © 2022 Copyright:
+          <a class="text-white" href="http://se-proj-develop.eba-hksnzcxj.us-west-2.elasticbeanstalk.com/"> INET2</a>
+        </div>
+        <!-- Copyright -->
+      </footer>
+      <!--/ Copy this code to have a working example -->
+    </div>
+  </div>
