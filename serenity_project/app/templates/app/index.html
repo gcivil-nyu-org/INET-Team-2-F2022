@@ -4,6 +4,7 @@
     {% load static %}
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href='https://fonts.googleapis.com/css?family=Sacramento' rel='stylesheet'>
     <link
         href="https://fonts.googleapis.com/css2?family=Catamaran:wght@200;400;700&family=Chau+Philomene+One&display=swap"
         rel="stylesheet">
@@ -49,9 +50,14 @@
             outline: none;
 
         }
+
+        hr.divider {
+            margin-top: 0em;
+            border-width: 2px;
+        }
     </style>
 
-    <nav class="navbar navbar-expand-lg navbar-light" style="height:40px;">
+    <nav class="navbar navbar-expand-lg navbar-light" style="height:80px; background-color: #1411112b;">
 
 
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
@@ -61,7 +67,7 @@
 
         <div class="collapse navbar-collapse justify-content-left mt-3 row">
             <div class="col-auto">
-                <h1 style="color:ForestGreen;">SerenitySearch</h1>
+                <h1 style="color:ForestGreen; font-family:Sacramento ;">SerenitySearch</h1>
             </div>
 
         </div>
@@ -95,7 +101,7 @@
             </p>
 
     </nav>
-<hr style ="border-top: 1px solid gray ;">
+    <hr class = "divider" style="border-top: 1px solid gray ;">
 
     <!-- In your Django template -->
 
@@ -108,8 +114,9 @@
 
             <form action="search" method="POST" style="margin-bottom: -10px;">
                 <div class="bar">
-                    <input class="searchbar" type="text" title="Search" type="text" placeholder="Enter a NYC zipcode for search" name="searched"
-                    minlength="5" maxlength="5" style="width: 250px;" pattern="[0-9]+" required >
+                    <input class="searchbar" type="text" title="Search" type="text"
+                        placeholder="Enter a NYC zipcode for search" name="searched" minlength="5" maxlength="5"
+                        style="width: 250px;" pattern="[0-9]+" required>
                 </div>
 
                 <button type="submit" class="btn btn-outline-primary" style="display: None;">Search</button>
