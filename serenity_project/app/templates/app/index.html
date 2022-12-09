@@ -78,24 +78,17 @@
 
 
     <center>
-        <div class="navbar navbar-nav" style="height: 100px;">
+        <div class="navbar navbar-nav" style="height: 80px;">
             <form>
             <div class="row g-2 align-items-center">
-                <div class="col-auto">
-
-
-                    
+                <div class="col-auto">                    
                     <!-- Load jQuery -->
                     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
                     
 
-                    
-
-
-
                     <label for="residentialNoise">
                         <input type="checkbox" id="residentialNoise" name="filter" value="yes" style="opacity:0;">
-                        <img src="{% static '/icon/noise-unchecked.svg' %}" id="residentialNoiseIcon" width="80px">
+                        <img src="{% static '/icon/noise-unchecked.svg' %}" id="residentialNoiseIcon" width="60px">
                                             <!-- Add the JavaScript to toggle the image -->
                     <script>
                         // Get the checkbox and its associated image
@@ -107,12 +100,12 @@
                           // If the checkbox is checked, change the image to the checked image
                           if (checkbox1.is(":checked")) {
                             image1.attr("src", "{% static '/icon/noise-checked.svg'%}");
-                            image1.attr("width", "80px")
+                            image1.attr("width", "60px")
                           } else {
                             
                             // Otherwise, change the image to the unchecked image
                             image1.attr("src", "{% static '/icon/noise-unchecked.svg' %}");
-                            image1.attr("width", "80px")
+                            image1.attr("width", "60px")
                           }
                         });
                       </script>
@@ -121,7 +114,7 @@
 
                     <label for="dirtyConditions">
                         <input type="checkbox" id="dirtyConditions" name="filter" value="yes" style="opacity:0;">
-                        <img src="{% static '/icon/dirty-unchecked.svg' %}" id="dirtyConditionsIcon" width="80px">
+                        <img src="{% static '/icon/dirty-unchecked.svg' %}" id="dirtyConditionsIcon" width="60px">
                                             <!-- Add the JavaScript to toggle the image -->
                     <script>
                         // Get the checkbox and its associated image
@@ -133,12 +126,12 @@
                           // If the checkbox is checked, change the image to the checked image
                           if (checkbox2.is(":checked")) {
                             image2.attr("src", "{% static '/icon/dirty-checked.svg'%}");
-                            image2.attr("width", "80px")
+                            image2.attr("width", "60px")
                           } else {
                             
                             // Otherwise, change the image to the unchecked image
                             image2.attr("src", "{% static '/icon/dirty-unchecked.svg' %}");
-                            image2.attr("width", "80px")
+                            image2.attr("width", "60px")
                           }
                         });
                       </script>
@@ -148,7 +141,7 @@
         
                     <label for="treeCensus">
                         <input type="checkbox" id="treeCensus" name="filter" value="yes" style="opacity:0;">
-                        <img src="{% static '/icon/trees-unchecked.svg' %}" id="treeCensusIcon" width="80px">
+                        <img src="{% static '/icon/trees-unchecked.svg' %}" id="treeCensusIcon" width="60px">
                                             <!-- Add the JavaScript to toggle the image -->
                     <script>
                         // Get the checkbox and its associated image
@@ -160,12 +153,12 @@
                           // If the checkbox is checked, change the image to the checked image
                           if (checkbox3.is(":checked")) {
                             image3.attr("src", "{% static '/icon/trees-checked.svg'%}");
-                            image3.attr("width", "80px")
+                            image3.attr("width", "60px")
                           } else {
                             
                             // Otherwise, change the image to the unchecked image
                             image3.attr("src", "{% static '/icon/trees-unchecked.svg' %}");
-                            image3.attr("width", "80px")
+                            image3.attr("width", "60px")
                           }
                         });
                       </script>
@@ -175,7 +168,7 @@
         
                     <label for="parkCount">
                         <input type="checkbox" id="parkCount" name="filter" value="yes" style="opacity:0;">
-                        <img src="{% static '/icon/parks-unchecked.svg' %}" id="parkCountIcon" width="80px">
+                        <img src="{% static '/icon/parks-unchecked.svg' %}" id="parkCountIcon" width="60px">
                                             <!-- Add the JavaScript to toggle the image -->
                     <script>
                         // Get the checkbox and its associated image
@@ -187,12 +180,12 @@
                           // If the checkbox is checked, change the image to the checked image
                           if (checkbox4.is(":checked")) {
                             image4.attr("src", "{% static '/icon/parks-checked.svg'%}");
-                            image4.attr("width", "80px")
+                            image4.attr("width", "60px")
                           } else {
                             
                             // Otherwise, change the image to the unchecked image
                             image4.attr("src", "{% static '/icon/parks-unchecked.svg' %}");
-                            image4.attr("width", "80px")
+                            image4.attr("width", "60px")
                           }
                         });
                       </script>
@@ -202,7 +195,7 @@
 
                     <label for="constructionImpact">
                         <input type="checkbox" id="constructionImpact" name="filter" value="yes" style="opacity:0;">
-                        <img src="{% static '/icon/construction-unchecked.svg' %}" id="constructionImpactIcon" width="80px">
+                        <img src="{% static '/icon/construction-unchecked.svg' %}" id="constructionImpactIcon" width="60px">
                                             <!-- Add the JavaScript to toggle the image -->
                     <script>
                         // Get the checkbox and its associated image
@@ -214,12 +207,12 @@
                           // If the checkbox is checked, change the image to the checked image
                           if (checkbox5.is(":checked")) {
                             image5.attr("src", "{% static '/icon/construction-checked.svg'%}");
-                            image5.attr("width", "80px")
+                            image5.attr("width", "60px")
                           } else {
                             
                             // Otherwise, change the image to the unchecked image
                             image5.attr("src", "{% static '/icon/construction-unchecked.svg' %}");
-                            image5.attr("width", "80px")
+                            image5.attr("width", "60px")
                           }
                         });
                       </script>
@@ -228,22 +221,23 @@
                 <div class="col-auto">
                     <button type="button" id="btn" class="btn btn-outline-primary">Submit</button>
                 </div>
+
+                <form action="search" method="POST">
+                        <div class="col-auto">
+                            <input class="form-control" type="text" placeholder="Enter a 5-digit NYC zipcode:" name="searched" minlength="5" maxlength="5"
+                            pattern="[0-9]+" required />
+                        </div>
+                        <div class="col-auto">
+                            <button type="submit" class="btn btn-outline-primary">Search</button>
+                        </div>
+                        {% csrf_token %}
+                </form>
+
             </div>
             </form>
     
             
-            <form action="search" method="POST">
-                <div class="row g-2 align-items-center">
-                    <div class="col-auto">
-                        <input class="form-control" type="text" placeholder="Enter a 5-digit NYC zipcode:" name="searched" minlength="5" maxlength="5"
-                        pattern="[0-9]+" required />
-                    </div>
-                    <div class="col-auto">
-                        <button type="submit" class="btn btn-outline-primary">Search</button>
-                    </div>
-                    {% csrf_token %}
-                </div>
-            </form>
+           
     
         </div>
 
