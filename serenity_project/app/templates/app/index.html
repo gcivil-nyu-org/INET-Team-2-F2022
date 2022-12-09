@@ -22,26 +22,23 @@
         integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
 </head>
 
-<body style="background-color:ECFFE8;">
+<body style="">
 
 
 
-    <nav class="navbar navbar-expand-lg navbar-light">
+    <nav class="navbar navbar-expand-lg navbar-light" style="height:40px;">
 
-        <a class="navbar-brand ps-3" href="/">
-            <img src="{% static '/img/SerenitySearch-1.png' %}" alt="" width="90" height="90">
-        </a>
+   
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
 
-        <div class="collapse navbar-collapse justify-content-center">
-            <header class="serenity-title">
+        <div class="collapse navbar-collapse justify-content-left mt-3 row">
+            <div class="col-auto">
                 <h1 style="color:ForestGreen;">SerenitySearch</h1>
-                <p style="color:ForestGreen;"><i>Helping New Yorkers find peace in the city that never sleeps</i></p>
-            </header>
-
+            </div>
+                
         </div>
 
         <!-- pe-6 is a bootstrap spacing class, need to figure out a better way to align the links and title -->
@@ -74,42 +71,181 @@
 
     </nav>
 
-    {% block content %}
-    <div id="map"></div>
-    {% endblock %}
+
+    <!-- In your Django template -->
+
+<!-- The checkbox and its associated image -->
+
 
     <center>
-        <form>
-            <label for="residentialNoise">
-                <input type="checkbox" id="residentialNoise" name="filter" value="yes"> Residential Noise
-            </label>
-            <label for="dirtyConditions">
-                <input type="checkbox" id="dirtyConditions" name="filter" value="yes"> Dirty Conditions
-            </label>
+        <div class="navbar navbar-nav" style="height: 100px;">
+            <form>
+            <div class="row g-2 align-items-center">
+                <div class="col-auto">
 
-            <label for="treeCensus">
-                <input type="checkbox" id="treeCensus" name="filter" value="yes"> Tree Census
-            </label>
 
-            <label for="parkCount">
-                <input type="checkbox" id="parkCount" name="filter" value="yes"> Park Count
-            </label>
+                    
+                    <!-- Load jQuery -->
+                    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+                    
 
-            <label for="constructionImpact">
-                <input type="checkbox" id="constructionImpact" name="filter" value="yes"> Construction
-                Impact
-            </label>
-            <br>
-            <button type="button" id="btn" class="btn btn-outline-primary">Submit</button>
-        </form>
+                    
 
-        <p style="color:ForestGreen;">To start your search, please enter a 5-digit NYC zipcode:</p>
-        <form action="search" method="POST">
-            {% csrf_token %}
-            <input type="text" placeholder="Enter a Zipcode" name="searched" minlength="5" maxlength="5"
-                pattern="[0-9]+" required />
-            <button type="submit" class="btn btn-outline-primary">Search</button>
-        </form>
+
+
+                    <label for="residentialNoise">
+                        <input type="checkbox" id="residentialNoise" name="filter" value="yes" style="opacity:0;">
+                        <img src="{% static '/icon/noise-unchecked.svg' %}" id="residentialNoiseIcon" width="80px">
+                                            <!-- Add the JavaScript to toggle the image -->
+                    <script>
+                        // Get the checkbox and its associated image
+                        var checkbox1 = $("#residentialNoise");
+                        var image1 = $("#residentialNoiseIcon");
+                      
+                        // Add a click event listener to the checkbox
+                        checkbox1.click(function() {
+                          // If the checkbox is checked, change the image to the checked image
+                          if (checkbox1.is(":checked")) {
+                            image1.attr("src", "{% static '/icon/noise-checked.svg'%}");
+                            image1.attr("width", "80px")
+                          } else {
+                            
+                            // Otherwise, change the image to the unchecked image
+                            image1.attr("src", "{% static '/icon/noise-unchecked.svg' %}");
+                            image1.attr("width", "80px")
+                          }
+                        });
+                      </script>
+                    </label>
+
+
+                    <label for="dirtyConditions">
+                        <input type="checkbox" id="dirtyConditions" name="filter" value="yes" style="opacity:0;">
+                        <img src="{% static '/icon/dirty-unchecked.svg' %}" id="dirtyConditionsIcon" width="80px">
+                                            <!-- Add the JavaScript to toggle the image -->
+                    <script>
+                        // Get the checkbox and its associated image
+                        var checkbox2 = $("#dirtyConditions");
+                        var image2 = $("#dirtyConditionsIcon");
+                      
+                        // Add a click event listener to the checkbox
+                        checkbox2.click(function() {
+                          // If the checkbox is checked, change the image to the checked image
+                          if (checkbox2.is(":checked")) {
+                            image2.attr("src", "{% static '/icon/dirty-checked.svg'%}");
+                            image2.attr("width", "80px")
+                          } else {
+                            
+                            // Otherwise, change the image to the unchecked image
+                            image2.attr("src", "{% static '/icon/dirty-unchecked.svg' %}");
+                            image2.attr("width", "80px")
+                          }
+                        });
+                      </script>
+                    </label>
+
+
+        
+                    <label for="treeCensus">
+                        <input type="checkbox" id="treeCensus" name="filter" value="yes" style="opacity:0;">
+                        <img src="{% static '/icon/trees-unchecked.svg' %}" id="treeCensusIcon" width="80px">
+                                            <!-- Add the JavaScript to toggle the image -->
+                    <script>
+                        // Get the checkbox and its associated image
+                        var checkbox3 = $("#treeCensus");
+                        var image3 = $("#treeCensusIcon");
+                      
+                        // Add a click event listener to the checkbox
+                        checkbox3.click(function() {
+                          // If the checkbox is checked, change the image to the checked image
+                          if (checkbox3.is(":checked")) {
+                            image3.attr("src", "{% static '/icon/trees-checked.svg'%}");
+                            image3.attr("width", "80px")
+                          } else {
+                            
+                            // Otherwise, change the image to the unchecked image
+                            image3.attr("src", "{% static '/icon/trees-unchecked.svg' %}");
+                            image3.attr("width", "80px")
+                          }
+                        });
+                      </script>
+                    </label>
+
+
+        
+                    <label for="parkCount">
+                        <input type="checkbox" id="parkCount" name="filter" value="yes" style="opacity:0;">
+                        <img src="{% static '/icon/parks-unchecked.svg' %}" id="parkCountIcon" width="80px">
+                                            <!-- Add the JavaScript to toggle the image -->
+                    <script>
+                        // Get the checkbox and its associated image
+                        var checkbox4 = $("#parkCount");
+                        var image4 = $("#parkCountIcon");
+                      
+                        // Add a click event listener to the checkbox
+                        checkbox4.click(function() {
+                          // If the checkbox is checked, change the image to the checked image
+                          if (checkbox4.is(":checked")) {
+                            image4.attr("src", "{% static '/icon/parks-checked.svg'%}");
+                            image4.attr("width", "80px")
+                          } else {
+                            
+                            // Otherwise, change the image to the unchecked image
+                            image4.attr("src", "{% static '/icon/parks-unchecked.svg' %}");
+                            image4.attr("width", "80px")
+                          }
+                        });
+                      </script>
+                    </label>
+        
+
+
+                    <label for="constructionImpact">
+                        <input type="checkbox" id="constructionImpact" name="filter" value="yes" style="opacity:0;">
+                        <img src="{% static '/icon/construction-unchecked.svg' %}" id="constructionImpactIcon" width="80px">
+                                            <!-- Add the JavaScript to toggle the image -->
+                    <script>
+                        // Get the checkbox and its associated image
+                        var checkbox5 = $("#constructionImpact");
+                        var image5 = $("#constructionImpactIcon");
+                      
+                        // Add a click event listener to the checkbox
+                        checkbox5.click(function() {
+                          // If the checkbox is checked, change the image to the checked image
+                          if (checkbox5.is(":checked")) {
+                            image5.attr("src", "{% static '/icon/construction-checked.svg'%}");
+                            image5.attr("width", "80px")
+                          } else {
+                            
+                            // Otherwise, change the image to the unchecked image
+                            image5.attr("src", "{% static '/icon/construction-unchecked.svg' %}");
+                            image5.attr("width", "80px")
+                          }
+                        });
+                      </script>
+                    </label>
+                </div>
+                <div class="col-auto">
+                    <button type="button" id="btn" class="btn btn-outline-primary">Submit</button>
+                </div>
+            </div>
+            </form>
+    
+            
+            <form action="search" method="POST">
+                <div class="row g-2 align-items-center">
+                    <div class="col-auto">
+                        <input class="form-control" type="text" placeholder="Enter a 5-digit NYC zipcode:" name="searched" minlength="5" maxlength="5"
+                        pattern="[0-9]+" required />
+                    </div>
+                    <div class="col-auto">
+                        <button type="submit" class="btn btn-outline-primary">Search</button>
+                    </div>
+                    {% csrf_token %}
+                </div>
+            </form>
+    
+        </div>
 
         {% if messages %}
         {% for message in messages %}
@@ -128,7 +264,12 @@
         {% endfor %}
 
 
+
+
     </center>
+
+    {% block content %}
+    <div id="map">
 
 
     <script>
@@ -432,8 +573,13 @@
 
         }
     </script>
+        </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa"
         crossorigin="anonymous"></script>
+
+
+
+    {% endblock %}
 
 </body>
