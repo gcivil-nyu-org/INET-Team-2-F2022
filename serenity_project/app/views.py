@@ -50,16 +50,16 @@ def index(request):
     # 3) Runserver manage.py and refresh the home page
     # 4) Undo steps 1 and 2 before pushing code, include db.sqlite3 file in push
 
-    # allposts = ScoreTable.objects.all()
-    # scores=[]
-    # for post in allposts:
-    #      score = calculate_factor(post.zipcode)[0] #only getting score
-    #      scores.append(score)
-    # for post in allposts:
-    #      curr_score = calculate_factor(post.zipcode)[0]
-    #      sorted_scores = sorted(scores)
-    #      post.grade = _get_grade_from_score(percentileofscore(sorted_scores, curr_score ))
-    #      post.save()
+    allposts = ScoreTable.objects.all()
+    scores = []
+    for post in allposts:
+        score = calculate_factor(post.zipcode)[0]  # only getting score
+        scores.append(score)
+    for post in allposts:
+        curr_score = calculate_factor(post.zipcode)[0]
+        sorted_scores = sorted(scores)
+        post.grade = _get_grade_from_score(percentileofscore(sorted_scores, curr_score))
+        post.save()
     return render(request, "app/index.html", {})
 
 
@@ -100,13 +100,13 @@ def calculate_factor(zipcode):
 
     score = np.dot(n, weights)
     if currUserScore != 0:
-        score = score / 9
-        if currUserScore > score:
-            score = round(((score + (0.5 * currUserScore)) / 2), 2)
-        else:
-            score = round(((score - (0.5 * currUserScore)) / 2), 2)
+        score = (score + currUserScore) / sum(weights)
+        # if currUserScore > score:
+        # score = round(((score + (0.5 * currUserScore)) / 2), 2)
+        # else:
+        #     score = round(((score - (0.5 * currUserScore)) / 2), 2)
     else:
-        score = score / 8
+        score = score / (sum(weights) - 1)
     return score, nFactors
 
 
@@ -357,19 +357,18 @@ def submit_rating(request):
 
 def update_user_rating(total, grade):
     if grade == "A":
-        total += 0.1
+        total += 7.5
     if grade == "B":
-        total += 0.2
+        total += 25
     if grade == "C":
-        total += 0.3
+        total += 50
     if grade == "D":
-        total += 0.4
+        total += 67.5
     if grade == "E":
-        total += 0.5
+        total += 82.5
     if grade == "F":
-        total += 0.6
-    if grade == "G":
-        total += 0.7
+        total += 95
+
     return total
 
 
@@ -389,7 +388,6 @@ def get_rating(request):
                 or grade == "D"
                 or grade == "E"
                 or grade == "F"
-                or grade == "G"
             ):
                 post = ScoreTable.objects.get(zipcode=zip)
                 post.gradeCount += 1
