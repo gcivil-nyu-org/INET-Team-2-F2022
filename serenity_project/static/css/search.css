@@ -31,6 +31,8 @@ p {
     height: 80px;
     padding-top: 10px;
     padding-bottom: 10px;
+    padding-left:30px;
+    padding-right:30px;
     line-height: 20px;
     background-color:#ECFFE8;
   }

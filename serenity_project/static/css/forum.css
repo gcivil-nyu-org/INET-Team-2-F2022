@@ -29,6 +29,8 @@ p {
     display: flex;
     align-items: center;  
     height: 80px;
+    padding-left:30px;
+    padding-right:30px;
     padding-top: 10px;
     padding-bottom: 10px;
     line-height: 20px;

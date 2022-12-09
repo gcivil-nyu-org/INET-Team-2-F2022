@@ -24,10 +24,8 @@
 
 <body style="background-color:ECFFE8;">
 
-
-
-    <nav class="navbar navbar-expand-lg navbar-light">
-
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top mask-custom shadow-0t">
+        <div class="container">
         <a class="navbar-brand ps-3" href="/">
             <img src="{% static '/img/SerenitySearch-1.png' %}" alt="" width="90" height="90">
         </a>
@@ -36,100 +34,82 @@
             <span class="navbar-toggler-icon"></span>
         </button>
 
-        <div class="collapse navbar-collapse justify-content-center">
-            <header class="serenity-title">
-                <h1 style="color:ForestGreen;">SerenitySearch</h1>
-                <p style="color:ForestGreen;"><i>Helping New Yorkers find peace in the city that never sleeps</i></p>
-            </header>
-
+        <div class="collapse navbar-collapse flex-column md-auto">
+            <form action="search" method="POST">
+                {% csrf_token %}
+                <input type="text" placeholder="Enter a Zipcode" name="searched" minlength="5" maxlength="5"
+                    pattern="[0-9]+" required />
+                <button type="submit" class="btn btn-primary">Search</button>
+            </form>
         </div>
-
+            {% if messages %}
+            {% for message in messages %}
+            {% endfor %}
+            {% endif %}
+    
+            {% for message in messages %}
+            <div class="container-fluid p-0">
+                <div class="alert {{ message.tags }} alert-dismissible" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="True">&times;</span>
+                    </button>
+                    {{ message }}
+                </div>
+            </div>
+            {% endfor %}
         <!-- pe-6 is a bootstrap spacing class, need to figure out a better way to align the links and title -->
-        <ul class="navbar-nav pe-6">
-            <li class="nav-item align-right pe-3">
-                <a class="nav-link" href="{% url 'home' %}">Home</a>
-            </li>
-            <li class="nav-item align-right pe-3">
-                <a class="nav-link" href="{%url 'about' %}">About SerenityScores</a>
-            </li>
+        
+        <div class="dropdown show flex-column mx-auto">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Serenity Menu
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" href="{% url 'home' %}">Home</a>
+                <a class="dropdown-item" href="{%url 'about' %}">About SerenityScores</a>
             {% block user %}
             {% if user.is_authenticated %}
-            <li class="nav-item align-right pe-3">
-                <a class="nav-link align-left" href="{% url 'profile' %}">View {{user.username}}'s Profile</a>
-            </li>
-            <li class="nav-item align-right pe-3">
-                <a class="nav-link align-right" href="{% url 'logout' %}">Log Out</a>
-            </li>
+                <a class="dropdown-item" href="{% url 'profile' %}">View {{user.username}}'s Profile</a>
+                <a class="dropdown-item" href="{% url 'logout' %}">Log Out</a>
             {% else %}
-            <li class="nav-item align-right">
-                <a class="nav-link" href="{% url 'login' %}">Log In</a>
-            </li>
+                <a class="dropdown-item" href="{% url 'login' %}">Log In</a>
             {% endif %}
             {% endblock %}
-            <li class="nav-item align-right pe-3">
-                <a class="nav-link" href="{% url 'forum_home' %}">Forum Home</a>
-            </li>
+                <a class="dropdown-item" href="{% url 'forum_home' %}">Forum Home</a>
+            </div>
+        </div>
 
-            </p>
+</nav>
+<div class="collapse navbar-collapse flex-column justify-content-center">
+    <h4><span>
+    <form>
+        <label for="residentialNoise">
+            <input type="checkbox" id="residentialNoise" name="filter" value="yes"> Residential Noise
+        </label>
+        <label for="dirtyConditions">
+            <input type="checkbox" id="dirtyConditions" name="filter" value="yes"> Dirty Conditions
+        </label>
 
-    </nav>
+        <label for="treeCensus">
+            <input type="checkbox" id="treeCensus" name="filter" value="yes"> Tree Census
+        </label>
+
+        <label for="parkCount">
+            <input type="checkbox" id="parkCount" name="filter" value="yes"> Park Count
+        </label>
+
+        <label for="constructionImpact">
+            <input type="checkbox" id="constructionImpact" name="filter" value="yes"> Construction
+            Impact
+        </label>
+        <button type="button" id="btn" class="btn btn-primary">Submit</button>
+    </form>
+    </span></h4>
+</div>
+
 
     {% block content %}
     <div id="map"></div>
     {% endblock %}
-
-    <center>
-        <form>
-            <label for="residentialNoise">
-                <input type="checkbox" id="residentialNoise" name="filter" value="yes"> Residential Noise
-            </label>
-            <label for="dirtyConditions">
-                <input type="checkbox" id="dirtyConditions" name="filter" value="yes"> Dirty Conditions
-            </label>
-
-            <label for="treeCensus">
-                <input type="checkbox" id="treeCensus" name="filter" value="yes"> Tree Census
-            </label>
-
-            <label for="parkCount">
-                <input type="checkbox" id="parkCount" name="filter" value="yes"> Park Count
-            </label>
-
-            <label for="constructionImpact">
-                <input type="checkbox" id="constructionImpact" name="filter" value="yes"> Construction
-                Impact
-            </label>
-            <br>
-            <button type="button" id="btn" class="btn btn-outline-primary">Submit</button>
-        </form>
-
-        <p style="color:ForestGreen;">To start your search, please enter a 5-digit NYC zipcode:</p>
-        <form action="search" method="POST">
-            {% csrf_token %}
-            <input type="text" placeholder="Enter a Zipcode" name="searched" minlength="5" maxlength="5"
-                pattern="[0-9]+" required />
-            <button type="submit" class="btn btn-outline-primary">Search</button>
-        </form>
-
-        {% if messages %}
-        {% for message in messages %}
-        {% endfor %}
-        {% endif %}
-
-        {% for message in messages %}
-        <div class="container-fluid p-0">
-            <div class="alert {{ message.tags }} alert-dismissible" role="alert">
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="True">&times;</span>
-                </button>
-                {{ message }}
-            </div>
-        </div>
-        {% endfor %}
-
-
-    </center>
-
 
     <script>
         var map;

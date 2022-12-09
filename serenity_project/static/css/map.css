@@ -5,8 +5,8 @@
 /* Optional: Makes the sample page fill the window. */
 html, body {
     height: 100%;
-    margin: 0;
-    padding: 0;
+    margin: 20px;
+    padding: 20px;
 }
 
 h1 {
@@ -24,7 +24,9 @@ p {
 .navbar-nav > li > a {
     display: flex;
     align-items: center;  
-    height: 80px;
+    height: 50px;
+    padding-left: 10px;
+    padding-right: 10px;
     padding-top: 10px;
     padding-bottom: 10px;
     line-height: 20px;
@@ -34,4 +36,36 @@ p {
     display: flex;
     height: 100px;
     line-height: 20px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+/* Color of the links BEFORE scroll */
+.navbar-scroll .nav-link,
+.navbar-scroll .navbar-toggler-icon,
+.navbar-scroll .navbar-brand {
+  color: #fff;
+}
+
+/* Color of the links AFTER scroll */
+.navbar-scrolled .nav-link,
+.navbar-scrolled .navbar-toggler-icon,
+.navbar-scrolled .navbar-brand {
+  color: #fff;
+}
+
+/* Color of the navbar AFTER scroll */
+.navbar-scroll,
+.navbar-scrolled {
+  background-color: #cbbcb1;
+}
+
+.mask-custom {
+  backdrop-filter: blur(5px);
+  background-color: rgba(255, 255, 255, .15);
+}
+
+.navbar-brand {
+  font-size: 1.75rem;
+  letter-spacing: 3px;
 }
