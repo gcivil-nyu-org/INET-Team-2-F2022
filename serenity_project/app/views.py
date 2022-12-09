@@ -50,16 +50,16 @@ def index(request):
     # 3) Runserver manage.py and refresh the home page
     # 4) Undo steps 1 and 2 before pushing code, include db.sqlite3 file in push
 
-    allposts = ScoreTable.objects.all()
-    scores = []
-    for post in allposts:
-        score = calculate_factor(post.zipcode)[0]  # only getting score
-        scores.append(score)
-    for post in allposts:
-        curr_score = calculate_factor(post.zipcode)[0]
-        sorted_scores = sorted(scores)
-        post.grade = _get_grade_from_score(percentileofscore(sorted_scores, curr_score))
-        post.save()
+    # allposts = ScoreTable.objects.all()
+    # scores = []
+    # for post in allposts:
+    #     score = calculate_factor(post.zipcode)[0]  # only getting score
+    #     scores.append(score)
+    # for post in allposts:
+    #     curr_score = calculate_factor(post.zipcode)[0]
+    #     sorted_scores = sorted(scores)
+    #     post.grade = _get_grade_from_score(percentileofscore(sorted_scores, curr_score))
+    #     post.save()
     return render(request, "app/index.html", {})
 
 
@@ -306,7 +306,7 @@ def search(request, test=False):  # pragma: no cover
                     showlegend=False,
                     paper_bgcolor=paper_bg,
                 )
-
+                print(post.grade)
                 return render(
                     request,
                     "app/search.html",
