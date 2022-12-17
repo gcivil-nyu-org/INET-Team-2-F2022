@@ -14,10 +14,15 @@ from django.shortcuts import HttpResponseRedirect
 from django.template.response import TemplateResponse
 from .forms import RatingForm, NewUserForm, CreateInForumPost, CreateInComment
 
+import os
 import pandas as pd
 import numpy as np
 from django.http import HttpResponse
 from django.contrib.auth import get_user
+import plotly.express as px
+import plotly.figure_factory as ff
+import plotly.graph_objects as go
+
 
 # from .changedata import changemap
 
@@ -25,13 +30,16 @@ from django.contrib.auth import get_user
 class ScoreTableViewSet(viewsets.ModelViewSet):
     queryset = ScoreTable.objects.all()
     serializer_class = ScoreTableSerializer
-    http_method_names = ["get"]
+    http_method_names = ["get", "post"]
 
 
 def index(request):
 
-    # RUN THE BELOW COMMENTED CODE TO UPDATE GRADES ACROSS THE MAP
-    # LOAD THE SITE, THEN COMMENT THE CODE OUT AGAIN.
+    # Steps to update map:
+    # 1) Uncomment the below code within this function
+    # 2) Go to index.html line ~331 and change the Var APILink to local
+    # 3) Runserver manage.py and refresh the home page
+    # 4) Undo steps 1 and 2 before pushing code, include db.sqlite3 file in push
 
     # allposts = ScoreTable.objects.all()
     # for post in allposts:
@@ -100,12 +108,16 @@ def _get_grade_from_score(score):
     return grade
 
 
-def search(request):  # pragma: no cover
+def search(request, test=False):  # pragma: no cover
     csrfContext = RequestContext(request)
     if request.method == "POST":
         search = request.POST["searched"]
         try:
             post = ScoreTable.objects.get(zipcode=search)
+            parkCountPoint = post.parkCount
+            treeCensusPoint = post.treeCensus
+            residentialNoisePoint = post.residentialNoise
+            dirtyConditionsPoint = post.dirtyConditions
             norm_score, normals = calculate_factor(search)
             factors = (
                 "residentialNoise",
@@ -129,11 +141,168 @@ def search(request):  # pragma: no cover
             post.grade = _get_grade_from_score(norm_score)
             # post.save()
             rounded = round(post.userAvg, 2)
-            return render(
-                request,
-                "app/search.html",
-                {"post": post, "rounded": rounded},
-            )
+
+            constructionImpact = []
+            residentialNoise = []
+            dirtyConditions = []
+            sanitationCondition = []
+            wasteDisposal = []
+            unsanitaryCondition = []
+            treeCensus = []
+            parkCount = []
+            grade = []
+            allposts = ScoreTable.objects.all()
+            for row in allposts:
+                constructionImpact.append(row.constructionImpact)
+                residentialNoise.append(row.residentialNoise)
+                dirtyConditions.append(row.dirtyConditions)
+                sanitationCondition.append(row.sanitationCondition)
+                wasteDisposal.append(row.wasteDisposal)
+                unsanitaryCondition.append(row.unsanitaryCondition)
+                treeCensus.append(row.treeCensus)
+                parkCount.append(row.parkCount)
+                grade.append(row.grade)
+
+            path = os.getcwd()
+            parent = os.path.dirname(path)
+            width = 300
+            height = 250
+            paper_bg = "#68B984"
+
+            if not test:
+                data = pd.read_csv("app/data/tree.csv")
+                px.set_mapbox_access_token(
+                    "pk.eyJ1IjoiYWJoaWRhc2FyaTEyODkiLCJhIjoiY2xiNXloZnI2MGJkajNwbXF4ZmVxNzJvdCJ9.60A0wnYJlzI-vUcTMUkU5Q"
+                )
+                source = data[data["zipcode"] == int(search)]
+                zipmap = px.scatter_mapbox(
+                    source,
+                    lat=source.Latitude,
+                    lon=source.longitude,
+                    color_discrete_sequence=["green"],
+                    zoom=16,
+                )
+                zipmap.update_layout(
+                    width=600,
+                    height=500,
+                    title_text="Tree Mapper",
+                    margin=dict(l=20, r=20, t=50, b=20),
+                    showlegend=False,
+                    paper_bgcolor=paper_bg,
+                    mapbox=dict(
+                        pitch=60,
+                    ),
+                )
+                zipmap.update_layout(
+                    mapbox_style="mapbox://styles/abhidasari1289/clb67vwkt000214mkgynh4pb7"
+                )
+
+                group_labels = ["Park Count"]
+                park_div = ff.create_distplot(
+                    [parkCount], group_labels, colors=["#FF33E9"]
+                )
+
+                park_div.update_traces(
+                    x=[parkCountPoint],
+                    marker=dict(
+                        color="red", line=dict(width=5, color="DarkSlateGrey"), size=12
+                    ),
+                    selector=dict(mode="markers"),
+                )
+                park_div.update_layout(
+                    width=width,
+                    height=height,
+                    title_text="Park Count Distribution",
+                    template="plotly",
+                    margin=dict(l=20, r=20, t=50, b=20),
+                    showlegend=False,
+                    paper_bgcolor=paper_bg,
+                )
+
+                # park_div.update_yaxes(visible=False, showticklabels=True)
+
+                group_labels = ["Tree Count"]
+
+                tree_div = ff.create_distplot(
+                    [treeCensus], group_labels, bin_size=100, colors=["#FFC300"]
+                )
+
+                tree_div.update_traces(
+                    x=[treeCensusPoint],
+                    marker=dict(
+                        color="red", line=dict(width=5, color="DarkSlateGrey"), size=12
+                    ),
+                    selector=dict(mode="markers"),
+                )
+                tree_div.update_layout(
+                    width=width,
+                    height=height,
+                    title_text="Tree Count Distribution",
+                    template="plotly",
+                    margin=dict(l=20, r=20, t=50, b=20),
+                    showlegend=False,
+                    paper_bgcolor=paper_bg,
+                )
+
+                group_labels = ["Residential Noise"]
+                res_div = ff.create_distplot(
+                    [residentialNoise], group_labels, bin_size=10, colors=["#9C33FF"]
+                )
+
+                res_div.update_traces(
+                    x=[residentialNoisePoint],
+                    marker=dict(
+                        color="red", line=dict(width=5, color="DarkSlateGrey"), size=12
+                    ),
+                    selector=dict(mode="markers"),
+                )
+                res_div.update_layout(
+                    width=width,
+                    height=height,
+                    title_text="Residential Noise Distribution",
+                    template="plotly",
+                    margin=dict(l=20, r=20, t=50, b=20),
+                    showlegend=False,
+                    paper_bgcolor=paper_bg,
+                )
+
+                group_labels = ["Dirty Conditions"]
+                dirty_div = ff.create_distplot(
+                    [dirtyConditions], group_labels, colors=["#C70039"]
+                )
+
+                dirty_div.update_traces(
+                    x=[dirtyConditionsPoint],
+                    marker=dict(
+                        color="red", line=dict(width=5, color="DarkSlateGrey"), size=12
+                    ),
+                    selector=dict(mode="markers"),
+                )
+                dirty_div.update_layout(
+                    width=width,
+                    height=height,
+                    title_text="Dirty Conditions Distribution",
+                    template="plotly",
+                    margin=dict(l=20, r=20, t=50, b=20),
+                    showlegend=False,
+                    paper_bgcolor=paper_bg,
+                )
+
+                return render(
+                    request,
+                    "app/search.html",
+                    {
+                        "post": post,
+                        "rounded": rounded,
+                        "plot_div": park_div.to_html(full_html=False),
+                        "plot_div1": tree_div.to_html(full_html=False),
+                        "plot_div2": res_div.to_html(full_html=False),
+                        "plot_div3": dirty_div.to_html(full_html=False),
+                        "plot_div4": zipmap.to_html(full_html=False),
+                    },
+                )
+            else:
+                return render(request, "app/search.html", {"post": post})
         except ScoreTable.DoesNotExist:
             print("entered else")
             messages.error(
@@ -339,6 +508,16 @@ def forum_post(request, pk, id):
     return render(request, "app/forum_post.html", context)
 
 
+def _id_to_zipcode(id):
+    table = ScoreTable.objects.get(id=id)
+    return table.zipcode
+
+
+def _zipcode_to_id(zipcode):
+    table = ScoreTable.objects.get(zipcode=zipcode)
+    return table.id
+
+
 @login_required(login_url="/login")
 def addInForumPost(request):
     form = CreateInForumPost()
@@ -346,10 +525,19 @@ def addInForumPost(request):
         form = CreateInForumPost(request.POST)
         if form.is_valid():
             form.save()
-            return redirect("/forumPosts")
+            current_zip = form.cleaned_data["zipcode"]
+            form.save()
+            return redirect(f"/forumPosts/zipcode/{current_zip}")
+
+    curzip = "11205"
+    if "curzip" in request.POST:
+        curzip = request.POST["curzip"]
+
     user = get_user(request)
     email = user.email
-    form = CreateInForumPost(initial={"name": user, "email": email})
+    form = CreateInForumPost(
+        initial={"name": user, "email": email, "zipcode": _zipcode_to_id(int(curzip))}
+    )
     form.fields["name"].widget = forms.HiddenInput()
     form.fields["email"].widget = forms.HiddenInput()
     context = {"form": form, "user": user, "email": email}
@@ -362,11 +550,20 @@ def addInComment(request):
     if request.method == "POST":
         form = CreateInComment(request.POST)
         if form.is_valid():
+            print(form)
             form.save()
-            return redirect("/forumPosts")
+            current_zip = form.cleaned_data["forumPost"]
+            current_zip = current_zip.zipcode
+            post_id = form["forumPost"].value()
+            return redirect(f"/forumPosts/zipcode/{current_zip}/{post_id}")
+
+    curpost = "1"
+    if "post" in request.POST:
+        curpost = request.POST["post"]
+
     user = get_user(request)
     email = user.email
-    form = CreateInComment(initial={"name": user, "email": email})
+    form = CreateInComment(initial={"name": user, "email": email, "forumPost": curpost})
     form.fields["name"].widget = forms.HiddenInput()
     form.fields["email"].widget = forms.HiddenInput()
     context = {"form": form, "user": user, "email": email}
