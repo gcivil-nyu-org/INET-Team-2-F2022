@@ -327,13 +327,13 @@ class TestViews(TestCase):
     def test_update_user_rating(self):
         from .views import update_user_rating
 
-        assert update_user_rating(100, "A") == 100.1
-        assert update_user_rating(100, "B") == 100.2
-        assert update_user_rating(100, "C") == 100.3
-        assert update_user_rating(100, "D") == 100.4
-        assert update_user_rating(100, "E") == 100.5
-        assert update_user_rating(100, "F") == 100.6
-        assert update_user_rating(100, "G") == 100.7
+        assert update_user_rating(100, "A") == 107.5
+        assert update_user_rating(100, "B") == 125
+        assert update_user_rating(100, "C") == 150
+        assert update_user_rating(100, "D") == 167.5
+        assert update_user_rating(100, "E") == 182.5
+        assert update_user_rating(100, "F") == 195
+        # assert update_user_rating(100, "G") == 100.7
 
 
 class ForumPostTests(TestCase):
@@ -401,5 +401,8 @@ class TestCalculateScore(TestCase):
         result = calculate_factor(object.zipcode)
         self.assertEqual(
             result,
-            (13.31, [100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0]),
+            (
+                100.04166666666664,
+                [100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0],
+            ),
         )

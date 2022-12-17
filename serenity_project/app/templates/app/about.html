@@ -25,10 +25,39 @@
         div {
             text-align: center;
         }
+        .bar {
+            margin: 0 auto;
+            width: 350px;
+            border-radius: 30px;
+            border: 1px solid #dcdcdc;
+        }
+
+        .bar:hover {
+            box-shadow: 1px 1px 8px 1px #dcdcdc;
+        }
+
+        .bar:focus-within {
+            box-shadow: 1px 1px 8px 1px #dcdcdc;
+            outline: none;
+        }
+
+        .searchbar {
+            height: 45px;
+            border: none;
+            width: 500px;
+            font-size: 16px;
+            outline: none;
+
+        }
+
+        hr.divider {
+            margin-top: 0em;
+            border-width: 2px;
+        }
     </style>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Serenity Search Result</title>
+    <title>About SerenitySearch</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -40,23 +69,21 @@
 
 </head>
 
-<body style="background-color:ECFFE8;">
+<body style="">
 
-    <nav class="navbar navbar-expand-lg navbar-light">
 
-        <a class="navbar-brand ps-3" href="/">
-            <img src="{% static '/img/SerenitySearch-1.png' %}" alt="" width="90" height="90">
-        </a>
+    <nav class="navbar navbar-expand-lg navbar-light" style="height:80px; background-color: #1411112b;">
+
+
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
 
-        <div class="collapse navbar-collapse justify-content-center">
-            <header class="serenity-title">
-                <h1 style="color:ForestGreen;">SerenitySearch</h1>
-                <p style="color:ForestGreen;"><i>Helping New Yorkers find peace in the city that never sleeps</i></p>
-            </header>
+        <div class="collapse navbar-collapse justify-content-left mt-3 row">
+            <div class="col-auto">
+                <h1 style="color:ForestGreen; font-family:Snell Roundhand;">SerenitySearch</h1>
+            </div>
 
         </div>
 
@@ -89,6 +116,9 @@
             </p>
 
     </nav>
+    <hr class = "divider" style="border-top: 1px solid gray ;">
+
+    <!-- In your Django template -->
     <br><br>
     <div class="container">
         <div class="container">
