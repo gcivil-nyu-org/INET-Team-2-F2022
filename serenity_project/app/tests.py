@@ -402,7 +402,7 @@ class TestCalculateScore(TestCase):
         self.assertEqual(
             result,
             (
-                100.04166666666664,
+                100.04,
                 [100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0],
             ),
         )

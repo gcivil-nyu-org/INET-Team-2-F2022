@@ -100,19 +100,17 @@ def calculate_factor(zipcode):
 
     score = np.dot(n, weights)
     if currUserScore != 0:
-        score = (score + currUserScore) / sum(weights)
-        # if currUserScore > score:
-        # score = round(((score + (0.5 * currUserScore)) / 2), 2)
-        # else:
-        #     score = round(((score - (0.5 * currUserScore)) / 2), 2)
+        score = round((score + currUserScore) / sum(weights), 2)
     else:
-        score = score / (sum(weights) - 1)
+        score = round(score / (sum(weights) - 1), 2)
     return score, nFactors
 
 
 def _get_grade_from_score(score):
     grade = "N"
-    if score >= 90:
+    if score >= 110:
+        grade = "G"
+    elif score < 110 and score >= 90:
         grade = "F"
     elif score < 90 and score >= 75:
         grade = "E"
