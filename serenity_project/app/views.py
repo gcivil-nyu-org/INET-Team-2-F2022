@@ -523,11 +523,6 @@ def forum_post(request, pk, id):
     return render(request, "app/forum_post.html", context)
 
 
-def _id_to_zipcode(id):
-    table = ScoreTable.objects.get(id=id)
-    return table.zipcode
-
-
 def _zipcode_to_id(zipcode):
     table = ScoreTable.objects.get(zipcode=zipcode)
     return table.id
@@ -617,7 +612,6 @@ def get_others(request, name):
 
     try:
         profile = Profile.objects.get(user__username=name)
-
         return render(
             request,
             "app/users/other_profile.html",
