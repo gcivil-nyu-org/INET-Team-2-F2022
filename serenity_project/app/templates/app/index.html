@@ -428,7 +428,7 @@
                     map.data.addListener('click', function (event) {
                         let zipcode = event.feature.getProperty("postalCode");
                         let neighborhood = event.feature.getProperty("PO_NAME");
-                        let forum_url = "http://se-proj-develop-env.eba-zrg4erqz.us-west-2.elasticbeanstalk.com/forumPosts/zipcode/" + zipcode;
+                        let forum_url = "http://se-proj-main-env-1.eba-4wm3msis.us-west-2.elasticbeanstalk.com/forumPosts/zipcode/" + zipcode;
                         var grade = "N";
                         if (zipDiction[zipcode]) {
                             grade = zipDiction[zipcode]["grade"];
@@ -477,7 +477,7 @@
 
             var zipDiction = {};
             // var APIlink = "http://127.0.0.1:8000/api/table/";
-            var APIlink = "http://se-proj-develop-env.eba-zrg4erqz.us-west-2.elasticbeanstalk.com/api/table/";
+            var APIlink = "http://se-proj-main-env-1.eba-4wm3msis.us-west-2.elasticbeanstalk.com/api/table/";
             fetch(APIlink)
                 .then((response) => response.json())
                 .then((data) => {
@@ -550,7 +550,7 @@
 
                         let zipcode = event.feature.getProperty("postalCode");
                         let neighborhood = event.feature.getProperty("PO_NAME");
-                        let forum_url = "http://se-proj-develop-env.eba-zrg4erqz.us-west-2.elasticbeanstalk.com/forumPosts/zipcode/" + zipcode;
+                        let forum_url = "http://sse-proj-main-env-1.eba-4wm3msis.us-west-2.elasticbeanstalk.com/forumPosts/zipcode/" + zipcode;
                         var grade = "N";
                         if (zipDiction[zipcode]) {
                             grade = zipDiction[zipcode]["grade"];
