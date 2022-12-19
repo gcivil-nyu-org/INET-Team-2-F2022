@@ -37,3 +37,36 @@ p {
     display: table;
     clear: both;
 }
+
+.bar {
+    margin: 0 auto;
+    width: 300px;
+    border-radius: 20px;
+    border: 2px solid #dcdcdc;
+    background-color: white;
+}
+
+.bar:hover {
+    box-shadow: 1px 1px 8px 1px #dcdcdc;
+}
+
+.bar:focus-within {
+    box-shadow: 1px 1px 8px 1px #dcdcdc;
+    outline: none;
+}
+
+.searchbar {
+    height: 45px;
+    border: none;
+    width: 500px;
+    font-size: 16px;
+    outline: none;
+    padding:0px !important;
+    margin-left: 20px;
+
+}
+
+hr.divider {
+    margin-top: 0em;
+    border-width: 2px;
+}
