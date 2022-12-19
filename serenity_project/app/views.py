@@ -50,16 +50,16 @@ def index(request):
     # 3) Runserver manage.py and refresh the home page
     # 4) Undo steps 1 and 2 before pushing code, include db.sqlite3 file in push
 
-    # allposts = ScoreTable.objects.all()
-    # scores = []
-    # for post in allposts:
-    #     score = calculate_factor(post.zipcode)[0]  # only getting score
-    #     scores.append(score)
-    # for post in allposts:
-    #     curr_score = calculate_factor(post.zipcode)[0]
-    #     sorted_scores = sorted(scores)
-    #     post.grade = _get_grade_from_score(percentileofscore(sorted_scores, curr_score))
-    #     post.save()
+    allposts = ScoreTable.objects.all()
+    scores = []
+    for post in allposts:
+        score = calculate_factor(post.zipcode)[0]  # only getting score
+        scores.append(score)
+    for post in allposts:
+        curr_score = calculate_factor(post.zipcode)[0]
+        sorted_scores = sorted(scores)
+        post.grade = _get_grade_from_score(percentileofscore(sorted_scores, curr_score))
+        post.save()
     return render(request, "app/index.html", {})
 
 
@@ -133,27 +133,27 @@ def search(request, test=False):  # pragma: no cover
             treeCensusPoint = post.treeCensus
             residentialNoisePoint = post.residentialNoise
             dirtyConditionsPoint = post.dirtyConditions
-            norm_score, normals = calculate_factor(search)
-            factors = (
-                "residentialNoise",
-                "dirtyConditions",
-                "sanitationCondition",
-                "wasteDisposal",
-                "unsanitaryCondition",
-                "constructionImpact",
-                "userAvg",
-                "treeCensus",
-                "parkCount",
-            )
-            count = 0
-            for factor in factors:
-                if factor != "userAvg":
-                    setattr(post, factor, normals[count])
-                    count += 1
-                else:
-                    count += 1
-            post.raw = norm_score
-            post.grade = _get_grade_from_score(norm_score)
+            # norm_score, normals = calculate_factor(search)
+            # factors = (
+            #     "residentialNoise",
+            #     "dirtyConditions",
+            #     "sanitationCondition",
+            #     "wasteDisposal",
+            #     "unsanitaryCondition",
+            #     "constructionImpact",
+            #     "userAvg",
+            #     "treeCensus",
+            #     "parkCount",
+            # )
+            # count = 0
+            # for factor in factors:
+            #     if factor != "userAvg":
+            #         setattr(post, factor, normals[count])
+            #         count += 1
+            #     else:
+            #         count += 1
+            # post.raw = norm_score
+            # post.grade = _get_grade_from_score(norm_score)
             # post.save()
             rounded = round(post.userAvg, 2)
 
