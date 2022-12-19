@@ -3,7 +3,7 @@ from django.urls import reverse
 from .models import ScoreTable, ForumPost, Profile
 from .serializers import ScoreTableSerializer
 from django.contrib.auth.models import User
-from .views import find, get_others, search, get_info
+from .views import find, get_others, search, get_info, get_rating
 from unittest.mock import patch
 import json
 import requests
@@ -238,8 +238,50 @@ class testSearchView(TestCase):
         assert response.status_code == 302
 
 
+class TestGetRating(TestCase):
+    def setUp(self) -> None:
+        self.client = Client()
+        self.user = User.objects.create_user(
+            "john", "lennon@thebeatles.com", "johnpassword"
+        )
+        ScoreTable.objects.create(
+            id=1,
+            zipcode=11220,
+            residentialNoise=1,
+            dirtyConditions=2,
+            sanitationCondition=3,
+            wasteDisposal=4,
+            unsanitaryCondition=5,
+            constructionImpact=1.0,
+            userAvg=0.1,
+            treeCensus=1,
+            parkCount=1,
+        )
+
+    def test_updateRating(self):
+        self.client.login(username="john", password="johnpassword")
+        response = self.client.post(
+            "/rate/",
+            data={
+                "zip": 11220,
+                "user_rating": "A",
+            },
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, "app/rate.html")
+
+    def test_submit_rating(self):
+        self.client.login(username="john", password="johnpassword")
+        response = self.client.get(path="/rate/")
+        self.assertEqual(response.status_code, 302)
+
+
 class TestForumZip(TestCase):
     def setUp(self) -> None:
+        self.client = Client()
+        self.user = User.objects.create_user(
+            "john", "lennon@thebeatles.com", "johnpassword"
+        )
         ScoreTable.objects.create(
             id=1,
             zipcode=11220,
@@ -335,6 +377,17 @@ class TestForms(TestCase):
         avatar = form.cleaned_data["avatar"]
         assert bio == "blah"
         assert avatar == "test.jpg"
+
+    def test_form(self):
+        from .forms import RatingForm
+
+        form = RatingForm()
+        form.cleaned_data = {}
+        form.cleaned_data["user_rating"] = "A"
+
+        A = "A"
+        grade = form.cleaned_data["user_rating"]
+        assert grade == A
 
 
 class TestViews(TestCase):
