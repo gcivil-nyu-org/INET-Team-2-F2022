@@ -3,7 +3,7 @@ from django.urls import reverse
 from .models import ScoreTable, ForumPost, Profile
 from .serializers import ScoreTableSerializer
 from django.contrib.auth.models import User
-from .views import search
+from .views import find, get_others, search
 from unittest.mock import patch
 import json
 import requests
@@ -11,8 +11,8 @@ from django.http import HttpRequest
 
 from django.test.client import RequestFactory
 from django.core.handlers.wsgi import WSGIRequest
-from .views import search
 from http import HTTPStatus
+import unittest.mock as mock
 import numpy as np
 
 
@@ -26,6 +26,16 @@ class AppViewTests(TestCase):
             "john", "lennon@thebeatles.com", "johnpassword"
         )
         self.profile = Profile.objects.create(user=self.user)
+
+    def test_profile_model(self):
+        user = User.objects.create_user(username="testuser", password="testpass")
+        profile = Profile.objects.create(user=user, bio="Test bio")
+        self.assertEqual(Profile.objects.count(), 2)
+        self.assertEqual(str(Profile.objects.first()), "john")
+        self.assertEqual(str(profile), "testuser")
+        with mock.patch.object(Profile, "save") as mock_save:
+            profile.save()
+            mock_save.assert_called_once()
 
     def test_home_endpoint_returns_welcome_page(self):
         response = self.client.get(path="/")
@@ -213,6 +223,14 @@ class testSearchView(TestCase):
         response = search(req, True)
         assert response.status_code == 200
 
+    @patch("requests.post")
+    def test_postfind(self, mock_post):
+        req = HttpRequest()
+        req.method = "POST"
+        req.POST = {"find": 11220}
+        response = find(req)
+        assert response.status_code == 302
+
 
 class TestForumZip(TestCase):
     def setUp(self) -> None:
@@ -376,6 +394,31 @@ class ForumPostTests(TestCase):
             data={"id": 1, "forumPost": 2, "discuss": "test discussion"},
         )
         self.assertEqual(response.status_code, 200)
+
+    @patch("requests.post")
+    def test_get_others(self, mock_post):
+        self.user = User.objects.create_user(
+            "john1", "lennon@thebeatles.com", "johnpassword1"
+        )
+        Profile.objects.create(user=self.user, bio="Test bio")
+        username = "john1"
+        self.client.login(username="john1", password="johnpassword1")
+
+        self.client.post(
+            "/addInForumPost/",
+            data={
+                "id": 1,
+                "curzip": 11220,
+                "topic": "test topic",
+                "description": "test description",
+                "date_created": "2021-05-05",
+            },
+        )
+        req = HttpRequest()
+        response = get_others(req, username)
+        self.assertEquals(response.status_code, 200)
+        response = get_others(req, "Invalid_User")
+        self.assertEquals(response.status_code, 404)
 
 
 class TestCalculateScore(TestCase):
