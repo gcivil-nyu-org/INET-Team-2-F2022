@@ -83,51 +83,106 @@
         }
     </style>
 
-    <nav class="navbar navbar-expand-lg navbar-light" style="height:80px; background-color: #1411112b;">
+<style>
+    .bar {
+        margin: 0 auto;
+        width: 300px;
+        border-radius: 20px;
+        border: 2px solid #dcdcdc;
+        background-color: white;
+    }
+
+    .bar:hover {
+        box-shadow: 1px 1px 8px 1px #dcdcdc;
+    }
+
+    .bar:focus-within {
+        box-shadow: 1px 1px 8px 1px #dcdcdc;
+        outline: none;
+    }
+
+    .searchbar {
+        height: 45px;
+        border: none;
+        width: 500px;
+        font-size: 16px;
+        outline: none;
+        padding:0px !important;
+        margin-left: 20px;
+
+    }
+
+    hr.divider {
+        margin-top: 0em;
+        border-width: 2px;
+    }
+</style>
 
 
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
 
-        <div class="collapse navbar-collapse justify-content-left mt-3 row">
-            <div class="col-auto">
-                <h1 style="color:ForestGreen; font-family:Snell Roundhand;">SerenitySearch</h1>
+<!-- In your Django template -->
+
+<!-- The checkbox and its associated image -->
+
+
+
+<div class="navbar navbar-expand-lg row-try" style="background-color: rgba(41, 185, 41, 0.332);">
+    
+    <div class="column ps-3">
+        <a href="" class="nav-link">
+            <h1 class=""style="color: #0000008C; font-size:30px; margin:0px;">SerenitySearch</h1>
+        </a>
+    </div>
+
+    <div class="column2">
+        <form action="/search" method="POST" style="margin-bottom: 0px;">
+            <div class="bar justify-content-center">
+                <input class="searchbar ps-3" type="text" title="Search" type="text"
+                    placeholder="Enter a NYC zipcode for search" name="searched" minlength="5" maxlength="5"
+                    style="width: 250px; text-align:center; padding:0px;" pattern="[0-9]+" required>
             </div>
 
-        </div>
+            <button type="submit" class="btn btn-outline-primary" style="display: None;">Search</button>
 
-        <!-- pe-6 is a bootstrap spacing class, need to figure out a better way to align the links and title -->
-        <ul class="navbar-nav pe-6">
-            <li class="nav-item align-right pe-3">
+            {% csrf_token %}
+        </form>
+    </div>
+
+    <div class="column3">
+        <ul class="navbar-nav justify-content-end pe-3">
+            <li class="">
                 <a class="nav-link" href="{% url 'home' %}">Home</a>
             </li>
-            <li class="nav-item align-right pe-3">
-                <a class="nav-link" href="{%url 'about' %}">About SerenityScores</a>
+            <li class="">
+                <a class="nav-link" href="{%url 'about' %}">About</a>
             </li>
             {% block user %}
             {% if user.is_authenticated %}
-            <li class="nav-item align-right pe-3">
-                <a class="nav-link align-left" href="{% url 'profile' %}">View {{user.username}}'s Profile</a>
+            <li class="">
+                <a class="nav-link" href="{% url 'profile' %}">Profile</a>
             </li>
-            <li class="nav-item align-right pe-3">
-                <a class="nav-link align-right" href="{% url 'logout' %}">Log Out</a>
+            <li class="">
+                <a class="nav-link" href="{% url 'logout' %}">Logout</a>
             </li>
             {% else %}
-            <li class="nav-item align-right">
-                <a class="nav-link" href="{% url 'login' %}">Log In</a>
+            <li class="">
+                <a class="nav-link" href="{% url 'login' %}">Login</a>
             </li>
             {% endif %}
             {% endblock %}
-            <li class="nav-item align-right pe-3">
-                <a class="nav-link" href="{% url 'forum_home' %}">Forum Home</a>
+            <li class="">
+                <a class="nav-link" href="{% url 'forum_home' %}">Forum</a>
             </li>
+            </ul>
+    </div>
 
-            </p>
+</div>
 
-    </nav>
+
+<center>
+
     <hr class = "divider" style="border-top: 1px solid gray ;">
+   
 
 
 
