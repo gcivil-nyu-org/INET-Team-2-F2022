@@ -1,12 +1,10 @@
-
-
-
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     {% load static %}
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href='https://fonts.googleapis.com/css?family=Sacramento' rel='stylesheet'>
     <link
         href="https://fonts.googleapis.com/css2?family=Catamaran:wght@200;400;700&family=Chau+Philomene+One&display=swap"
         rel="stylesheet">
@@ -23,604 +21,602 @@
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+
 </head>
-<style>.aigo {
-    height: 100px;
-    width: 500px;
-    border:1.8px solid black;
-    
-  }
-  ::placeholder { 
-  color: lightblue;
-  opacity: 0.5; 
-}
-  </style>
+
+<body style="">
+
+    <style>
+        .bar {
+            margin: 0 auto;
+            width: 350px;
+            border-radius: 30px;
+            border: 1px solid #dcdcdc;
+        }
+
+        .bar:hover {
+            box-shadow: 1px 1px 8px 1px #dcdcdc;
+        }
+
+        .bar:focus-within {
+            box-shadow: 1px 1px 8px 1px #dcdcdc;
+            outline: none;
+        }
+
+        .searchbar {
+            height: 45px;
+            border: none;
+            width: 500px;
+            font-size: 16px;
+            outline: none;
+
+        }
+
+        hr.divider {
+            margin-top: 0em;
+            border-width: 2px;
+        }
+    </style>
+
+    <nav class="navbar navbar-expand-lg navbar-light" style="height:80px; background-color: #1411112b;">
 
 
-
-<body style="background-color:ECFFE8;">
-
-<!-- 
-    <nav class="navbar navbar-expand-lg navbar-light">
-    
-       <center>
-        <a class="navbar-brand ps-3" href="/">
-            <img src="{% static '/img/SerenitySearch-1.png' %}" alt="" width="70" height="85">
-        </a>
-    </center>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
 
-        <div class="collapse navbar-collapse justify-content-center">
-            <header class="serenity-title">
-                <h1 style="color:ForestGreen;">SerenitySearch</h1>
-                <p style="color:ForestGreen;"><i>Helping New Yorkers find peace in the city that never sleeps</i></p>
-            </header>
-
-        </div>
-        </nav> -->
-
-
- 
-
-
-
-
-
-        <!-- <nav class="navbar navbar-dark bg-primary"> -->
-    <nav class="navbar navbar-expand-sm bg-primary navbar-dark">
-        <div class="d-flex flex-grow-1">
-            <ul class="navbar-nav text-left">
-            <a href="/" class="navbar-brand">
-                <a class="nav-link" href="{% url 'home' %}">
-
-                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-house-heart" viewBox="0 0 16 16">
-                        <path d="M8 6.982C9.664 5.309 13.825 8.236 8 12 2.175 8.236 6.336 5.309 8 6.982Z"/>
-                        <path d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.707L2 8.207V13.5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5V8.207l.646.646a.5.5 0 0 0 .708-.707L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.707 1.5ZM13 7.207V13.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V7.207l5-5 5 5Z"/>
-                      </svg>
-                      Home
-                </a>
-            </a>
-     
-    
-    
-            <a class="nav-link" href="{%url 'about' %}">
-                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-clipboard-data-fill" viewBox="0 0 16 16">
-                    <path d="M6.5 0A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3Zm3 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3Z"/>
-                    <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1A2.5 2.5 0 0 1 9.5 5h-3A2.5 2.5 0 0 1 4 2.5v-1ZM10 8a1 1 0 1 1 2 0v5a1 1 0 1 1-2 0V8Zm-6 4a1 1 0 1 1 2 0v1a1 1 0 1 1-2 0v-1Zm4-3a1 1 0 0 1 1 1v3a1 1 0 1 1-2 0v-3a1 1 0 0 1 1-1Z"/>
-                  </svg>
-                  Info
-                </i></a>  
-  
-        </a>  
-        <a href="/" class="navbar-brand">
-    
-            <a class="nav-link" href="{% url 'forum_home' %}">
-                <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" class="bi bi-card-list" viewBox="0 0 16 16">
-                    <path d="M14.5 3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h13zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-13z"/>
-                    <path d="M5 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 5 8zm0-2.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zm0 5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5zm-1-5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0zM4 8a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0zm0 2.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0z"/>
-                  </svg>Forum </a> 
-  
-        </a>  
-    </ul>
-    </div>
-     
-    <div class="collapse navbar-collapse justify-content-left">
-        <header class="serenity-title">
-            <!-- <h1 style="color:rgb(229, 237, 229);">SerenitySearch</h1> -->
-            
-            <p style="font-size:300% rem1.7; color: #e2e9e5;"><i>Helping New Yorkers find peace in the city</i></p>
-            
-        </header>
-
-    </div>
-        <div class="collapse navbar-collapse flex-grow-0" id="navbarSupportedContent">
-            <ul class="navbar-nav text-right">
-                            <a class="nav-link" href="{% url 'login' %}">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-check-circle-fill" viewBox="0 0 16 16">
-                                    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
-                                  </svg>Log In
-                                </a>
-                        
-                                <a href="/" class="navbar-brand">
-
-                            <a class="nav-link" href="{% url 'register' %}">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-check-circle" viewBox="0 0 16 16">
-                                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
-                                    <path d="M10.97 4.97a.235.235 0 0 0-.02.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-1.071-1.05z"/>
-                                  </svg>Sign In
-                                </a>
-                                
-                        </li>
-                    </ul>
-                    </div>
-    </nav>
-<!-- <center> 
-    <p style="color:ForestGreen;">To start your search, please enter a 5-digit NYC zipcode:</p>
-    <form action="search" method="POST">
-        {% csrf_token %}
-        <input type="text" placeholder="Enter a Zipcode" name="searched" minlength="5" maxlength="5"
-            pattern="[0-9]+" required />
-        <button type="submit" class="btn btn-outline-primary">Search</button>
-    </form>
-</center> -->
-
-
-
-
-
-
-     <!-- Background image -->
-     <div
-     class="bg-image"
-     style="
-       background-image: url('static/img/fr.jpg');
-         -webkit-background-size: cover;
-         -moz-background-size: cover;
-         -o-background-size: cover;
-         background-size: cover;
-       height: 65vh;"
-   >
-     <div class="mask gradient-custom">
-       <div class="d-flex justify-content-center align-items-center h-100">
-         <h1 style="color:rgb(27, 108, 208)">To start your search, please enter a 5-digit NYC zipcode:
-             <!-- <p style="color:ForestGreen;">To start your search, please enter a 5-digit NYC zipcode:</p> -->
-             <center>
-             <form action="search" style="color:rgb(27, 108, 208)" method="POST">
-                
-                 {% csrf_token %}
-                 <input type="text"  placeholder="Enter a Zipcode" name="searched" minlength="5" maxlength="5"
-                     pattern="[0-9]+" required />
-                 <button type="submit" class="btn btn-outline-primary">Search</button>
-               
-             </form>
-            </center>
-         </h1>
-       </div>
-     </div>
-   </div>
-   <!-- Background image -->
-<br>
-   <center> 
-    {% block content %}
-    
-    <div id="map" class="aigo"></div>
-    {% endblock %}
-   </center>
-    <center>
-        <form>
-            <label for="residentialNoise">
-                <input type="checkbox" id="residentialNoise" name="filter" value="yes"> Residential Noise
-            </label>
-            <label for="dirtyConditions">
-                <input type="checkbox" id="dirtyConditions" name="filter" value="yes"> Dirty Conditions
-            </label>
-
-            <label for="treeCensus">
-                <input type="checkbox" id="treeCensus" name="filter" value="yes"> Tree Census
-            </label>
-
-            <label for="parkCount">
-                <input type="checkbox" id="parkCount" name="filter" value="yes"> Park Count
-            </label>
-
-            <label for="constructionImpact">
-                <input type="checkbox" id="constructionImpact" name="filter" value="yes"> Construction
-                Impact
-            </label>
-            <br>
-            <button type="button" id="btn" class="btn btn-outline-primary">Submit</button>
-        </form>
-
-
-
-        {% if messages %}
-        {% for message in messages %}
-        {% endfor %}
-        {% endif %}
-
-        {% for message in messages %}
-        <div class="container-fluid p-0">
-            <div class="alert {{ message.tags }} alert-dismissible" role="alert">
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="True">&times;</span>
-                </button>
-                {{ message }}
+        <div class="collapse navbar-collapse justify-content-left mt-3 row">
+            <div class="col-auto">
+                <h1 style="color:ForestGreen; font-family:Snell Roundhand;">SerenitySearch</h1>
             </div>
+
         </div>
-        {% endfor %}
+
+        <!-- pe-6 is a bootstrap spacing class, need to figure out a better way to align the links and title -->
+        <ul class="navbar-nav pe-6">
+            <li class="nav-item align-right pe-3">
+                <a class="nav-link" href="{% url 'home' %}">Home</a>
+            </li>
+            <li class="nav-item align-right pe-3">
+                <a class="nav-link" href="{%url 'about' %}">About SerenityScores</a>
+            </li>
+            {% block user %}
+            {% if user.is_authenticated %}
+            <li class="nav-item align-right pe-3">
+                <a class="nav-link align-left" href="{% url 'profile' %}">View {{user.username}}'s Profile</a>
+            </li>
+            <li class="nav-item align-right pe-3">
+                <a class="nav-link align-right" href="{% url 'logout' %}">Log Out</a>
+            </li>
+            {% else %}
+            <li class="nav-item align-right">
+                <a class="nav-link" href="{% url 'login' %}">Log In</a>
+            </li>
+            {% endif %}
+            {% endblock %}
+            <li class="nav-item align-right pe-3">
+                <a class="nav-link" href="{% url 'forum_home' %}">Forum Home</a>
+            </li>
+
+            </p>
+
+    </nav>
+    <hr class = "divider" style="border-top: 1px solid gray ;">
+
+    <!-- In your Django template -->
+
+    <!-- The checkbox and its associated image -->
+
+
+
+    <center>
+        <div style="text-align: center;">
+
+            <form action="search" method="POST" style="margin-bottom: -10px;">
+                <div class="bar">
+                    <input class="searchbar" type="text" title="Search" type="text"
+                        placeholder="Enter a NYC zipcode for search" name="searched" minlength="5" maxlength="5"
+                        style="width: 250px;" pattern="[0-9]+" required>
+                </div>
+
+                <button type="submit" class="btn btn-outline-primary" style="display: None;">Search</button>
+
+                {% csrf_token %}
+            </form>
+
+        </div>
+        <div class="navbar navbar-nav" style="height: 80px;">
+            <form action="?">
+                <div class="row g-2 align-items-center">
+                    <div class="col-auto">
+                        <!-- Load jQuery -->
+                        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+
+                        <label for="residentialNoise">
+                            <input type="checkbox" id="residentialNoise" name="filter" value="yes" style="opacity:0;"
+                                onchange="changemap()">
+                            <img src="{% static '/icon/noise-unchecked.svg' %}" id="residentialNoiseIcon" width="60px">
+                            <!-- Add the JavaScript to toggle the image -->
+                            <script>
+                                // Get the checkbox and its associated image
+                                var checkbox1 = $("#residentialNoise");
+                                var image1 = $("#residentialNoiseIcon");
+
+                                // Add a click event listener to the checkbox
+                                checkbox1.click(function () {
+                                    // If the checkbox is checked, change the image to the checked image
+                                    if (checkbox1.is(":checked")) {
+                                        image1.attr("src", "{% static '/icon/noise-checked.svg'%}");
+                                        image1.attr("width", "60px")
+                                    } else {
+
+                                        // Otherwise, change the image to the unchecked image
+                                        image1.attr("src", "{% static '/icon/noise-unchecked.svg' %}");
+                                        image1.attr("width", "60px")
+                                    }
+                                });
+                            </script>
+                        </label>
+
+
+                        <label for="dirtyConditions">
+                            <input type="checkbox" id="dirtyConditions" name="filter" value="yes" style="opacity:0;"
+                                onchange="changemap()">
+                            <img src="{% static '/icon/dirty-unchecked.svg' %}" id="dirtyConditionsIcon" width="60px">
+                            <!-- Add the JavaScript to toggle the image -->
+                            <script>
+                                // Get the checkbox and its associated image
+                                var checkbox2 = $("#dirtyConditions");
+                                var image2 = $("#dirtyConditionsIcon");
+
+                                // Add a click event listener to the checkbox
+                                checkbox2.click(function () {
+                                    // If the checkbox is checked, change the image to the checked image
+                                    if (checkbox2.is(":checked")) {
+                                        image2.attr("src", "{% static '/icon/dirty-checked.svg'%}");
+                                        image2.attr("width", "60px")
+                                    } else {
+
+                                        // Otherwise, change the image to the unchecked image
+                                        image2.attr("src", "{% static '/icon/dirty-unchecked.svg' %}");
+                                        image2.attr("width", "60px")
+                                    }
+                                });
+                            </script>
+                        </label>
+
+
+
+                        <label for="treeCensus">
+                            <input type="checkbox" id="treeCensus" name="filter" value="yes" style="opacity:0;"
+                                onchange="changemap()">
+                            <img src="{% static '/icon/trees-unchecked.svg' %}" id="treeCensusIcon" width="60px">
+                            <!-- Add the JavaScript to toggle the image -->
+                            <script>
+                                // Get the checkbox and its associated image
+                                var checkbox3 = $("#treeCensus");
+                                var image3 = $("#treeCensusIcon");
+
+                                // Add a click event listener to the checkbox
+                                checkbox3.click(function () {
+                                    // If the checkbox is checked, change the image to the checked image
+                                    if (checkbox3.is(":checked")) {
+                                        image3.attr("src", "{% static '/icon/trees-checked.svg'%}");
+                                        image3.attr("width", "60px")
+                                    } else {
+
+                                        // Otherwise, change the image to the unchecked image
+                                        image3.attr("src", "{% static '/icon/trees-unchecked.svg' %}");
+                                        image3.attr("width", "60px")
+                                    }
+                                });
+                            </script>
+                        </label>
+
+
+
+                        <label for="parkCount">
+                            <input type="checkbox" id="parkCount" name="filter" value="yes" style="opacity:0;"
+                                onchange="changemap()">
+                            <img src="{% static '/icon/parks-unchecked.svg' %}" id="parkCountIcon" width="60px">
+                            <!-- Add the JavaScript to toggle the image -->
+                            <script>
+                                // Get the checkbox and its associated image
+                                var checkbox4 = $("#parkCount");
+                                var image4 = $("#parkCountIcon");
+
+                                // Add a click event listener to the checkbox
+                                checkbox4.click(function () {
+                                    // If the checkbox is checked, change the image to the checked image
+                                    if (checkbox4.is(":checked")) {
+                                        image4.attr("src", "{% static '/icon/parks-checked.svg'%}");
+                                        image4.attr("width", "60px")
+                                    } else {
+
+                                        // Otherwise, change the image to the unchecked image
+                                        image4.attr("src", "{% static '/icon/parks-unchecked.svg' %}");
+                                        image4.attr("width", "60px")
+                                    }
+                                });
+                            </script>
+                        </label>
+
+
+
+                        <label for="constructionImpact">
+                            <input type="checkbox" id="constructionImpact" name="filter" value="yes" style="opacity:0;"
+                                onchange="changemap()">
+                            <img src="{% static '/icon/construction-unchecked.svg' %}" id="constructionImpactIcon"
+                                width="60px">
+                            <!-- Add the JavaScript to toggle the image -->
+                            <script>
+                                // Get the checkbox and its associated image
+                                var checkbox5 = $("#constructionImpact");
+                                var image5 = $("#constructionImpactIcon");
+
+                                // Add a click event listener to the checkbox
+                                checkbox5.click(function () {
+                                    // If the checkbox is checked, change the image to the checked image
+                                    if (checkbox5.is(":checked")) {
+                                        image5.attr("src", "{% static '/icon/construction-checked.svg'%}");
+                                        image5.attr("width", "60px")
+                                    } else {
+
+                                        // Otherwise, change the image to the unchecked image
+                                        image5.attr("src", "{% static '/icon/construction-unchecked.svg' %}");
+                                        image5.attr("width", "60px")
+                                    }
+                                });
+                            </script>
+                        </label>
+                    </div>
+                    <div class="col-auto">
+                        <button type="button" id="btn" class="btn btn-outline-primary"
+                            style="display:None">Submit</button>
+                    </div>
+
+                </div>
+
+                {% if messages %}
+                {% for message in messages %}
+                {% endfor %}
+                {% endif %}
+
+                {% for message in messages %}
+                <div class="container-fluid p-0">
+                    <div class="alert {{ message.tags }} alert-dismissible" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="True">&times;</span>
+                        </button>
+                        {{ message }}
+                    </div>
+                </div>
+                {% endfor %}
+
+
 
 
     </center>
 
+    {% block content %}
+    <div id="map">
 
 
+        <script>
+            var map;
 
-   
+            const residentialNoise = document.querySelector('#residentialNoise');
+            const dirtyConditions = document.querySelector('#dirtyConditions');
+            const treeCensus = document.querySelector('#treeCensus');
+            const parkCount = document.querySelector('#parkCount');
+            const constructionImpact = document.querySelector('#constructionImpact');
+            const btn = document.getElementsByName('#btn');
+            var factors = document.getElementsByName("filter");
 
-    <script>
-        var map;
+            function changemap() {
+                var filters = [];
+                factors.forEach(factor => {
+                    if (factor.checked) {
+                        filters.push(factor.id);
+                    }
+                });
 
-        const residentialNoise = document.querySelector('#residentialNoise');
-        const dirtyConditions = document.querySelector('#dirtyConditions');
-        const treeCensus = document.querySelector('#treeCensus');
-        const parkCount = document.querySelector('#parkCount');
-        const constructionImpact = document.querySelector('#constructionImpact');
-        const btn = document.querySelector('#btn');
-        var factors = document.getElementsByName("filter");
+                console.log(filters);
+                if (!filters.length) {
+                    console.log("No filters selected");
+                    location.reload(true);;
+                } else {
 
-        btn.onclick = () => {
-            var filters = [];
-            factors.forEach(factor => {
-                if (factor.checked) {
-                    filters.push(factor.id);
-                }
-            });
-            console.log(filters);
-            if (!filters.length) {
-                console.log("No filters selected");
-                location.reload(true);;
-            } else {
+                    // Create new grades for all zipcodes with the filters
+                    // console.log(zipDiction["11220"]);
+                    var filterDiction1 = {};
+                    var zipcodes = Object.keys(zipDiction);
+                    function sum(obj) {
+                        var sum = 0;
+                        for (var el in obj) {
+                            if (obj.hasOwnProperty(el)) {
+                                console.log(el);
 
-                // Create new grades for all zipcodes with the filters
-                // console.log(zipDiction["11220"]);
-                var filterDiction1 = {};
-                var zipcodes = Object.keys(zipDiction);
-                function sum(obj) {
-                    var sum = 0;
-                    for (var el in obj) {
-                        if (obj.hasOwnProperty(el)) {
-                            console.log(el);
-
-                            if (el == "parkCount") {
-                                sum += -parseFloat(obj[el]);
-                            }
-                            else if (el == "treeCensus") {
-                                sum += -parseFloat(obj[el]);
-                            }
-                            else if (el == "residentialNoise") {
-                                sum += 0.05 * parseFloat(obj[el]);
-                            }
-                            else {
-                                sum += parseFloat(obj[el]);
+                                if (el == "parkCount") {
+                                    sum += -parseFloat(obj[el]);
+                                }
+                                else if (el == "treeCensus") {
+                                    sum += -parseFloat(obj[el]);
+                                }
+                                else if (el == "residentialNoise") {
+                                    sum += 0.05 * parseFloat(obj[el]);
+                                }
+                                else {
+                                    sum += parseFloat(obj[el]);
+                                }
                             }
                         }
+                        return sum;
                     }
-                    return sum;
-                }
 
-                const deepCopy = function (src) {
-                    let target = {};
-                    // using for/in on object also returns prototype properties
-                    for (let prop in src) {
-                        // .hasOwnProperty() filters out these prototype properties.
-                        if (src.hasOwnProperty(prop)) {
-                            target[prop] = src[prop]; //iteratively copies over values, not references
+                    const deepCopy = function (src) {
+                        let target = {};
+                        // using for/in on object also returns prototype properties
+                        for (let prop in src) {
+                            // .hasOwnProperty() filters out these prototype properties.
+                            if (src.hasOwnProperty(prop)) {
+                                target[prop] = src[prop]; //iteratively copies over values, not references
+                            }
                         }
+                        return target;
                     }
-                    return target;
+                    var min = 1000000;
+                    var max = 0;
+                    for (let j = 0; j < zipcodes.length; j++) {
+
+                        var zipcode = zipcodes[j];
+                        var transform = zipDiction[zipcode];
+                        var subset = filters
+                            .reduce(function (obj2, key) {
+                                if (key in transform) // line can be removed to make it inclusive
+                                    obj2[key] = transform[key];
+                                return obj2;
+                            }, {});
+
+                        if (sum(subset) > max) {
+                            max = sum(subset);
+                        }
+                        if (sum(subset) < min) {
+                            min = sum(subset);
+                        }
+                        filterDiction1[zipcode] = subset;
+                        filterDiction1[zipcode]["sum"] = sum(subset);
+
+                    }
+                    zips = Object.keys(filterDiction1);
+                    for (let j = 0; j < zips.length; j++) {
+                        var zipcode = zips[j];
+                        var subset = filterDiction1[zipcode]
+                        filterDiction1[zipcode]["grade"] = score_to_grade((sum(subset) - min) / (max - min));
+                    }
+                    console.log(filterDiction1)
+
+
+                    console.log(subset);
+
+
+                    var map;
+                    map = new window.google.maps.Map(document.getElementById('map'), {
+                        zoom: 11,
+                        center: {
+                            lat: 40.7831,
+                            lng: -73.9712
+                        }
+                    });
+                    map.data.loadGeoJson("{% static '/json/serenity.geojson' %}");
+
+                    map.data.setStyle(function (feature) {
+                        //TODO: Read grade from database based on zipcode
+                        curzip = feature.getProperty('postalCode');
+                        var grade = "N";
+                        if (filterDiction1[curzip]) {
+                            grade = filterDiction1[curzip]["grade"];
+                            // grade = filterDiction[curzip];
+                        }
+
+                        // var SD_NAME = feature.getProperty('grade');
+                        var color = "gray";
+                        if (grade == "A") {
+                            color = "#379237";
+                        }
+
+                        else if (grade == "B") {
+                            color = "#82CD47";
+                        }
+
+                        else if (grade == "C") {
+                            color = "#F0FF42";
+                        }
+
+                        else if (grade == "D") {
+                            color = "#FFCD38";
+                        }
+
+                        else if (grade == "E") {
+                            color = "#FF8D29";
+                        }
+
+                        else if (grade == "F") {
+                            color = "#FF4949";
+                        }
+
+                        else if (grade == "G") {
+                            color = "#F32424";
+                        }
+                        return {
+                            fillColor: color,
+                            strokeWeight: 1,
+                            fillOpacity: 0.5,
+                            strokeColor: "#55555",
+                            strokeOpacity: 1.0,
+
+                        }
+                    });
+
+                    var infowindow = new google.maps.InfoWindow();
+
+                    map.data.addListener('click', function (event) {
+                        let zipcode = event.feature.getProperty("postalCode");
+                        let neighborhood = event.feature.getProperty("PO_NAME");
+                        let forum_url = "http://se-proj-develop.eba-hksnzcxj.us-west-2.elasticbeanstalk.com/forumPosts/zipcode/" + zipcode;
+                        var grade = "N";
+                        if (zipDiction[zipcode]) {
+                            grade = zipDiction[zipcode]["grade"];
+                        }
+                        if (filterDiction1[zipcode]) {
+                            grade = filterDiction1[zipcode]["grade"];
+                        }
+
+                        let html = '' + neighborhood + '<br>' + zipcode + "<br>" + ' Grade: ' + grade + "<br>" + "<a href=" + forum_url + ">" + "Forum" + "</a>"; // combine state name with a label
+
+
+                        infowindow.setContent(html); // show the html variable in the infowindow
+                        infowindow.setPosition(event.latLng); // anchor the infowindow at the marker
+                        infowindow.setOptions({ pixelOffset: new google.maps.Size(0, -30) }); // move the infowindow up slightly to the top of the marker icon
+                        infowindow.open(map);
+                    });
                 }
-                var min = 1000000;
-                var max = 0;
-                for (let j = 0; j < zipcodes.length; j++) {
 
-                    var zipcode = zipcodes[j];
-                    var transform = zipDiction[zipcode];
-                    var subset = filters
-                        .reduce(function (obj2, key) {
-                            if (key in transform) // line can be removed to make it inclusive
-                                obj2[key] = transform[key];
-                            return obj2;
-                        }, {});
-
-                    if (sum(subset) > max) {
-                        max = sum(subset);
-                    }
-                    if (sum(subset) < min) {
-                        min = sum(subset);
-                    }
-                    filterDiction1[zipcode] = subset;
-                    filterDiction1[zipcode]["sum"] = sum(subset);
-
-                }
-                zips = Object.keys(filterDiction1);
-                for (let j = 0; j < zips.length; j++) {
-                    var zipcode = zips[j];
-                    var subset = filterDiction1[zipcode]
-                    filterDiction1[zipcode]["grade"] = score_to_grade((sum(subset) - min) / (max - min));
-                }
-                console.log(filterDiction1)
-
-
-                console.log(subset);
-
-
-                var map;
-                map = new window.google.maps.Map(document.getElementById('map'), {
-                    zoom: 11,
-                    center: {
-                        lat: 40.7831,
-                        lng: -73.9712
-                    }
-                });
-                map.data.loadGeoJson("{% static '/json/serenity.geojson' %}");
-
-                map.data.setStyle(function (feature) {
-                    //TODO: Read grade from database based on zipcode
-                    curzip = feature.getProperty('postalCode');
-                    var grade = "N";
-                    if (filterDiction1[curzip]) {
-                        grade = filterDiction1[curzip]["grade"];
-                        // grade = filterDiction[curzip];
-                    }
-
-                    // var SD_NAME = feature.getProperty('grade');
-                    var color = "gray";
-                    if (grade == "A") {
-                        color = "#379237";
-                    }
-
-                    else if (grade == "B") {
-                        color = "#82CD47";
-                    }
-
-                    else if (grade == "C") {
-                        color = "#F0FF42";
-                    }
-
-                    else if (grade == "D") {
-                        color = "#FFCD38";
-                    }
-
-                    else if (grade == "E") {
-                        color = "#FF8D29";
-                    }
-
-                    else if (grade == "F") {
-                        color = "#FF4949";
-                    }
-
-                    else if (grade == "G") {
-                        color = "#F32424";
-                    }
-                    return {
-                        fillColor: color,
-                        strokeWeight: 1,
-                        fillOpacity: 0.5,
-                        strokeColor: "#55555",
-                        strokeOpacity: 1.0,
-
-                    }
-                });
-
-                var infowindow = new google.maps.InfoWindow();
-
-                map.data.addListener('click', function (event) {
-                    let zipcode = event.feature.getProperty("postalCode");
-                    let neighborhood = event.feature.getProperty("PO_NAME");
-                    let forum_url = "http://se-proj-develop.eba-hksnzcxj.us-west-2.elasticbeanstalk.com/forumPosts/zipcode/" + zipcode;
-                    var grade = "N";
-                    if (zipDiction[zipcode]) {
-                        grade = zipDiction[zipcode]["grade"];
-                    }
-                    if(filterDiction1[zipcode]){
-                        grade = filterDiction1[zipcode]["grade"];
-                    }
-
-                    let html = '' + neighborhood + '<br>' + zipcode + "<br>" + ' Grade: ' + grade + "<br>" + "<a href=" + forum_url + ">" + "Forum" + "</a>"; // combine state name with a label
-
-
-                    infowindow.setContent(html); // show the html variable in the infowindow
-                    infowindow.setPosition(event.latLng); // anchor the infowindow at the marker
-                    infowindow.setOptions({ pixelOffset: new google.maps.Size(0, -30) }); // move the infowindow up slightly to the top of the marker icon
-                    infowindow.open(map);
-                });
             }
-        };
+            btn.onclick = () => {
+                changemap();
+            };
 
 
 
 
-        function score_to_grade(score) {
-            var grade = "N"
-            if (score >= 0.95) {
-                grade = "G";
-            } else if (score < 0.95 && score >= 0.7) {
-                grade = "F";
-            } else if (score < 0.7 && score >= 0.5) {
-                grade = "E";
-            } else if (score < 0.5 && score >= 0.25) {
-                grade = "D";
-            } else if (score < 0.25 && score >= 0.15) {
-                grade = "C";
-            } else if (score < 0.15 && score >= 0.02) {
-                grade = "B";
-            } else if (score < 0.02) {
-                grade = "A";
-            }
-            return grade;
-        }
-
-        var zipDiction = {};
-        //var APIlink = "http://127.0.0.1:8000/api/table/";
-        var APIlink = "http://se-proj-develop.eba-hksnzcxj.us-west-2.elasticbeanstalk.com/api/table/";
-        fetch(APIlink)
-            .then((response) => response.json())
-            .then((data) => {
-                for (var i = 0; i < data.length; i++) {
-                    zipDiction[data[i]['zipcode']] = data[i];
+            function score_to_grade(score) {
+                var grade = "N"
+                if (score >= 0.95) {
+                    grade = "G";
+                } else if (score < 0.95 && score >= 0.7) {
+                    grade = "F";
+                } else if (score < 0.7 && score >= 0.5) {
+                    grade = "E";
+                } else if (score < 0.5 && score >= 0.25) {
+                    grade = "D";
+                } else if (score < 0.25 && score >= 0.15) {
+                    grade = "C";
+                } else if (score < 0.15 && score >= 0.02) {
+                    grade = "B";
+                } else if (score < 0.02) {
+                    grade = "A";
                 }
-            })
-            .then(() => {
-                var map;
-                map = new window.google.maps.Map(document.getElementById('map'), {
-                    zoom: 11,
-                    center: {
-                        lat: 40.7831,
-                        lng: -73.9712
+                return grade;
+            }
+
+            var zipDiction = {};
+            var APIlink = "http://127.0.0.1:8000/api/table/";
+            // var APIlink = "http://se-proj-develop.eba-hksnzcxj.us-west-2.elasticbeanstalk.com/api/table/";
+            fetch(APIlink)
+                .then((response) => response.json())
+                .then((data) => {
+                    for (var i = 0; i < data.length; i++) {
+                        zipDiction[data[i]['zipcode']] = data[i];
                     }
+                })
+                .then(() => {
+                    var map;
+                    map = new window.google.maps.Map(document.getElementById('map'), {
+                        zoom: 11,
+                        center: {
+                            lat: 40.7831,
+                            lng: -73.9712
+                        }
+                    });
+                    map.data.loadGeoJson("{% static '/json/serenity.geojson' %}");
+
+                    map.data.setStyle(function (feature) {
+                        //TODO: Read grade from database based on zipcode
+                        curzip = feature.getProperty('postalCode');
+                        var grade = "N";
+                        if (zipDiction[curzip]) {
+                            grade = zipDiction[curzip]["grade"];
+                            // grade = filterDiction[curzip];
+                        }
+
+                        // var SD_NAME = feature.getProperty('grade');
+                        var color = "gray";
+                        if (grade == "A") {
+                            color = "#379237";
+                        }
+
+                        else if (grade == "B") {
+                            color = "#82CD47";
+                        }
+
+                        else if (grade == "C") {
+                            color = "#F0FF42";
+                        }
+
+                        else if (grade == "D") {
+                            color = "#FFCD38";
+                        }
+
+                        else if (grade == "E") {
+                            color = "#FF8D29";
+                        }
+
+                        else if (grade == "F") {
+                            color = "#FF4949";
+                        }
+
+                        else if (grade == "G") {
+                            color = "#F32424";
+                        }
+                        return {
+                            fillColor: color,
+                            strokeWeight: 1,
+                            fillOpacity: 0.5,
+                            strokeColor: "#55555",
+                            strokeOpacity: 1.0,
+
+                        }
+                    });
+
+                    var infowindow = new google.maps.InfoWindow();
+
+                    map.data.addListener('click', function (event) {
+
+                        let zipcode = event.feature.getProperty("postalCode");
+                        let neighborhood = event.feature.getProperty("PO_NAME");
+                        let forum_url = "http://se-proj-develop.eba-hksnzcxj.us-west-2.elasticbeanstalk.com/forumPosts/zipcode/" + zipcode;
+                        var grade = "N";
+                        if (zipDiction[zipcode]) {
+                            grade = zipDiction[zipcode]["grade"];
+                        }
+
+
+
+                        let html = '' + neighborhood + '<br>' + zipcode + "<br>" + ' Grade: ' + grade + "<br>" + "<a href=" + forum_url + ">" + "Forum" + "</a>"; // combine state name with a label
+
+
+                        infowindow.setContent(html); // show the html variable in the infowindow
+                        infowindow.setPosition(event.latLng); // anchor the infowindow at the marker
+                        infowindow.setOptions({ pixelOffset: new google.maps.Size(0, -30) }); // move the infowindow up slightly to the top of the marker icon
+                        infowindow.open(map);
+                    });
                 });
-                map.data.loadGeoJson("{% static '/json/serenity.geojson' %}");
-
-                map.data.setStyle(function (feature) {
-                    //TODO: Read grade from database based on zipcode
-                    curzip = feature.getProperty('postalCode');
-                    var grade = "N";
-                    if (zipDiction[curzip]) {
-                        grade = zipDiction[curzip]["grade"];
-                        // grade = filterDiction[curzip];
-                    }
-
-                    // var SD_NAME = feature.getProperty('grade');
-                    var color = "gray";
-                    if (grade == "A") {
-                        color = "#379237";
-                    }
-
-                    else if (grade == "B") {
-                        color = "#82CD47";
-                    }
-
-                    else if (grade == "C") {
-                        color = "#F0FF42";
-                    }
-
-                    else if (grade == "D") {
-                        color = "#FFCD38";
-                    }
-
-                    else if (grade == "E") {
-                        color = "#FF8D29";
-                    }
-
-                    else if (grade == "F") {
-                        color = "#FF4949";
-                    }
-
-                    else if (grade == "G") {
-                        color = "#F32424";
-                    }
-                    return {
-                        fillColor: color,
-                        strokeWeight: 1,
-                        fillOpacity: 0.5,
-                        strokeColor: "#55555",
-                        strokeOpacity: 1.0,
-
-                    }
-                });
-
-                var infowindow = new google.maps.InfoWindow();
-
-                map.data.addListener('click', function (event) {
-
-                    let zipcode = event.feature.getProperty("postalCode");
-                    let neighborhood = event.feature.getProperty("PO_NAME");
-                    let forum_url = "http://se-proj-develop.eba-hksnzcxj.us-west-2.elasticbeanstalk.com/forumPosts/zipcode/" + zipcode;
-                    var grade = "N";
-                    if (zipDiction[zipcode]) {
-                        grade = zipDiction[zipcode]["grade"];
-                    }
 
 
+            function initMap() {
 
-                    let html = '' + neighborhood + '<br>' + zipcode + "<br>" + ' Grade: ' + grade + "<br>" + "<a href=" + forum_url + ">" + "Forum" + "</a>"; // combine state name with a label
-
-
-                    infowindow.setContent(html); // show the html variable in the infowindow
-                    infowindow.setPosition(event.latLng); // anchor the infowindow at the marker
-                    infowindow.setOptions({ pixelOffset: new google.maps.Size(0, -30) }); // move the infowindow up slightly to the top of the marker icon
-                    infowindow.open(map);
-                });
-            });
-
-
-        function initMap() {
-
-        }
-    </script>
+            }
+        </script>
+    </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa"
         crossorigin="anonymous"></script>
 
+
+
+    {% endblock %}
+
 </body>
-
-
-
-
-
-    <!-- <div class="border p-5"> -->
-      <!-- Copy this code to have a working example -->
-      <footer class="bg-primary text-white text-center text-lg-start">
-        <!-- Grid container -->
-        <div class="container p-4">
-          <!--Grid row-->
-          <div class="row">
-            <!--Grid column-->
-            <div class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
-              <!-- Content -->
-              <h6 class="text-uppercase fw-bold mb-4">
-                <i class="fas fa-gem me-3"></i>Serenity Search
-              </h6>
-              <p>
-                  Explore the peaceful and safest neighborhoods in NYC based on 311 complaints, construction permits, tree census, 
-                  park properties, and other data by city, for more information check the info section. 
-                  Ranking based on Serenity Search we can help you be aware of your neighborhood by providing a grading system. 
-                   Read more on how this ranking was calculated in the info section.
-              </p>
-            </div>
-            <!--Grid column-->
-
-            <!-- Grid column -->
-          <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
-            <!-- Links -->
-            <h6 class="text-uppercase fw-bold mb-4">
-              Products
-            </h6>
-            <p>
-              <a href="#!" class="text-reset">Bootstrap</a>
-            </p>
-            <p>
-              <a href="#!" class="text-reset">Django</a>
-            </p>
-            <p>
-              <a href="#!" class="text-reset">Sqlite3</a>
-            </p>
-          
-          </div>
-          <!-- Grid column -->
-  
-          <!-- Grid column -->
-          <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4">
-            <!-- Links -->
-            <h6 class="text-uppercase fw-bold mb-4">
-              Our Data
-            </h6>
-            <p>
-              <a href="https://data.cityofnewyork.us/Environment/2015-Street-Tree-Census-Tree-Data/pi5s-9p35" class="text-reset">
-                Street Tree Census</a>
-            </p>
-            <p>
-              <a href="https://data.cityofnewyork.us/Recreation/Parks-Properties/enfh-gkve" class="text-reset">Parks Properties </a>
-            </p>
-            <p>
-              <a href="https://data.cityofnewyork.us/Social-Services/311-Service-Requests-from-2010-to-Present/erm2-nwe9" class="text-reset">
-                311 Dataset</a>
-            </p>
-            <p>
-              <a href="https://data.cityofnewyork.us/Transportation/Street-Construction-Permits/tqtj-sjs8" class="text-reset">DOB Permit</a>
-            </p>
-          </div>
-
-        <!-- Copyright -->
-        <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2)">
-          © 2022 Copyright:
-          <a class="text-white" href="http://se-proj-develop.eba-hksnzcxj.us-west-2.elasticbeanstalk.com/"> INET2</a>
-        </div>
-        <!-- Copyright -->
-      </footer>
-      <!--/ Copy this code to have a working example -->
-    </div>
-  </div>

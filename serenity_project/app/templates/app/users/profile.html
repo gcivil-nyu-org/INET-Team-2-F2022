@@ -26,6 +26,26 @@
             text-align: left;
             margin: 30px;
         }
+        .bar {
+            margin: 0 auto;
+            width: 350px;
+            border-radius: 30px;
+            border: 1px solid #dcdcdc;
+        }
+
+        .bar:hover {
+            box-shadow: 1px 1px 8px 1px #dcdcdc;
+        }
+
+        .bar:focus-within {
+            box-shadow: 1px 1px 8px 1px #dcdcdc;
+            outline: none;
+        }
+
+        hr.divider {
+            margin-top: 0em;
+            border-width: 2px;
+        }
     </style>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -43,21 +63,18 @@
 
 <body style="background-color:ECFFE8;">
 
-    <nav class="navbar navbar-expand-lg navbar-light">
+    <nav class="navbar navbar-expand-lg navbar-light" style="height:80px; background-color: #1411112b;">
 
-        <a class="navbar-brand ps-3" href="/">
-            <img src="{% static '/img/SerenitySearch-1.png' %}" alt="" width="90" height="90">
-        </a>
+
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
 
-        <div class="collapse navbar-collapse justify-content-center">
-            <header class="serenity-title">
-                <h1 style="color:ForestGreen;">SerenitySearch</h1>
-                <p style="color:ForestGreen;"><i>Helping New Yorkers find peace in the city that never sleeps</i></p>
-            </header>
+        <div class="collapse navbar-collapse justify-content-left mt-3 row">
+            <div class="col-auto">
+                <h1 style="color:ForestGreen; font-family:Snell Roundhand;">SerenitySearch</h1>
+            </div>
 
         </div>
 
@@ -90,6 +107,8 @@
             </p>
 
     </nav>
+    <hr class = "divider" style="border-top: 1px solid gray ;">
+
 <body>
 
 
@@ -131,7 +150,7 @@
                             <a href="#">Change Password</a>
                             <hr>
                         </div> -->
-                        <label class="small mb-1">Bio:</label> {{ profile_form.bio }}
+                        <label class="small mb-1">Serene Spots {{user.username}} has visited:</label> {{ profile_form.bio }}
                     </div>
                 </div>
                 <br><br>

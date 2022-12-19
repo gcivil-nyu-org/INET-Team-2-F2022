@@ -6,6 +6,7 @@
     <style>
         h1 {
             text-align: center;
+            color:ForestGreen
         }
 
         p {
@@ -22,13 +23,57 @@
             text-align: right;
         }
 
+        h3 {
+            color:ForestGreen;
+            margin: 40px;
+        }
+
+        h5{
+            color:ForestGreen;
+        }
+        h6{
+            color:ForestGreen;
+        }
+        li{
+            color:ForestGreen;
+        }
+
         div {
             text-align: center;
+        }
+        .bar {
+            margin: 0 auto;
+            width: 350px;
+            border-radius: 30px;
+            border: 1px solid #dcdcdc;
+        }
+
+        .bar:hover {
+            box-shadow: 1px 1px 8px 1px #dcdcdc;
+        }
+
+        .bar:focus-within {
+            box-shadow: 1px 1px 8px 1px #dcdcdc;
+            outline: none;
+        }
+
+        .searchbar {
+            height: 45px;
+            border: none;
+            width: 500px;
+            font-size: 16px;
+            outline: none;
+
+        }
+
+        hr.divider {
+            margin-top: 0em;
+            border-width: 2px;
         }
     </style>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Serenity Search Result</title>
+    <title>About SerenitySearch</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -40,23 +85,21 @@
 
 </head>
 
-<body style="background-color:ECFFE8;">
+<body style="">
 
-    <nav class="navbar navbar-expand-lg navbar-light">
 
-        <a class="navbar-brand ps-3" href="/">
-            <img src="{% static '/img/SerenitySearch-1.png' %}" alt="" width="90" height="90">
-        </a>
+    <nav class="navbar navbar-expand-lg navbar-light" style="height:80px; background-color: #1411112b;">
+
+
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
 
-        <div class="collapse navbar-collapse justify-content-center">
-            <header class="serenity-title">
-                <h1 style="color:ForestGreen;">SerenitySearch</h1>
-                <p style="color:ForestGreen;"><i>Helping New Yorkers find peace in the city that never sleeps</i></p>
-            </header>
+        <div class="collapse navbar-collapse justify-content-left mt-3 row">
+            <div class="col-auto">
+                <h1 style="color:ForestGreen; font-family:Snell Roundhand;">SerenitySearch</h1>
+            </div>
 
         </div>
 
@@ -89,12 +132,39 @@
             </p>
 
     </nav>
+    <hr class = "divider" style="border-top: 1px solid gray ;">
+
+    <!-- In your Django template -->
     <br><br>
     <div class="container">
         <div class="container">
             <h2> Why Search for Serenity? </h2>
 
-            <p> ...because mental health reasons...</p>
+            <p> We at SerenitySearch believe that mental health is just as important, if not more important, then physical health, and 
+                mental health care starts at home! New Yorkers are a fast-paced & stressed population, and as the city grows increasingly
+                dense it becomes even more vital for its residents to have peaceful, and healthy homes to return to at the end of their days.
+                SerenitySearch hopes to help New Yorkers find peaceful places to live within the city, and we hope to in general 
+                encourage discussion and conversation about the importance of wellness and the curation of peaceful spaces.
+            </p>
+            <p> <a href="https://hms.harvard.edu/magazine/viral-world/effects-noise-health">Multiple studies</a> 
+                have <a href="https://www.theguardian.com/lifeandstyle/2018/jul/03/sonic-doom-noise-pollution-kills-heart-disease-diabetes">demonstrated </a>
+                that noise pullution negatively affects <a href="https://www.mentalhealthtoday.co.uk/innovations/can-noise-pollution-affect-our-mental-health">mental health</a>. 
+                Even when we are <a href="https://journals.lww.com/environepidem/Fulltext/2019/08000/Environmental_noise_and_sleep_and_mental_health.4.aspx">sleeping</a>, 
+                our brains are listening and evaluating the sounds surrounding us, so if you live in a noisy place chances are your brain does
+                not get the rest that it needs. In fact, continued exposure to noise pollution (i.e., honking cars) increases an individual's risk of heart attack,
+                anger, likelihood of depression, and <a href="https://www.medicalnewstoday.com/articles/noise-pollution-health-effects#mental-health">sensitivity to stress</a>.
+            </p>
+            <p>One way to combat the negative affects that noise pollution may have on mental health is to prioritize picking a living
+                space based on its levels of noise and overall peacefulness instead of the usual criteria (public transportation distance, access to work
+                access to recreation, and price). While we believe that the usual criteria are important (espectially price), we also hold fast 
+                to the believe that mental health should be an individual's primary concern, and it has thus far been undervalued within our society. 
+                SerenitySearch is committed to providing equal access to calm spaces, and that is why our site is completey free to use, with no subscription
+                or fees required for joining. We hope to someday include live rental prices for our users to view alongside
+                SerenityScores, but for we encourage discussion regarding affordability and transportation to take place within our dedicated
+                user forums.
+            </p>
+            <p>The SerenityScore here is what we believe to be an accurate scoring of a zip code based upon how peaceful and quite it is.
+            </p>
         </div>
 
 
@@ -104,10 +174,18 @@
 
     <div class="container">
         <h2> About Our Scoring </h2>
+        <p>
+            Using a number of factors contributing peaceful living, our team calculated each zip-code's percentile
+            for that factor across all NYC zip codes. For example, a zip code with more trees than 90% of other zip codes
+            has a Tree Score of 90 while a zip code with more noise complaints than 90% of other zip codes has a Noise Complaints
+            score of 90. If this seems confusing at first, you're right to be confused! Wouldn't we expect a high Tree Score to look
+            different from a high Noise Complaints score if the goal is to measure serenity? Yes, we would - that is why factors
+            which positively contribute to serenity (like trees!) are factored into the final weighted average with a negative weight.
+            The SerenityScore you see is this weighted average.
+        </p>
 
         <div class="container">
-            <p> Our team pulled publicly available datasets containing information we believe is fundamental or
-                detrimental to healthy, peaceful living.</p>
+            <p> Some more information on our datasets follows...</p>
 
             <h3>NYC 311 Dataset</h3>
             <p>This 311 data contains information about
@@ -115,7 +193,10 @@
                 311 is a phone number used in the U.S. that allows callers to access non-emergency municipal services,
                 report problems to government agencies, and request information.</p>
             <p>From this dataset we collected reports related to Residential Noise Complaints, Dirty Condition
-                Complaints, Sanitation Complaints, and Waste Disposal Requests.</p>
+                Complaints, Sanitation Complaints, and Waste Disposal Requests. Each complaint type comprises one Serenity factor,
+                with the raw scores for these factors reflecting how many of each type of complaint a zip code received
+                compared to other zip codes in NYC.
+            </p>
         </div>
 
         <div class="container">
@@ -126,8 +207,7 @@
                 Building, Demolition, and Alterations Type 1, 2, and 3. Each job type can have multiple work types, such
                 as general construction, boiler, elevator, and plumbing. Each work type will receive a separate permit.
                 Each row/record in this dataset represents the life cycle of one permit for one work type. The dataset
-                is
-                updated daily with new records, and each existing record will be updated as the permit application moves
+                is updated daily with new records, and each existing record will be updated as the permit application moves
                 through the approval process to reflect the latest status of the application.</p>
 
             <p>
@@ -177,8 +257,13 @@
             NYC Parks & Recreation and partner organizations. Tree data collected includes tree species, diameter and
             perception of health. Accompanying blockface data is available indicating status of data collection and data
             release citywide.</p>
-        <p>From this dataset we simply summed the number of street trees in every zipcode, more trees improve the
-            SerenityScore.</p>
+        <p>From this dataset we simply summed the number of street trees in every zipcode, as we believe that a high density
+            of trees may contribute significantly to peaceful living. Zip codes are similar enough in area that we assume 
+            a larger number of trees corresponds to a higher density of trees. 
+        </p>
+        <p>Trees improve mental health in a number of ways which include: generating clean oxygen (air purification), absorbing
+            polution, and provifing seclusion. 
+        </p>
     </div>
 
     <div class="container">
@@ -203,14 +288,14 @@
     <div class="container">
         <div class="container">
             <h3>About our scoring system:</h3>
-            <p>Scores are on the range [0,1] with the lower scores representing zip codes are more peaceful.</p>
-            <p>A = [0,0.1)</p>
-            <p>B = [0.1,0.2)</p>
-            <p>C = [0.2,0.3)</p>
-            <p>D = [0.3,0.4)</p>
-            <p>E = [0.4,0.5)</p>
-            <p>F = [0.5,0.6)</p>
-            <p>G = 0.6+</p>
+            <p>Scores are on the range [0,125] with the lower scores representing zip codes are more peaceful.</p>
+            <p>A = [0,15)</p>
+            <p>B = [15,40)</p>
+            <p>C = [40,60)</p>
+            <p>D = [60,75)</p>
+            <p>E = [75,90)</p>
+            <p>F = [90,110)</p>
+            <p>G = 110+</p>
             <br>
         </div>
     </div>
