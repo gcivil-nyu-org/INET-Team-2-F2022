@@ -3,22 +3,31 @@ from django.shortcuts import render, redirect
 # Create your views here.
 from rest_framework import viewsets
 from django import forms
-from .models import ScoreTable, ForumPost, Comment
+from .models import ScoreTable, ForumPost, Comment, Profile
 from .serializers import ScoreTableSerializer
 from django.template import RequestContext, Template, Context
 from django.contrib import messages
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
-from django.shortcuts import HttpResponseRedirect
+from django.shortcuts import HttpResponseRedirect, redirect
 from django.template.response import TemplateResponse
-from .forms import RatingForm, NewUserForm, CreateInForumPost, CreateInComment
+from .forms import (
+    RatingForm,
+    NewUserForm,
+    CreateInForumPost,
+    CreateInComment,
+    UpdateUserForm,
+    UpdateProfileForm,
+)
+from django.shortcuts import render
 
 import os
 import pandas as pd
 import numpy as np
 from django.http import HttpResponse
 from django.contrib.auth import get_user
+from scipy.stats import percentileofscore
 import plotly.express as px
 import plotly.figure_factory as ff
 import plotly.graph_objects as go
@@ -42,9 +51,14 @@ def index(request):
     # 4) Undo steps 1 and 2 before pushing code, include db.sqlite3 file in push
 
     # allposts = ScoreTable.objects.all()
+    # scores = []
     # for post in allposts:
-    #     score = calculate_factor(post.zipcode)[0] #only getting score
-    #     post.grade = _get_grade_from_score(score)
+    #     score = calculate_factor(post.zipcode)[0]  # only getting score
+    #     scores.append(score)
+    # for post in allposts:
+    #     curr_score = calculate_factor(post.zipcode)[0]
+    #     sorted_scores = sorted(scores)
+    #     post.grade = _get_grade_from_score(percentileofscore(sorted_scores, curr_score))
     #     post.save()
     return render(request, "app/index.html", {})
 
@@ -60,50 +74,53 @@ def calculate_factor(zipcode):
     nFactors = []
     factors = (
         ("residentialNoise", 1),
-        ("dirtyConditions", 1),
-        ("sanitationCondition", 1),
-        ("wasteDisposal", 1),
-        ("unsanitaryCondition", 1),
-        ("constructionImpact", 4),
+        ("dirtyConditions", 0.6),
+        ("sanitationCondition", 0.6),
+        ("wasteDisposal", 0.6),
+        ("unsanitaryCondition", 0.6),
+        ("constructionImpact", 1),
         ("userAvg", 1),
-        ("treeCensus", -0.5),
+        ("treeCensus", -1),
         ("parkCount", -1),
     )
     score = 0
     for factor, weight in factors:
         currSet = ScoreTable.objects.values_list(factor, flat=True)
         arr = np.array(currSet)
-        normal = 3 * (getattr(zipcodeFactors, factor) / np.linalg.norm(arr))
+        # normal = 3 * (getattr(zipcodeFactors, factor) / np.linalg.norm(arr))
+        arr_sorted = np.sort(arr)
+        normal = percentileofscore(arr_sorted, getattr(zipcodeFactors, factor))
         nFactors.append(round(normal, 2))
+
         if factor == "userAvg":
             currUserScore = getattr(zipcodeFactors, factor)
         elif factor != "userAvg" and normal != 0:
             n.append(normal)
             weights.append(weight)
-    score = round(np.average(n, weights=weights), 2)
+
+    score = np.dot(n, weights)
     if currUserScore != 0:
-        if currUserScore > score:
-            score = round(((score + (0.5 * currUserScore)) / 2), 2)
-        else:
-            score = round(((score - (0.5 * currUserScore)) / 2), 2)
+        score = round((score + currUserScore) / sum(weights), 2)
+    else:
+        score = round(score / (sum(weights) - 1), 2)
     return score, nFactors
 
 
 def _get_grade_from_score(score):
     grade = "N"
-    if score >= 0.6:
+    if score >= 110:
         grade = "G"
-    elif score < 0.6 and score >= 0.5:
+    elif score < 110 and score >= 90:
         grade = "F"
-    elif score < 0.5 and score >= 0.4:
+    elif score < 90 and score >= 75:
         grade = "E"
-    elif score < 0.4 and score >= 0.3:
+    elif score < 75 and score >= 60:
         grade = "D"
-    elif score < 0.3 and score >= 0.2:
+    elif score < 60 and score >= 40:
         grade = "C"
-    elif score < 0.2 and score >= 0.1:
+    elif score < 40 and score >= 15:
         grade = "B"
-    elif score < 0.1 and score >= 0:
+    elif score < 15 and score >= 0:
         grade = "A"
     return grade
 
@@ -287,7 +304,7 @@ def search(request, test=False):  # pragma: no cover
                     showlegend=False,
                     paper_bgcolor=paper_bg,
                 )
-
+                print(post.grade)
                 return render(
                     request,
                     "app/search.html",
@@ -338,19 +355,18 @@ def submit_rating(request):
 
 def update_user_rating(total, grade):
     if grade == "A":
-        total += 0.1
+        total += 7.5
     if grade == "B":
-        total += 0.2
+        total += 25
     if grade == "C":
-        total += 0.3
+        total += 50
     if grade == "D":
-        total += 0.4
+        total += 67.5
     if grade == "E":
-        total += 0.5
+        total += 82.5
     if grade == "F":
-        total += 0.6
-    if grade == "G":
-        total += 0.7
+        total += 95
+
     return total
 
 
@@ -370,7 +386,6 @@ def get_rating(request):
                 or grade == "D"
                 or grade == "E"
                 or grade == "F"
-                or grade == "G"
             ):
                 post = ScoreTable.objects.get(zipcode=zip)
                 post.gradeCount += 1
@@ -527,7 +542,7 @@ def addInForumPost(request):
             form.save()
             current_zip = form.cleaned_data["zipcode"]
             form.save()
-            return redirect(f"/forumPosts/zipcode/{current_zip}")
+            return redirect(f"/forumPosts/zipcode/{current_zip}/")
 
     curzip = "11205"
     if "curzip" in request.POST:
@@ -555,7 +570,7 @@ def addInComment(request):
             current_zip = form.cleaned_data["forumPost"]
             current_zip = current_zip.zipcode
             post_id = form["forumPost"].value()
-            return redirect(f"/forumPosts/zipcode/{current_zip}/{post_id}")
+            return redirect(f"/forumPosts/zipcode/{current_zip}/{post_id}/")
 
     curpost = "1"
     if "post" in request.POST:
@@ -568,6 +583,49 @@ def addInComment(request):
     form.fields["email"].widget = forms.HiddenInput()
     context = {"form": form, "user": user, "email": email}
     return render(request, "app/addInComment.html", context)
+
+
+@login_required
+def profile(request):
+    # ?: list all the posts
+    posts = ForumPost.objects.filter(name=request.user)
+    if request.method == "POST":
+        user_form = UpdateUserForm(request.POST, instance=request.user)
+        profile_form = UpdateProfileForm(
+            request.POST, request.FILES, instance=request.user.profile
+        )
+
+        if profile_form.is_valid():
+            # user_form.save()
+            profile_form.save()
+            messages.success(request, "Your profile is updated successfully")
+            return redirect(to="profile")
+    else:
+        user_form = UpdateUserForm(instance=request.user)
+        profile_form = UpdateProfileForm(instance=request.user.profile)
+
+    return render(
+        request,
+        "app/users/profile.html",
+        {"user_form": user_form, "profile_form": profile_form, "forumPosts": posts},
+    )
+
+
+def get_others(request, name):
+    # ?: list all the posts
+    posts = ForumPost.objects.filter(name=name)
+
+    try:
+        profile = Profile.objects.get(user__username=name)
+
+        return render(
+            request,
+            "app/users/other_profile.html",
+            {"username": name, "profile": profile, "forumPosts": posts},
+        )
+
+    except:
+        return render(request, "404.html", status=404)
 
 
 def page_not_found_view(request, exception):

@@ -1,6 +1,6 @@
 from django.test import TestCase
 from django.urls import reverse
-from .models import ScoreTable, ForumPost
+from .models import ScoreTable, ForumPost, Profile
 from .serializers import ScoreTableSerializer
 from django.contrib.auth.models import User
 from .views import search
@@ -25,6 +25,7 @@ class AppViewTests(TestCase):
         self.user = User.objects.create_user(
             "john", "lennon@thebeatles.com", "johnpassword"
         )
+        self.profile = Profile.objects.create(user=self.user)
 
     def test_home_endpoint_returns_welcome_page(self):
         response = self.client.get(path="/")
@@ -76,6 +77,12 @@ class AppViewTests(TestCase):
     def test_add_forum_post_login(self):
         self.client.login(username="john", password="johnpassword")
         response = self.client.get(path="/addInComment/")
+        assert response.status_code == 200
+
+    def test_profile_view(self):
+        self.client.login(username="john", password="johnpassword")
+        response = self.client.get(path="/users/profile/")
+        self.assertTemplateUsed(response, "app/users/profile.html")
         assert response.status_code == 200
 
 
@@ -265,6 +272,7 @@ class TestForms(TestCase):
         form.cleaned_data["password1"] = "test_password"
 
         user = form.save(False)
+
         email = form.cleaned_data["email"]
         assert email == user.email
 
@@ -276,29 +284,56 @@ class TestForms(TestCase):
         assert meta.model == User
         assert meta.fields == ("username", "email", "password1", "password2")
 
+    def test_user_update(self):
+        from .forms import UpdateUserForm, NewUserForm
+
+        form2 = UpdateUserForm()
+
+        form2.cleaned_data = {}
+        form2.cleaned_data["username"] = "test_user"
+        form2.cleaned_data["email"] = "new@email.com"
+
+        email = form2.cleaned_data["email"]
+        username = form2.cleaned_data["username"]
+        assert email == "new@email.com"
+        assert username == "test_user"
+
+    def test_profile_update(self):
+        from .forms import UpdateProfileForm
+
+        form = UpdateProfileForm
+
+        form.cleaned_data = {}
+        form.cleaned_data["bio"] = "blah"
+        form.cleaned_data["avatar"] = "test.jpg"
+
+        bio = form.cleaned_data["bio"]
+        avatar = form.cleaned_data["avatar"]
+        assert bio == "blah"
+        assert avatar == "test.jpg"
+
 
 class TestViews(TestCase):
     def test_get_grade_from_score(self):
         from .views import _get_grade_from_score
 
-        assert _get_grade_from_score(0.6) == "G"
-        assert _get_grade_from_score(0.5) == "F"
-        assert _get_grade_from_score(0.4) == "E"
-        assert _get_grade_from_score(0.3) == "D"
-        assert _get_grade_from_score(0.2) == "C"
-        assert _get_grade_from_score(0.1) == "B"
-        assert _get_grade_from_score(0.0) == "A"
+        assert _get_grade_from_score(95) == "F"
+        assert _get_grade_from_score(77) == "E"
+        assert _get_grade_from_score(69) == "D"
+        assert _get_grade_from_score(50) == "C"
+        assert _get_grade_from_score(25) == "B"
+        assert _get_grade_from_score(9) == "A"
 
     def test_update_user_rating(self):
         from .views import update_user_rating
 
-        assert update_user_rating(100, "A") == 100.1
-        assert update_user_rating(100, "B") == 100.2
-        assert update_user_rating(100, "C") == 100.3
-        assert update_user_rating(100, "D") == 100.4
-        assert update_user_rating(100, "E") == 100.5
-        assert update_user_rating(100, "F") == 100.6
-        assert update_user_rating(100, "G") == 100.7
+        assert update_user_rating(100, "A") == 107.5
+        assert update_user_rating(100, "B") == 125
+        assert update_user_rating(100, "C") == 150
+        assert update_user_rating(100, "D") == 167.5
+        assert update_user_rating(100, "E") == 182.5
+        assert update_user_rating(100, "F") == 195
+        # assert update_user_rating(100, "G") == 100.7
 
 
 class ForumPostTests(TestCase):
@@ -364,4 +399,10 @@ class TestCalculateScore(TestCase):
 
         object = ScoreTable.objects.get(zipcode=00000)
         result = calculate_factor(object.zipcode)
-        self.assertEqual(result, (1.48, [3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0, 3.0]))
+        self.assertEqual(
+            result,
+            (
+                100.04,
+                [100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0, 100.0],
+            ),
+        )

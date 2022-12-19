@@ -134,3 +134,9 @@ STATIC_URL = "/static/"
 
 LOGIN_REDIRECT_URL = "home"
 LOGOUT_REDIRECT_URL = "home"
+
+# for storing user uploaded media
+MEDIA_ROOT = [
+    BASE_DIR / "media",
+]
+MEDIA_URL = "/media/"
