@@ -3,118 +3,74 @@
 <html>
 
 <head>
-    <style>
-        h1 {
-            text-align: center;
-        }
-
-        p {
-            color: darkolivegreen;
-            margin: 30px;
-        }
-
-        h2 {
-            color: forestgreen;
-            margin: 30px;
-        }
-
-        p {
-            text-align: right;
-        }
-
-        div {
-            text-align: left;
-            margin: 30px;
-        }
-        .bar {
-            margin: 0 auto;
-            width: 350px;
-            border-radius: 30px;
-            border: 1px solid #dcdcdc;
-        }
-
-        .bar:hover {
-            box-shadow: 1px 1px 8px 1px #dcdcdc;
-        }
-
-        .bar:focus-within {
-            box-shadow: 1px 1px 8px 1px #dcdcdc;
-            outline: none;
-        }
-
-        hr.divider {
-            margin-top: 0em;
-            border-width: 2px;
-        }
-    </style>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{user.username}}'s Profile</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Catamaran:wght@200;400;700&family=Chau+Philomene+One&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Catamaran:wght@200;400;700&family=Chau+Philomene+One&family=Merriweather&display=swap"
         rel="stylesheet">
-    <link href="{% static 'css/styles.css' %}" rel="stylesheet">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
-        integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous" 0>
-
+    <link href="{% static 'css/map.css' %}" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
 </head>
-
-<body style="background-color:ECFFE8;">
-
-    <nav class="navbar navbar-expand-lg navbar-light" style="height:80px; background-color: #1411112b;">
-
-
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <div class="collapse navbar-collapse justify-content-left mt-3 row">
-            <div class="col-auto">
-                <h1 style="color:ForestGreen; font-family:Snell Roundhand;">SerenitySearch</h1>
-            </div>
-
-        </div>
-
-        <!-- pe-6 is a bootstrap spacing class, need to figure out a better way to align the links and title -->
-        <ul class="navbar-nav pe-6">
-            <li class="nav-item align-right pe-3">
-                <a class="nav-link" href="{% url 'home' %}">Home</a>
-            </li>
-            <li class="nav-item align-right pe-3">
-                <a class="nav-link" href="{%url 'about' %}">About SerenityScores</a>
-            </li>
-            {% block user %}
-            {% if user.is_authenticated %}
-            <li class="nav-item align-right pe-3">
-                <a class="nav-link align-left" href="{% url 'profile' %}">View {{user.username}}'s Profile</a>
-            </li>
-            <li class="nav-item align-right pe-3">
-                <a class="nav-link align-right" href="{% url 'logout' %}">Log Out</a>
-            </li>
-            {% else %}
-            <li class="nav-item align-right">
-                <a class="nav-link" href="{% url 'login' %}">Log In</a>
-            </li>
-            {% endif %}
-            {% endblock %}
-            <li class="nav-item align-right pe-3">
-                <a class="nav-link" href="{% url 'forum_home' %}">Forum Home</a>
-            </li>
-
-            </p>
-
-    </nav>
-    <hr class = "divider" style="border-top: 1px solid gray ;">
 
 <body>
 
 
+    <div class="navbar navbar-expand-lg row-try" style="background-color: rgba(41, 185, 41, 0.332); height:65px;">
+
+        <div class="column ps-3">
+            <a href="/" class="nav-link">
+                <h1 class="" style="color: #0000008C; font-size:30px; margin:0px;">SerenitySearch</h1>
+            </a>
+        </div>
+      
+        <div class="column2">
+      
+        </div>
+      
+        <div class="column3">
+            <ul class="navbar-nav justify-content-end pe-3">
+                <li class="">
+                    <a class="nav-link" href="{% url 'home' %}">Home</a>
+                </li>
+                <li class="">
+                    <a class="nav-link" href="{%url 'about' %}">About</a>
+                </li>
+                {% block user %}
+                {% if user.is_authenticated %}
+                <li class="">
+                    <a class="nav-link" href="{% url 'profile' %}">Profile</a>
+                </li>
+                <li class="">
+                    <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+                </li>
+                {% else %}
+                <li class="">
+                    <a class="nav-link" href="{% url 'login' %}">Login</a>
+                </li>
+                {% endif %}
+                {% endblock %}
+                <li class="">
+                    <a class="nav-link" href="{% url 'forum_home' %}">Forum</a>
+                </li>
+            </ul>
+        </div>
+      
+      </div>
+      
+      <hr class = "divider" style="border-top: 1px solid gray ;">
+        
+<body>
+
+
+<div class="container">
+
 
     {% block content %}
-    <h1>This is the profile page for {{user.username}}</h1>
+    <h2>This is the profile page for {{user.username}}</h2>
         <div class="row my-3 p-3">
             <img class="rounded-circle account-img" src="{{ user.profile.avatar.url }} " style="cursor: pointer;"/>
         </div>
@@ -154,12 +110,13 @@
                     </div>
                 </div>
                 <br><br>
-                <button type="submit" class="btn btn-dark btn-lg">Save Changes</button>
-                <button type="reset" class="btn btn-dark btn-lg">Reset</button>
+                <button type="submit" class="btn btn-dark btn-sm">Save Changes</button>
+                <button type="reset" class="btn btn-dark btn-sm">Reset</button>
             </form>
         </div>
         
 {% endblock content %}
+</div>
 
 {%for post in forumPosts %}
             
