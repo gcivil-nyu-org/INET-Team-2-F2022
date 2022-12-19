@@ -108,9 +108,7 @@ def calculate_factor(zipcode):
 
 def _get_grade_from_score(score):
     grade = "N"
-    if score >= 110:
-        grade = "G"
-    elif score < 110 and score >= 90:
+    if score >= 90:
         grade = "F"
     elif score < 90 and score >= 75:
         grade = "E"
@@ -135,27 +133,27 @@ def search(request, test=False):  # pragma: no cover
             treeCensusPoint = post.treeCensus
             residentialNoisePoint = post.residentialNoise
             dirtyConditionsPoint = post.dirtyConditions
-            norm_score, normals = calculate_factor(search)
-            factors = (
-                "residentialNoise",
-                "dirtyConditions",
-                "sanitationCondition",
-                "wasteDisposal",
-                "unsanitaryCondition",
-                "constructionImpact",
-                "userAvg",
-                "treeCensus",
-                "parkCount",
-            )
-            count = 0
-            for factor in factors:
-                if factor != "userAvg":
-                    setattr(post, factor, normals[count])
-                    count += 1
-                else:
-                    count += 1
-            post.raw = norm_score
-            post.grade = _get_grade_from_score(norm_score)
+            # norm_score, normals = calculate_factor(search)
+            # factors = (
+            #     "residentialNoise",
+            #     "dirtyConditions",
+            #     "sanitationCondition",
+            #     "wasteDisposal",
+            #     "unsanitaryCondition",
+            #     "constructionImpact",
+            #     "userAvg",
+            #     "treeCensus",
+            #     "parkCount",
+            # )
+            # count = 0
+            # for factor in factors:
+            #     if factor != "userAvg":
+            #         setattr(post, factor, normals[count])
+            #         count += 1
+            #     else:
+            #         count += 1
+            # post.raw = norm_score
+            # post.grade = _get_grade_from_score(norm_score)
             # post.save()
             rounded = round(post.userAvg, 2)
 
@@ -304,7 +302,7 @@ def search(request, test=False):  # pragma: no cover
                     showlegend=False,
                     paper_bgcolor=paper_bg,
                 )
-                print(post.grade)
+
                 return render(
                     request,
                     "app/search.html",
@@ -560,7 +558,6 @@ def addInComment(request):
     if request.method == "POST":
         form = CreateInComment(request.POST)
         if form.is_valid():
-            print(form)
             form.save()
             current_zip = form.cleaned_data["forumPost"]
             current_zip = current_zip.zipcode
