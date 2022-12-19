@@ -3,7 +3,7 @@ from django.urls import reverse
 from .models import ScoreTable, ForumPost, Profile
 from .serializers import ScoreTableSerializer
 from django.contrib.auth.models import User
-from .views import find,get_others,search,get_info
+from .views import find, get_others, search, get_info
 from unittest.mock import patch
 import json
 import requests
@@ -26,18 +26,14 @@ class AppViewTests(TestCase):
             "john", "lennon@thebeatles.com", "johnpassword"
         )
         self.profile = Profile.objects.create(user=self.user)
-    
+
     def test_profile_model(self):
-        user = User.objects.create_user(
-            username='testuser', password='testpass'
-         )
-        profile = Profile.objects.create(
-            user=user, bio='Test bio'
-        )
+        user = User.objects.create_user(username="testuser", password="testpass")
+        profile = Profile.objects.create(user=user, bio="Test bio")
         self.assertEqual(Profile.objects.count(), 2)
         self.assertEqual(str(Profile.objects.first()), "john")
-        self.assertEqual(str(profile), 'testuser')
-        with mock.patch.object(Profile, 'save') as mock_save:
+        self.assertEqual(str(profile), "testuser")
+        with mock.patch.object(Profile, "save") as mock_save:
             profile.save()
             mock_save.assert_called_once()
 
@@ -67,11 +63,10 @@ class AppViewTests(TestCase):
         self.assertTemplateUsed(response, "app/index.html")
 
     @patch("requests.post")
-    def test_get_info(self,re1):
-        req=HttpRequest()
+    def test_get_info(self, re1):
+        req = HttpRequest()
         response = get_info(req)
         self.assertEqual(response.status_code, 200)
-
 
     def test_forum_index(self):
         response = self.client.get(path="/forumPosts/")
@@ -407,16 +402,14 @@ class ForumPostTests(TestCase):
         self.assertEqual(response.status_code, 200)
 
     @patch("requests.post")
-    def test_get_others(self,mock_post):
+    def test_get_others(self, mock_post):
         self.user = User.objects.create_user(
             "john1", "lennon@thebeatles.com", "johnpassword1"
         )
-        Profile.objects.create(
-            user=self.user, bio='Test bio'
-        )
-        username="john1";
-        self.client.login( username="john1", password="johnpassword1")
-        
+        Profile.objects.create(user=self.user, bio="Test bio")
+        username = "john1"
+        self.client.login(username="john1", password="johnpassword1")
+
         self.client.post(
             "/addInForumPost/",
             data={
@@ -427,10 +420,10 @@ class ForumPostTests(TestCase):
                 "date_created": "2021-05-05",
             },
         )
-        req=HttpRequest()
-        response=get_others(req,username)
+        req = HttpRequest()
+        response = get_others(req, username)
         self.assertEquals(response.status_code, 200)
-        response=get_others(req,"Invalid_User")
+        response = get_others(req, "Invalid_User")
         self.assertEquals(response.status_code, 404)
 
 

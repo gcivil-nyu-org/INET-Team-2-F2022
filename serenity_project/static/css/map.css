@@ -70,3 +70,22 @@ hr.divider {
     margin-top: 0em;
     border-width: 2px;
 }
+
+
+.card-body {
+ 
+    margin:0px;
+    padding:0px;
+
+}
+
+.box{
+    border: 4px solid black;
+    margin: 0 auto;
+   
+}
+
+
+
+
+
