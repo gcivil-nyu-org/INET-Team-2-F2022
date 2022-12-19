@@ -11,28 +11,29 @@ html, body {
 }
 
 h1 {
-    font-family: 'Chau Philomene One', sans-serif;
+    font-family: 'Merriweather';
 }
 
 p {
-    font-family: 'Catamaran', sans-serif;
+    font-family: 'Merriweather';
 }
 
-.serenity-title {
-    text-align:center;
+.column {
+
+    width: 33.3%;
+}
+.column2 {
+
+    width:33.3%;
+}
+.column3 {
+ 
+    width:33.3%;
 }
 
-.navbar-nav > li > a {
-    display: flex;
-    align-items: center;  
-    height: 80px;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    line-height: 20px;
-  }
 
-.navbar {
-    display: flex;
-    height: 100px;
-    line-height: 20px;
+.row-try:after {
+    content: "";
+    display: table;
+    clear: both;
 }
