@@ -133,25 +133,25 @@ def search(request, test=False):  # pragma: no cover
             treeCensusPoint = post.treeCensus
             residentialNoisePoint = post.residentialNoise
             dirtyConditionsPoint = post.dirtyConditions
-            # norm_score, normals = calculate_factor(search)
-            # factors = (
-            #     "residentialNoise",
-            #     "dirtyConditions",
-            #     "sanitationCondition",
-            #     "wasteDisposal",
-            #     "unsanitaryCondition",
-            #     "constructionImpact",
-            #     "userAvg",
-            #     "treeCensus",
-            #     "parkCount",
-            # )
-            # count = 0
-            # for factor in factors:
-            #     if factor != "userAvg":
-            #         setattr(post, factor, normals[count])
-            #         count += 1
-            #     else:
-            #         count += 1
+            norm_score, normals = calculate_factor(search)
+            factors = (
+                "residentialNoise",
+                "dirtyConditions",
+                "sanitationCondition",
+                "wasteDisposal",
+                "unsanitaryCondition",
+                "constructionImpact",
+                "userAvg",
+                "treeCensus",
+                "parkCount",
+            )
+            count = 0
+            for factor in factors:
+                if factor != "userAvg":
+                    setattr(post, factor, normals[count])
+                    count += 1
+                else:
+                    count += 1
             # post.raw = norm_score
             # post.grade = _get_grade_from_score(norm_score)
             # post.save()
